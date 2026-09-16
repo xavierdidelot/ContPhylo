@@ -4,9 +4,40 @@
 #' @export
 contphylo2phylo = function(r) {
   stopifnot(inherits(r, "contphylo"))
-  n=nrow(r$coordinates)
-  p=rtree(n)#TODO
+  coords=exp(r$coordinates)
+  n=nrow(coords)
+  if (n<2) stop('Need at least two leaves.')
+  m=matrix(NA,n*2-1,4)#child1,child2,father,dist_to_father
+  for (i in 2:n) {
+    if (i==2) graft=1 else graft=sample(c(1:(i-1),n+(1:(i-2))),1)
+    graft_dist=rexp(1)#TODO contour traversal based on coords[i,1]
+    if (!is.na(m[graft,4]) && graft_dist>m[graft,4]) graft_dist=m[graft,4]/2#TODO remove
+    m[i,3]=n+i-1
+    m[i,4]=coords[i,2]
+    m[n+i-1,1]=graft
+    m[n+i-1,2]=i
+    m[n+i-1,3]=m[graft,3]
+    m[n+i-1,4]=m[graft,4]-graft_dist
+    m[graft,3]=n+i-1
+    m[graft,4]=graft_dist
+  }
+  root=which(is.na(m[,3]))
+  if (root!=n+1) {
+    #swap root and n+1
+    row=m[n+1,]
+    m[n+1,]=m[root,]
+    m[root,]=row
+    m[which(m[,1:3]==n+1, arr.ind=T)]=-1
+    m[which(m[,1:3]==root,arr.ind=T)]=n+1
+    m[which(m[,1:3]==-1. ,arr.ind=T)]=root
+  }
+  p=list()
+  p$Nnode=n-1
+  p$edge=cbind(m[,3],1:(n*2-1))
+  p$edge=p$edge[-(n+1),]
+  p$edge.length=m[-(n+1),4]
   p$tip.label=r$tip.label
+  class(p)='phylo'
   return(p)
 }
 
