@@ -9,15 +9,22 @@ contphylo2phylo = function(r) {
   if (n<2) stop('Need at least two leaves.')
   m=matrix(NA,n*2-1,4)#child1,child2,father,dist_to_father
   for (i in 2:n) {
-    if (i==2) graft=1 else graft=sample(c(1:(i-1),n+(1:(i-2))),1)
-    graft_dist=rexp(1)#TODO contour traversal based on coords[i,1]
-    if (!is.na(m[graft,4]) && graft_dist>m[graft,4]) graft_dist=m[graft,4]/2#TODO remove
+    if (i==2) {
+      graft=1
+      graft_dist=coords[i,1]
+    } else {
+      g=contour_traversal(m,coords[i,1])
+      graft=g[1]
+      graft_dist=g[2]
+    }
     m[i,3]=n+i-1
     m[i,4]=coords[i,2]
     m[n+i-1,1]=graft
     m[n+i-1,2]=i
     m[n+i-1,3]=m[graft,3]
     m[n+i-1,4]=m[graft,4]-graft_dist
+    if (!is.na(m[m[graft,3],1])&&m[m[graft,3],1]==graft) m[m[graft,3],1]=n+i-1
+    if (!is.na(m[m[graft,3],2])&&m[m[graft,3],2]==graft) m[m[graft,3],2]=n+i-1
     m[graft,3]=n+i-1
     m[graft,4]=graft_dist
   }
@@ -39,6 +46,55 @@ contphylo2phylo = function(r) {
   p$tip.label=r$tip.label
   class(p)='phylo'
   return(p)
+}
+
+#' Perform contour traversal
+contour_traversal = function(m,d) {
+  root=which(!is.na(m[,1])&is.na(m[,3]))
+  remainder=d
+  from=root
+  cur=m[root,1]
+  while (T) {
+    if (cur==root && from==m[root,2]) break
+    if (cur==root && from==m[root,1]) {
+      from=root
+      cur=m[root,2]
+      next
+    }
+    if (remainder<m[cur,4] && from==m[cur,3]) {
+      remainder=m[cur,4]-remainder
+      break
+    }
+    if (is.na(m[cur,1]) && remainder<m[cur,4]*2) {
+      remainder=remainder-m[cur,4]
+      break
+    }
+    if (is.na(m[cur,1])) {
+      remainder=remainder-2*m[cur,4]
+      from=cur;cur=m[cur,3]
+      next
+    }
+    if (from==m[cur,3]) {
+      remainder=remainder-m[cur,4]
+      from=cur
+      cur=m[cur,1]
+      next
+    }
+    if (from==m[cur,1]) {
+      from=cur
+      cur=m[cur,2]
+      next
+    }
+    if (from==m[cur,2]) {
+      remainder=remainder-m[cur,4]
+      from=cur
+      cur=m[cur,3]
+      next
+    }
+    stop('not happening')
+    break
+  }
+  return(c(cur,remainder))
 }
 
 #' Convert a phylo into a contphylo
