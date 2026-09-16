@@ -1,0 +1,52 @@
+---
+title: "Example"
+author: "Xavier Didelot"
+date: '`r Sys.Date()`'
+output:
+  pdf_document: default
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Example}
+  %\usepackage[utf8]{inputenc}
+---
+
+## Starting from a phylo object
+
+```{r}
+library(ContPhylo)
+library(ape)
+set.seed(0)
+p=rtree(10)
+plot(p)
+axisPhylo(backward = F)
+```
+
+```{r}
+r=phylo2contphylo(p)
+plot(r)
+```
+
+```{r}
+p=contphylo2phylo(r)
+plot(p)
+axisPhylo(backward = F)
+```
+
+## Starting from a contphylo object
+
+```{r}
+set.seed(0)
+r=rcontphylo(10)
+plot(r)
+```
+
+```{r}
+p=contphylo2phylo(r)
+plot(p)
+axisPhylo(backward = F)
+```
+
+```{r}
+r=phylo2contphylo(p)
+plot(r)
+```
