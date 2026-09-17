@@ -1,0 +1,14 @@
+#Testing basic package functions
+context("Testing sum of branch lengths equation")
+
+test_that("Testing sum of branch lengths equation.", {
+  for (i in 1:10) {
+    set.seed(i)
+    r=rcontphylo(10)
+    s=sum_bra_len(r)
+    p=contphylo2phylo(r)
+    expect_equal(s,sum(p$edge.length))
+  }
+})
+
+

@@ -1,0 +1,156 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[top=3cm, bottom=3cm, left=3cm,right=3cm]{geometry}
+%\usepackage[numbers,round]{natbib}
+\usepackage{natbib}
+\setcitestyle{aysep={}} 
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{amsfonts}
+\usepackage{setspace}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{bbm}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[super]{nth}
+\usepackage{tikzit}
+\input{fig.tikzstyles}
+
+\parindent0cm
+\parskip0.5cm
+\hyphenpenalty=10000
+\pretolerance=10000
+\usepackage{lineno}
+\linespread{1.5}
+
+% Line numbering works around align environment without requiring paragraph break
+\let\oldalign\align
+\let\oldendalign\endalign
+\renewenvironment{align}{\linenomathNonumbers\oldalign}{\oldendalign\endlinenomath}
+
+\linenumbers
+
+\makeatletter
+\newcommand{\customlabel}[2]{
+\protected@write \@auxout {}{\string \newlabel {#1}{{#2}{}}}}
+\makeatother
+
+%\renewcommand\footnote[2][]{\relax}
+\renewcommand{\eqref}[1]{\ref{#1}}
+
+\begin{document}
+{\Large A continuous parametrisation of phylogenetic trees}
+
+%Journal target:  Journal of Theoretical Biology? Theoretical Population Biology?
+
+%\vspace*{2cm}
+%Xavier Didelot$^{1,2,*}$, ...
+
+%\vspace*{2cm}
+%$^1$ School of Life Sciences, University of Warwick, Coventry, United Kingdom\\
+%$^2$ Department of Statistics, University of Warwick, Coventry, United Kingdom\\
+%$^*$ Corresponding author. Tel: 0044 (0)2476 572827. Email: \verb+xavier.didelot@warwick.ac.uk+
+
+%\vspace*{2cm}
+%Running title: A continuous parametrisation of phylogenetic trees
+
+%\vspace*{2cm}
+%Keywords: ...
+
+%\newpage
+%\section*{Abstract}
+
+%\newpage
+\section{Introduction}
+
+We consider phylogenetic trees that are binary and rooted, with $n$ labeled leaves. 
+There are $n-1$ internal nodes including the root.
+Such trees are usually represented as a mixture
+of discrete and continuous variables \citep{Paradis2006}. The topology of the tree is discrete and there are 
+$(2n-3)!!$ unique possibilities \citep{Felsenstein1978b}. 
+The branch lengths are continuous, and there are $2n-2$ branch lengths
+taking values in $\mathbb{R}_{>0}$ (one for each leaf and non-root internal node). This mixture makes it difficult
+to explore the space of trees. For example, Markov Chain Monte-Carlo (MCMC) methods \citep{Gilks1996}
+need to propose updates
+to both the branch lengths and the topology, using moves such as nearest-neighbor interchange (NNI)
+or subtree pruning and regrafting (SPR). These moves have been the workhorse of Bayesian phylogenetics
+for the past 30 years but are not easy to optimise \citep{hohnaGuidedTreeTopology2012,zhangUsingParsimonyGuidedTree2020}. 
+Alternatives such as Hamiltonian Monte-Carlo (HMC)
+can only deal with continuous variables \citep{Betancourt2017}. 
+A continuous representation of phylogenetic tree is given by the Billera‐Holmes‐Vogtmann (BHV) 
+space \citep{Billera2001}, which is made of one orthant
+for each topology, connected between themselves at the points where a branch length degenerates
+to zero to switch from one topology to another. But this is difficult to explore.
+
+\section{New continuous parametrisation}
+
+Here we propose a new continuous parametrisation for binary rooted phylogenetic trees.
+We consider an arbitrary but fixed order in which the leaves are added to the tree.
+Let $L_{i-1}$ denote the sum of the branch lengths in the tree formed by the first $i-1$ leaves.
+For the first leaf ($i=1$) there is nothing to specify but from the second leaf ($i=2..n$) 
+two parameters need to be specified, $a_i$ and $b_i$ which both take values in $\mathbb{R}$.
+The parameter $a_i$ determines the point on the tree built so far where the new leaf is grafted.
+The parameter $b_i$ determines the length $\mathrm{exp}(b_i)$ of the branch separating the new leaf 
+from this grafting point. 
+The parameter $a_i$ represents the length
+of the path from the root of the tree to the grafting point, following a contour traversal started at the root of the tree.
+The contour traversal algorithm is defined recursively as follows: start from a given point, 
+move down to its first child, performs the contour traversal from this first child, then move back up from the first child to the 
+starting point, then move down to the second child, perform the contour traversal from the second child, and then move
+back up to the starting point. If the contour traversal comes back to the root after having explored both children,
+which happens if and only if $a_i>2L_{i-1}$,
+then the grafting point is above the root by the remaining amount $a_i-2L_{i-1}$. 
+Likewise, if $a_i<0$ then the grafting point is above the root by the amount $-a_i$.
+We can deduce the following recursive formula for the sum of the branch lengths:
+\begin{equation}
+L_i=\begin{cases}
+0 & \text{if $i=1$}\\
+L_{i-1}+\mathrm{exp}(b_i)+\mathrm{max}(0,a_i-2L_{i-1})+\mathrm{max}(0,-a_i) & \text{otherwise}
+		 \end{cases}
+\end{equation}
+
+The parametrisation of $a_i$ using a contour traversal is illustrated in Figure \ref{fig:contour}.
+At the graft point, a new node is created with left child equal to what was previously below that point,
+and right child equal to the new branch of length $\mathrm{exp}(b_i)$ leading to the leaf number $i$.
+This process is repeated for all leaves from the second one ($i=2$) to the last one ($i=n$), each time
+using the contour traversal on the tree built previously.
+
+This parametrisation has the advantage to create no discontinuity,
+or no jump from one part of the tree to another. It has the disadvantage to represent each grafting point
+exactly twice, since each point of the tree is traversed first as the algorithm goes down the branch and then
+again as it goes back up the branch. This is not ideal but is the price to pay to achieve continuity, and we
+will see that it is not a problem in practice. 
+Let $C=(a_i,b_i)_{i=2..n} \in \mathbb{R}^{2n-2}$.
+$C$ defines a unique phylogenetic tree $T$, which can be reconstructed by considering adding the leaves
+one by one as described above. Conversely, each unique phylogenetic tree $T$
+can be obtained by several values $C$ due to each grafting point having two equivalent values of $a_i$.
+There are therefore $2^{n-1}$ unique values of $C$ for each phylogenetic tree $T$.
+
+\begin{figure}
+\ctikzfig{fig1}
+\caption{Illustration of the contour traversal. The initial tree is shown in black, with three 
+leaves labeled 1, 2 and 3 and all four branches of length 1.
+Leaf 4 is added with the value of $a_4$ determining the graft point as shown and the new terminal branch
+of length $\mathrm{exp}(b_4)=1$ shown in red.
+\label{fig:contour}}
+\end{figure}
+
+\section{Exploring the tree space}
+
+Our target distribution on the tree $T$ is that all of the $(2n-3)!!$ topologies are equally
+likely and the branch lengths $l_i$ follow a Gamma($\alpha,\theta$) distribution, so that:
+\begin{equation}\label{eq:tree-prior}
+p(T)=\frac{1}{(2n-3)!!}\prod_{i=1}^{2n-2}\frac{1}{\Gamma(\alpha)\theta^\alpha}l_i^{\alpha-1}\exp\left(-\frac{l_i}{\theta}\right)
+\end{equation}
+
+
+
+\clearpage
+\bibliographystyle{elsarticle-harv}
+\IfFileExists{/Users/u1775021/all.bib}
+{\bibliography{/Users/u1775021/all.bib}}
+{\bibliography{biblio}}
+
+\end{document}
+

@@ -47,3 +47,9 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+draft/scr.sh
+draft/main.aux
+draft/main.bbl
+draft/main.log
+draft/main.out
+draft/main.synctex.gz
