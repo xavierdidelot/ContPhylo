@@ -20,7 +20,7 @@ phylo2contphylo <- function(x) {
   root <- setdiff(edge[, 1], edge[, 2])
   tree_length <- sum(x$edge.length)
   coordinates <- matrix(NA_real_, n, 2)
-  coordinates[1, ] <- c(1,1)
+  coordinates[1, ] <- c(0,0)
 
   contour_offset <- function(target) {
     distance <- 0
@@ -64,12 +64,10 @@ phylo2contphylo <- function(x) {
       tree_length <- tree_length - pendant_length
     }
   }
-
-  coordinates[,2] <- log(coordinates[,2])
-  rownames(coordinates) <- x$tip.label
-  colnames(coordinates) <- c("contour", "pendant")
-
-  out <- structure(list(coordinates = coordinates), class = "contphylo")
-  out$tip.label <- x$tip.label
-  out
+  coordinates[-1,2] <- log(coordinates[-1,2])
+  out=list()
+  out$coordinates=coordinates
+  out$tip.label=x$tip.label
+  class(out)<-'contphylo'
+  return(out)
 }
