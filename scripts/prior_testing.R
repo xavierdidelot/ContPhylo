@@ -22,4 +22,5 @@ plot(sapply(trees,function(x) x$sd[2]),type='l',xlab='',ylab='sd[2]')
 
 #MCMC from adaptMCMC package
 trees=mcmc2(n=4,niter=1e5)
+pdf('mcmc.pdf',7,7)
 prior_test(trees)
