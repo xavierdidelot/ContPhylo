@@ -127,7 +127,7 @@ one by one as described above. Conversely, each unique phylogenetic tree $T$
 can be obtained by several values $C$ due to each grafting point having two equivalent values of $a_i$.
 There are therefore $2^{n-1}$ unique values of $C$ for each phylogenetic tree $T$.
 
-\begin{figure}
+\begin{figure}[p!]
 \ctikzfig{fig1}
 \caption{Illustration of the contour traversal. The initial tree is shown in black, with three 
 leaves labeled 1, 2 and 3 and all four branches of length 1.
@@ -136,14 +136,30 @@ of length $\mathrm{exp}(b_4)=1$ shown in red.
 \label{fig:contour}}
 \end{figure}
 
-\section{Exploring the tree space}
+\section{Exploring the tree space with MCMC}
 
-Our target distribution on the tree $T$ is that all of the $(2n-3)!!$ topologies are equally
+Our prior distribution on the tree $T$ is that all of the $(2n-3)!!$ topologies are equally
 likely and the branch lengths $l_i$ follow a Gamma($\alpha,\theta$) distribution, so that:
 \begin{equation}\label{eq:tree-prior}
-p(T)=\frac{1}{(2n-3)!!}\prod_{i=1}^{2n-2}\frac{1}{\Gamma(\alpha)\theta^\alpha}l_i^{\alpha-1}\exp\left(-\frac{l_i}{\theta}\right)
+p_T(T)=\frac{1}{(2n-3)!!}\prod_{i=1}^{2n-2}\frac{1}{\Gamma(\alpha)\theta^\alpha}l_i^{\alpha-1}\exp\left(-\frac{l_i}{\theta}\right)
 \end{equation}
 
+To find the equivalent prior on $C$ we need to account for the Jacobian of the function
+$f: C \rightarrow T$:
+\begin{equation}
+\left| \mathrm{det} \frac{\partial T}{\partial C}\right|=\mathrm{exp}\left( \sum_{i=2}^n b_i\right)
+\end{equation}
+
+So that, when accounting for the multiple representations of each $T$:
+\begin{equation}\label{eq:tree-prior2}
+p_C(C) = \frac{1}{2^{n-1}}p_T(f(C))\mathrm{exp}\left( \sum_{i=2}^n b_i\right)
+\end{equation}
+
+To explore this distribution, we run an adaptive MCMC algorithm \citep{Vihola2011,Spencer2021}. Figure \ref{fig:mcmc}
+shows that the trees sampled by the MCMC are distributed as expected under
+Equation \ref{eq:tree-prior}.
+
+\section{Exploring the tree space with HMC}
 
 
 \clearpage

@@ -7,29 +7,50 @@
 #' @export
 mcmc = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),showProgress=T) {
   tree=rtree(n)
-  p=prior(tree)
   r=phylo2contphylo(tree)
+  p=prior(tree)+sum(r$coordinates[,2])
   res=vector('list',niter/thin)
   if (showProgress) pb <- txtProgressBar(min=0,max=niter,style = 3)
+  adapt_target=0.234
+  adapt_scale=1.0/adapt_target/(1.0-adapt_target)
+  sd=rep(1,2)
+  adapt_nstart=rep(5.0*adapt_scale,2)
+  adapt_lambda=rep(1.0,2)
+  naccepted=c(0,0)
   for (i in 1:niter) {
     if (showProgress) setTxtProgressBar(pb, i)
-    r2=r
-    new=r$coordinates[-1,]
-    w=sample.int(nrow(new)*2,1)
-    if (w<=nrow(new)) new[w,1]=new[w,1]+rnorm(1,0,1e-3) else
-      new[w-nrow(new),2]=log(abs(exp(new[w-nrow(new),2])+rnorm(1,0,1e-3)))
-    new=rbind(c(0,0),new)
-    r2$coordinates=new
-    tree2=contphylo2phylo(r2)
-    p2=prior(tree2)
-    if (log(runif(1))<p2-p) {
-      p=p2
-      r=r2
-      tree=tree2
+    for (move in 1:2) {
+      r2=r
+      new=r$coordinates[-1,]
+      w=sample.int(nrow(new),1)
+      new[w,move]=new[w,move]+rnorm(1,0,sd[move])
+      new=rbind(c(0,0),new)
+      r2$coordinates=new
+      tree2=contphylo2phylo(r2)
+      p2=prior(tree2)+sum(r2$coordinates[,2])
+      mh=p2-p
+      if (log(runif(1))<mh) {
+        p=p2
+        r=r2
+        tree=tree2
+        naccepted[move]=naccepted[move]+1
+      }
+      prob_accept=min(1,exp(mh))
+      sd[move]=sd[move]*exp(0.5*adapt_scale/(i+adapt_nstart[move])*(prob_accept-adapt_target))
+      lambda=sd[move]*sd[move]
+      if (abs(log(lambda)-log(adapt_lambda[move]))>log(3.0)) {
+        #Restart Robbins-Munro
+        adapt_lambda[move]=lambda
+        adapt_nstart[move]=5.0*adapt_scale-i
+      }
     }
-    if (i%%thin==0) res[[i/thin]]=tree
+    if (i%%thin==0) {
+      res[[i/thin]]=tree
+      res[[i/thin]]$sd=sd
+      res[[i/thin]]$paccepted=naccepted/i
+    }
   }
-  close(pb)
+  if (showProgress) close(pb)
   return(res)
 }
 
@@ -47,11 +68,10 @@ mcmc2 = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),showProgress=T) {
     r$tip.label=paste0('t',1:n)
     class(r)<-'contphylo'
     t=contphylo2phylo(r)
-    p=prior(t)
+    p=prior(t)+sum(r$coordinates[,2])
     return(p)
   }
-  tree=rtree(n)
-  init=as.vector(phylo2contphylo(tree)$coordinates[-1,])
+  init=runif(n*2-2)
   r=adaptMCMC::MCMC(p=target,n=niter,init=init,adapt=T,acc.rate=0.234,showProgressBar=showProgress)
   res=vector('list',niter/thin)
   l=list()
@@ -64,26 +84,3 @@ mcmc2 = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),showProgress=T) {
   return(res)
 }
 
-#' Perform topology test for a given set of trees (eg output from mcmc())
-#' @param trees List of trees
-#' @returns Topology test p-value
-#' @export
-topology_test=function(trees=mcmc(n=3)) {
-  n=Ntip(trees[[1]])
-  clusters=rep(0,length(trees))
-  reps=vector('list',length(trees))
-  k=0
-  for (i in seq_along(trees)) {
-    assigned=FALSE
-    if (k>0) for (j in 1:k)
-      if (phangorn::RF.dist(trees[[i]], reps[[j]],rooted=T) == 0) {clusters[i]=j;assigned=TRUE;break}
-    if (!assigned) {k=k+1;reps[[k]]=trees[[i]];clusters[i]=k}
-  }
-  counts=table(clusters)
-  print(counts)
-  expected=round(exp(lfactorial(2*n-2)-(n-1)*log(2)-lfactorial(n-1)))
-  if (length(counts)<expected) stop(sprintf('Found %d topologies but was expecting %d.',length(counts),expected))
-  t=chisq.test(counts)
-  print(t)
-  invisible(t)
-}
