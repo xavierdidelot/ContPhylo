@@ -21,6 +21,21 @@ plot(sapply(trees,function(x) x$sd[1]),type='l',xlab='',ylab='sd[1]')
 plot(sapply(trees,function(x) x$sd[2]),type='l',xlab='',ylab='sd[2]')
 
 #MCMC from adaptMCMC package
-trees=mcmc2(n=4,niter=1e5)
+trees=mcmc2(n=5,niter=2e5,thin = 1e2,shape=2,scale=2)
+mat=trees[[1]]$cov.jump
+image(1:nrow(mat),1:ncol(mat),mat,xlab='',ylab='')
+title('Covariance of last jump distribution')
 pdf('mcmc.pdf',7,7)
-prior_test(trees)
+trees2=trees[(length(trees)/2):length(trees)]
+prior_test(trees2,shape=2,scale=2)
+dev.off()
+browseURL('mcmc.pdf')
+
+#Computing the approximate topological ESS from rwty
+library(rwty)
+filename=tempfile()
+f=file(filename,'w')
+for (i in 1:length(trees2)) write.tree(trees2[[i]],file=f,append=T)
+close(f)
+r=load.trees(filename,type = "newick")
+print(topological.approx.ess(r,burnin=0))

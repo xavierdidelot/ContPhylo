@@ -4,7 +4,14 @@
 \alias{mcmc2}
 \title{MCMC algorithm using package adaptMCMC}
 \usage{
-mcmc2(n = 10, niter = 1000, thin = max(1, round(niter/1000)), showProgress = T)
+mcmc2(
+  n = 10,
+  niter = 1000,
+  thin = max(1, round(niter/1000)),
+  shape = 1,
+  scale = 1,
+  showProgress = T
+)
 }
 \arguments{
 \item{n}{Number of tips}
@@ -12,6 +19,10 @@ mcmc2(n = 10, niter = 1000, thin = max(1, round(niter/1000)), showProgress = T)
 \item{niter}{Number of MCMC iterations}
 
 \item{thin}{Thining interval}
+
+\item{shape}{Shape of the gamma distribution for branch lengths}
+
+\item{scale}{Scale of the gamma distribution for branch lengths}
 
 \item{showProgress}{Whether to show a progress bar}
 }

@@ -2,13 +2,15 @@
 #' @param n Number of tips
 #' @param niter Number of MCMC iterations
 #' @param thin Thining interval
+#' @param shape Shape of the gamma distribution for branch lengths
+#' @param scale Scale of the gamma distribution for branch lengths
 #' @param showProgress Whether to show a progress bar
 #' @returns MCMC result
 #' @export
-mcmc = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),showProgress=T) {
+mcmc = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),shape=1,scale=1,showProgress=T) {
   tree=rtree(n)
   r=phylo2contphylo(tree)
-  p=prior(tree)+sum(r$coordinates[,2])
+  p=prior(tree,shape,scale)+sum(r$coordinates[,2])
   res=vector('list',niter/thin)
   if (showProgress) pb <- txtProgressBar(min=0,max=niter,style = 3)
   adapt_target=0.234
@@ -27,7 +29,7 @@ mcmc = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),showProgress=T) {
       new=rbind(c(0,0),new)
       r2$coordinates=new
       tree2=contphylo2phylo(r2)
-      p2=prior(tree2)+sum(r2$coordinates[,2])
+      p2=prior(tree2,shape,scale)+sum(r2$coordinates[,2])
       mh=p2-p
       if (log(runif(1))<mh) {
         p=p2
@@ -58,17 +60,19 @@ mcmc = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),showProgress=T) {
 #' @param n Number of tips
 #' @param niter Number of MCMC iterations
 #' @param thin Thining interval
+#' @param shape Shape of the gamma distribution for branch lengths
+#' @param scale Scale of the gamma distribution for branch lengths
 #' @param showProgress Whether to show a progress bar
 #' @returns MCMC result
 #' @export
-mcmc2 = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),showProgress=T) {
+mcmc2 = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),shape=1,scale=1,showProgress=T) {
   target = function(v) {
     r=list()
     r$coordinates=rbind(c(0,0),matrix(v,ncol=2,byrow=F))
     r$tip.label=paste0('t',1:n)
     class(r)<-'contphylo'
     t=contphylo2phylo(r)
-    p=prior(t)+sum(r$coordinates[,2])
+    p=prior(t,shape,scale)+sum(r$coordinates[,2])
     return(p)
   }
   init=runif(n*2-2)
@@ -81,6 +85,7 @@ mcmc2 = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),showProgress=T) {
     l$coordinates=rbind(c(0,0),matrix(r$samples[i,],ncol=2,byrow=F))
     res[[i/thin]]=contphylo2phylo(l)
   }
+  res[[1]]$cov.jump=r$cov.jump#interesting
   return(res)
 }
 

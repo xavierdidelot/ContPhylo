@@ -40,38 +40,39 @@
 \renewcommand{\eqref}[1]{\ref{#1}}
 
 \begin{document}
-{\Large A continuous parametrisation of phylogenetic trees}
+{\Large A continuous parametrisation of phylogenetic trees and
+application for Bayesian phylogenetic inference}
 
 %Journal target:  Journal of Theoretical Biology? Theoretical Population Biology?
 
-%\vspace*{2cm}
-%Xavier Didelot$^{1,2,*}$, ...
+\vspace*{2cm}
+Xavier Didelot$^{1,2,*}$, ...
 
-%\vspace*{2cm}
-%$^1$ School of Life Sciences, University of Warwick, Coventry, United Kingdom\\
-%$^2$ Department of Statistics, University of Warwick, Coventry, United Kingdom\\
-%$^*$ Corresponding author. Tel: 0044 (0)2476 572827. Email: \verb+xavier.didelot@warwick.ac.uk+
+\vspace*{2cm}
+$^1$ School of Life Sciences, University of Warwick, Coventry, United Kingdom\\
+$^2$ Department of Statistics, University of Warwick, Coventry, United Kingdom\\
+$^*$ Corresponding author. Tel: 0044 (0)2476 572827. Email: \verb+xavier.didelot@warwick.ac.uk+
 
-%\vspace*{2cm}
-%Running title: A continuous parametrisation of phylogenetic trees
+\vspace*{2cm}
+Running title: A continuous parametrisation of phylogenetic trees
 
-%\vspace*{2cm}
-%Keywords: ...
+\vspace*{2cm}
+Keywords: ...
 
 %\newpage
 %\section*{Abstract}
 
-%\newpage
+\newpage
 \section{Introduction}
 
 We consider phylogenetic trees that are binary and rooted, with $n$ labeled leaves. 
 There are $n-1$ internal nodes including the root.
 Such trees are usually represented as a mixture
 of discrete and continuous variables \citep{Paradis2006}. The topology of the tree is discrete and there are 
-$(2n-3)!!$ unique possibilities \citep{Felsenstein1978b}. 
+$(2n-3)!!=\frac{(2n-2)!}{2^{n-1}(n-1)!}$ unique possibilities \citep{Felsenstein1978b}. 
 The branch lengths are continuous, and there are $2n-2$ branch lengths
 taking values in $\mathbb{R}_{>0}$ (one for each leaf and non-root internal node). This mixture makes it difficult
-to explore the space of trees. For example, Markov Chain Monte-Carlo (MCMC) methods \citep{Gilks1996}
+to sample the space of trees. For example, Markov Chain Monte-Carlo (MCMC) methods \citep{Gilks1996}
 need to propose updates
 to both the branch lengths and the topology, using moves such as nearest-neighbor interchange (NNI)
 or subtree pruning and regrafting (SPR). These moves have been the workhorse of Bayesian phylogenetics
@@ -81,7 +82,8 @@ can only deal with continuous variables \citep{Betancourt2017}.
 A continuous representation of phylogenetic tree is given by the Billera‐Holmes‐Vogtmann (BHV) 
 space \citep{Billera2001}, which is made of one orthant
 for each topology, connected between themselves at the points where a branch length degenerates
-to zero to switch from one topology to another. But this is difficult to explore.
+to zero to switch from one topology to another. But this construction is difficult to use in Bayesian
+phylogenetic inference.
 
 \section{New continuous parametrisation}
 
@@ -136,42 +138,59 @@ of length $\mathrm{exp}(b_4)=1$ shown in red.
 \label{fig:contour}}
 \end{figure}
 
-\section{Exploring the tree space with MCMC}
+\section{Sampling the continuous tree space with MCMC}
 
-Our prior distribution on the tree $T$ is that all of the $(2n-3)!!$ topologies are equally
+We consider a prior distribution on the tree $T$ such that all of the $(2n-3)!!$ topologies are equally
 likely and the branch lengths $l_i$ follow a Gamma($\alpha,\theta$) distribution, so that:
 \begin{equation}\label{eq:tree-prior}
 p_T(T)=\frac{1}{(2n-3)!!}\prod_{i=1}^{2n-2}\frac{1}{\Gamma(\alpha)\theta^\alpha}l_i^{\alpha-1}\exp\left(-\frac{l_i}{\theta}\right)
 \end{equation}
 
-To find the equivalent prior on $C$ we need to account for the Jacobian of the function
+To find the corresponding distribution on $C$ we need to consider the Jacobian of the function
 $f: C \rightarrow T$:
 \begin{equation}
-\left| \mathrm{det} \frac{\partial T}{\partial C}\right|=\mathrm{exp}\left( \sum_{i=2}^n b_i\right)
+\left| \mathrm{det} \frac{\partial f(C)}{\partial C}\right|=\mathrm{exp}\left( \sum_{i=2}^n b_i\right)
 \end{equation}
 
-So that, when accounting for the multiple representations of each $T$:
+When accounting for this and the multiple representations of each $T$ in the space of $C$ we obtain the probability density function of $T$:
 \begin{equation}\label{eq:tree-prior2}
 p_C(C) = \frac{1}{2^{n-1}}p_T(f(C))\mathrm{exp}\left( \sum_{i=2}^n b_i\right)
 \end{equation}
 
-To explore this distribution, we run an adaptive MCMC algorithm \citep{Vihola2011,Spencer2021}. Figure \ref{fig:mcmc}
-shows that the trees sampled by the MCMC are distributed as expected under
-Equation \ref{eq:tree-prior}.
+To sample from this distribution, we use the adaptive Metropolis sampler \citep{Vihola2011}. 
+This algorithm uses a multivariate normal distribution as the proposal kernel
+$q(C'|C)$ which is symmetric ($q(C'|C)=q(C|C')$), so that the acceptance probability 
+is simply $\mathrm{min}(1,p_C(C')/p_C(C))$ calculated using Equation \ref{eq:tree-prior2}.
+The mean of the proposal kernel is the current value $C$ and 
+its covariance matrix is tuned to achieve an acceptance
+rate of 0.234 \citep{Andrieu2008}. 
+We take $n=5$ as a small example, with $\alpha=2$ and $\theta=2$ as the shape
+and scale parameters of the distribution of branch lengths.
+The sampler was run for $2\times10^{5}$ iterations, with the first half discarded
+as burn-in and the remainder sampled every 100 iterations to produce a sample
+of size 1000. This run took less than a minute on a standard laptop. 
+Figure \ref{fig:mcmc} shows that the trees sampled by the MCMC are distributed as 
+expected under Equation \ref{eq:tree-prior}. All $(2n-3)!!=105$ topologies have been sampled,
+the distribution of the sum of branch lengths and of a single branch length are as expected,
+and a majority-rule consensus tree looks completely star-like. The effective sample size
+was greater than 200 for individual branch lengths as computed using the R
+package coda \citep{Plummer2006}. The approximate effective sample size
+of the tree topology was also greater than 200 as computed by the R package
+rwty \citep{Warren2017}.
 
 \begin{figure}[p!]
 \includegraphics{mcmc}
 \caption{MCMC run. 
 (A) Trace of sum of branch lengths.
-(B) Distribution of sum of branch lengths.
+(B) Distribution of sum of branch lengths, sampled (histogram) and expected (line).
 (C) Trace of a single branch length.
-(D) Distribution of a single branch length.
+(D) Distribution of a single branch length, sampled (histogram) and expected (line).
 (E) Trace of topology.
 (F) Majority-rule consensus tree.
 \label{fig:mcmc}}
 \end{figure}
 
-\section{Exploring the tree space with HMC}
+\section{Sampling the continuous tree space with HMC}
 
 
 \clearpage
