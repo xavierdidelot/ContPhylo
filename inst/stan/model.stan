@@ -68,6 +68,8 @@ functions {
       }
 
       if (from == child2[cur]) {
+        if (remainder < dist_to_parent[cur])
+          return (cur, remainder);
         remainder -= dist_to_parent[cur];
         from = cur;
         cur = parent[cur];
@@ -204,7 +206,9 @@ model {
         array[2 * n - 2] int,
         vector[2 * n - 2]) tree = build_contphylo(a, b);
 
-  // Exponential prior on every final branch length.
+  if (min(tree.3) < 0)
+  reject("Negative branch length: ", min(tree.3),"; a = ", a, "; b = ", b);
+  // Gamma prior on every final branch length.
   target += gamma_lpdf(tree.3 | shape, 1/scale);
 
   // Change-of-variables Jacobian: log |det(df/dC)| = sum_i b_i.

@@ -3,8 +3,8 @@ library(ape)
 library(ContPhylo)
 
 #Random independent trees
-trees=lapply(1:1000,function(x) rtopology(5,rooted=T,br=rexp))
-prior_test(trees)
+trees=lapply(1:1000,function(x) rtopology(5,rooted=T,br=function (n) rgamma(n,shape=2,scale=2)))
+prior_test(trees,2,2)
 
 #My own MCMC
 trees=mcmc(n=5,niter=1e5,shape=2,scale=2)

@@ -89,6 +89,7 @@ contour_traversal = function(m,d) {
       next
     }
     if (from==m[cur,2]) {
+      if (remainder < m[cur,4]) return(c(cur,remainder))
       remainder=remainder-m[cur,4]
       from=cur
       cur=m[cur,3]
