@@ -80,7 +80,7 @@ functions {
     }
 
     reject("contour_traversal: iteration guard exceeded");
-    return (root, remainder); // Unreachable, but required by the type checker.
+    //return (root, remainder); // Unreachable, but required by the type checker.
   }
 
   // Implements the final R relabelling that swaps the actual root with n + 1.
@@ -191,7 +191,6 @@ functions {
 
 data {
   int<lower=2> n;
-  real<lower=0> shape;
   real<lower=0> scale;
 }
 
@@ -209,7 +208,7 @@ model {
   if (min(tree.3) < 0)
   reject("Negative branch length: ", min(tree.3),"; a = ", a, "; b = ", b);
   // Gamma prior on every final branch length.
-  target += gamma_lpdf(tree.3 | shape, 1/scale);
+  target += exponential_lpdf(tree.3 | 1/scale);
 
   // Change-of-variables Jacobian: log |det(df/dC)| = sum_i b_i.
   target += sum(b);
@@ -231,6 +230,6 @@ generated quantities {
   edge_length = tree.3;
 
   real log_prior;
-  log_prior = gamma_lpdf(tree.3 | shape, 1/scale)+sum(b);
+  log_prior = exponential_lpdf(tree.3 | 1/scale)+sum(b);
 }
 

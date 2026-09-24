@@ -1,9 +1,8 @@
 #' Test that a given set of trees (eg output from mcmc()) is distributed according to prior distribution
 #' @param trees List of trees
-#' @param shape Shape parameter of gamma distribution for branch lengths
-#' @param scale Scale parameter of gamma distribution for branch lengths
+#' @param scale Scale parameter of exponential distribution for branch lengths
 #' @export
-prior_test=function(trees=mcmc(n=3),shape=1,scale=1) {
+prior_test=function(trees=mcmc(n=3),scale=1) {
   n=Ntip(trees[[1]])
   clusters=rep(0,length(trees))
   reps=vector('list',length(trees))
@@ -26,7 +25,7 @@ prior_test=function(trees=mcmc(n=3),shape=1,scale=1) {
   plot(sbl,type='l',main='Sum branch lengths',xlab='',ylab='')
   hist(sbl,main='Sum branch lengths',xlab='',probability=T,breaks=20)
   xs=seq(min(sbl),max(sbl),length.out=1000)
-  lines(xs,dgamma(xs,shape=(2*n-2)*shape,scale=scale))
+  lines(xs,dgamma(xs,shape=(2*n-2),scale=scale))
   ess=coda::effectiveSize(coda::as.mcmc(sbl))
   print(sprintf('ESS of sum of branch lengths: %f',ess))
 
@@ -34,7 +33,7 @@ prior_test=function(trees=mcmc(n=3),shape=1,scale=1) {
   plot(b1,type='l',main='Single branch length',xlab='',ylab='')
   hist(b1,main='Single branch length',xlab='',probability=T,breaks=20)
   xs=seq(min(b1),max(b1),length.out=1000)
-  lines(xs,dgamma(xs,shape=shape,scale=scale))
+  lines(xs,dexp(xs,rate=1/scale))
   ess=coda::effectiveSize(coda::as.mcmc(b1))
   print(sprintf('ESS of single branch length: %f',ess))
 

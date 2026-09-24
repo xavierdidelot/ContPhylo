@@ -2,15 +2,14 @@
 #' @param n Number of tips
 #' @param niter Number of MCMC iterations
 #' @param thin Thining interval
-#' @param shape Shape of the gamma distribution for branch lengths
-#' @param scale Scale of the gamma distribution for branch lengths
+#' @param scale Scale of the exponential distribution for branch lengths
 #' @param showProgress Whether to show a progress bar
 #' @returns MCMC result
 #' @export
-mcmc = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),shape=1,scale=1,showProgress=T) {
+mcmc = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),scale=1,showProgress=T) {
   tree=rtree(n)
   r=phylo2contphylo(tree)
-  p=prior(r,shape,scale)
+  p=prior(r,scale)
   res=vector('list',niter/thin)
   if (showProgress) pb <- txtProgressBar(min=0,max=niter,style = 3)
   adapt_target=0.234
@@ -28,7 +27,7 @@ mcmc = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),shape=1,scale=1,show
       new[w,move]=new[w,move]+rnorm(1,0,sd[move])
       new=rbind(c(0,0),new)
       r2$coordinates=new
-      p2=prior(r2,shape,scale)
+      p2=prior(r2,scale)
       mh=p2-p
       if (log(runif(1))<mh) {
         p=p2
@@ -58,18 +57,17 @@ mcmc = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),shape=1,scale=1,show
 #' @param n Number of tips
 #' @param niter Number of MCMC iterations
 #' @param thin Thining interval
-#' @param shape Shape of the gamma distribution for branch lengths
-#' @param scale Scale of the gamma distribution for branch lengths
+#' @param scale Scale of the exponential distribution for branch lengths
 #' @param showProgress Whether to show a progress bar
 #' @returns MCMC result
 #' @export
-mcmc2 = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),shape=1,scale=1,showProgress=T) {
+mcmc2 = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),scale=1,showProgress=T) {
   target = function(v) {
     r=list()
     r$coordinates=rbind(c(0,0),matrix(v,ncol=2,byrow=F))
     r$tip.label=paste0('t',1:n)
     class(r)<-'contphylo'
-    p=prior(r,shape,scale)
+    p=prior(r,scale)
     return(p)
   }
   init=runif(n*2-2)

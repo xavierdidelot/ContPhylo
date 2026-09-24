@@ -4,14 +4,12 @@
 \alias{prior}
 \title{Prior function}
 \usage{
-prior(r, shape = 1, scale = 1)
+prior(r, scale = 1)
 }
 \arguments{
 \item{r}{Object of class ContPhylo}
 
-\item{shape}{Shape of the gamma distribution for branch lengths}
-
-\item{scale}{Scale of the gamma distribution for branch lengths}
+\item{scale}{Scale of the exponential distribution for branch lengths}
 }
 \value{
 Log of the prior

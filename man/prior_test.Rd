@@ -4,14 +4,12 @@
 \alias{prior_test}
 \title{Test that a given set of trees (eg output from mcmc()) is distributed according to prior distribution}
 \usage{
-prior_test(trees = mcmc(n = 3), shape = 1, scale = 1)
+prior_test(trees = mcmc(n = 3), scale = 1)
 }
 \arguments{
 \item{trees}{List of trees}
 
-\item{shape}{Shape parameter of gamma distribution for branch lengths}
-
-\item{scale}{Scale parameter of gamma distribution for branch lengths}
+\item{scale}{Scale parameter of exponential distribution for branch lengths}
 }
 \description{
 Test that a given set of trees (eg output from mcmc()) is distributed according to prior distribution
