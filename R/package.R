@@ -17,6 +17,7 @@
 #' @import graphics
 #' @import utils
 #' @import ape
+#' @import cmdstanr
 #'
 
 NULL

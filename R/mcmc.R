@@ -10,7 +10,7 @@
 mcmc = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),shape=1,scale=1,showProgress=T) {
   tree=rtree(n)
   r=phylo2contphylo(tree)
-  p=prior(tree,shape,scale)+sum(r$coordinates[,2])
+  p=prior(r,shape,scale)
   res=vector('list',niter/thin)
   if (showProgress) pb <- txtProgressBar(min=0,max=niter,style = 3)
   adapt_target=0.234
@@ -28,13 +28,11 @@ mcmc = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),shape=1,scale=1,show
       new[w,move]=new[w,move]+rnorm(1,0,sd[move])
       new=rbind(c(0,0),new)
       r2$coordinates=new
-      tree2=contphylo2phylo(r2)
-      p2=prior(tree2,shape,scale)+sum(r2$coordinates[,2])
+      p2=prior(r2,shape,scale)
       mh=p2-p
       if (log(runif(1))<mh) {
         p=p2
         r=r2
-        tree=tree2
         naccepted[move]=naccepted[move]+1
       }
       prob_accept=min(1,exp(mh))
@@ -47,7 +45,7 @@ mcmc = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),shape=1,scale=1,show
       }
     }
     if (i%%thin==0) {
-      res[[i/thin]]=tree
+      res[[i/thin]]=contphylo2phylo(r)
       res[[i/thin]]$sd=sd
       res[[i/thin]]$paccepted=naccepted/i
     }
@@ -71,8 +69,7 @@ mcmc2 = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),shape=1,scale=1,sho
     r$coordinates=rbind(c(0,0),matrix(v,ncol=2,byrow=F))
     r$tip.label=paste0('t',1:n)
     class(r)<-'contphylo'
-    t=contphylo2phylo(r)
-    p=prior(t,shape,scale)+sum(r$coordinates[,2])
+    p=prior(r,shape,scale)
     return(p)
   }
   init=runif(n*2-2)

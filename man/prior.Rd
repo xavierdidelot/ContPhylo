@@ -4,10 +4,10 @@
 \alias{prior}
 \title{Prior function}
 \usage{
-prior(tree, shape = 1, scale = 1)
+prior(r, shape = 1, scale = 1)
 }
 \arguments{
-\item{tree}{Tree in ape::phylo format}
+\item{r}{Object of class ContPhylo}
 
 \item{shape}{Shape of the gamma distribution for branch lengths}
 

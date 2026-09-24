@@ -3,12 +3,12 @@ library(ape)
 library(ContPhylo)
 
 #Random independent trees
-trees=lapply(1:1000,function(x) rtopology(4,rooted=T,br=rexp))
+trees=lapply(1:1000,function(x) rtopology(5,rooted=T,br=rexp))
 prior_test(trees)
 
 #My own MCMC
-trees=mcmc(n=4,niter=1e5)
-prior_test(trees)
+trees=mcmc(n=5,niter=1e5,shape=2,scale=2)
+prior_test(trees,shape=2,scale=2)
 par(mfrow=c(2,2))
 for (i in c(700,800,900,1000)) {
   plot(trees[[i]])

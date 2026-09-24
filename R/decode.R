@@ -20,7 +20,7 @@ contphylo2phylo = function(r) {
     }
     m[i,3]=n+i-1
     m[i,4]=exp(coords[i,2])
-    if (m[i,4]==0) m[i,4]=1e-10;if (is.infinite(m[i,4])) m[i,4]=1e10#to review
+    #if (m[i,4]==0) m[i,4]=1e-10;if (is.infinite(m[i,4])) m[i,4]=1e10#to review
     m[n+i-1,1]=graft
     m[n+i-1,2]=i
     m[n+i-1,3]=m[graft,3]
