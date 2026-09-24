@@ -77,13 +77,16 @@ need to propose updates
 to both the branch lengths and the topology, using moves such as nearest-neighbor interchange (NNI)
 or subtree pruning and regrafting (SPR). These moves have been the workhorse of Bayesian phylogenetics
 for the past 30 years but are not easy to optimise \citep{hohnaGuidedTreeTopology2012,zhangUsingParsimonyGuidedTree2020}. 
-Alternatives such as Hamiltonian Monte-Carlo (HMC)
+Several MCMC algorithms can be applied only to continuous variables and have therefore not
+been applied to Bayesian phylogenetics. This includes 
+Hamiltonian Monte-Carlo (HMC) methods which
 can only deal with continuous variables \citep{Betancourt2017}. 
 A continuous representation of phylogenetic tree is given by the Billera‐Holmes‐Vogtmann (BHV) 
 space \citep{Billera2001}, which is made of one orthant
 for each topology, connected between themselves at the points where a branch length degenerates
 to zero to switch from one topology to another. But this construction is difficult to use in Bayesian
-phylogenetic inference.
+phylogenetic inference. Here we propose a new continuous parametrisation of phylogenetic
+trees, and show that it enables new MCMC methods to be used for Bayesian phylogenetic inference.
 
 \section{New continuous parametrisation}
 
@@ -138,12 +141,12 @@ of length $\mathrm{exp}(b_4)=1$ shown in red.
 \label{fig:contour}}
 \end{figure}
 
-\section{Sampling the continuous tree space with MCMC}
+\section{Application of the adaptive Metropolis sampler to the continuous phylogenetic space}
 
 We consider a prior distribution on the tree $T$ such that all of the $(2n-3)!!$ topologies are equally
-likely and the branch lengths $l_i$ follow a Gamma($\alpha,\theta$) distribution, so that:
+likely and the branch lengths $l_i$ follow an Exponential distribution with mean $\theta$, so that:
 \begin{equation}\label{eq:tree-prior}
-p_T(T)=\frac{1}{(2n-3)!!}\prod_{i=1}^{2n-2}\frac{1}{\Gamma(\alpha)\theta^\alpha}l_i^{\alpha-1}\exp\left(-\frac{l_i}{\theta}\right)
+p_T(T)=\frac{1}{(2n-3)!!}\prod_{i=1}^{2n-2}\theta^{-1}\exp\left(-\frac{l_i}{\theta}\right)
 \end{equation}
 
 To find the corresponding distribution on $C$ we need to consider the Jacobian of the function
@@ -154,7 +157,8 @@ $f: C \rightarrow T$:
 
 When accounting for this and the multiple representations of each $T$ in the space of $C$ we obtain the probability density function of $C$:
 \begin{equation}\label{eq:tree-prior2}
-p_C(C) = \frac{1}{2^{n-1}}p_T(f(C))\mathrm{exp}\left( \sum_{i=2}^n b_i\right)
+p_C(C) = 
+\frac{1}{2^{n-1}}p_T(f(C))\mathrm{exp}\left( \sum_{i=2}^n b_i\right)
 \end{equation}
 
 To sample from this distribution, we use the adaptive Metropolis sampler \citep{Vihola2011}. 
@@ -164,8 +168,7 @@ is simply $\mathrm{min}(1,p_C(C')/p_C(C))$ calculated using Equation \ref{eq:tre
 The mean of the proposal kernel is the current value $C$ and 
 its covariance matrix is tuned to achieve an acceptance
 rate of 0.234 \citep{Andrieu2008}. 
-We take $n=5$ as a small example, with $\alpha=2$ and $\theta=2$ as the shape
-and scale parameters of the distribution of branch lengths.
+We take $n=5$ as a small example, with $\theta=2$ as the mean of the distribution of branch lengths.
 The sampler was run for $2\times10^{5}$ iterations, with the first half discarded
 as burn-in and the remainder sampled every 100 iterations to produce a sample
 of size 1000. This run took less than a minute on a standard laptop. 
@@ -190,7 +193,34 @@ rwty \citep{Warren2017}.
 \label{fig:mcmc}}
 \end{figure}
 
-\section{Sampling the continuous tree space with HMC}
+\section{Application of  Hamiltonian Monte Carlo (HMC) to the continuous phylogenetic space}
+
+We use the dynamic Hamiltonian Monte Carlo (HMC) method implemented in Stan
+\citep{Carpenter2017,Betancourt2017}. The target distribution is as defined in 
+Equation \ref{eq:tree-prior2}. 
+The MCMC was run for a total of $2\times10^{5}$ iterations, with the first half discarded
+as burn-in and the remainder sampled every 100 iterations to produce a sample
+of size 1000. This run took less than a minute on a standard laptop. 
+Figure \ref{fig:hmc} shows that the trees sampled by the MCMC are distributed as 
+expected under Equation \ref{eq:tree-prior}. All $(2n-3)!!=105$ topologies have been sampled,
+the distribution of the sum of branch lengths and of a single branch length are as expected,
+and a majority-rule consensus tree looks completely star-like. The effective sample size
+was greater than 200 for individual branch lengths as computed using the R
+package coda \citep{Plummer2006}. The approximate effective sample size
+of the tree topology was also greater than 200 as computed by the R package
+rwty \citep{Warren2017}.
+
+\begin{figure}[p!]
+\includegraphics{hmc}
+\caption{HMC run. 
+(A) Trace of sum of branch lengths.
+(B) Distribution of sum of branch lengths, sampled (histogram) and expected (line).
+(C) Trace of a single branch length.
+(D) Distribution of a single branch length, sampled (histogram) and expected (line).
+(E) Trace of topology.
+(F) Majority-rule consensus tree.
+\label{fig:hmc}}
+\end{figure}
 
 
 \clearpage

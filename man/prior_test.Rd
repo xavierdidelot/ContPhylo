@@ -4,12 +4,14 @@
 \alias{prior_test}
 \title{Test that a given set of trees (eg output from mcmc()) is distributed according to prior distribution}
 \usage{
-prior_test(trees = mcmc(n = 3), scale = 1)
+prior_test(trees = mcmc(n = 3), scale = 1, analyse_topology = T)
 }
 \arguments{
 \item{trees}{List of trees}
 
 \item{scale}{Scale parameter of exponential distribution for branch lengths}
+
+\item{analyse_topology}{Whether or not to analyse the topology}
 }
 \description{
 Test that a given set of trees (eg output from mcmc()) is distributed according to prior distribution

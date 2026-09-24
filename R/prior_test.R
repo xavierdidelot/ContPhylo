@@ -1,24 +1,27 @@
 #' Test that a given set of trees (eg output from mcmc()) is distributed according to prior distribution
 #' @param trees List of trees
 #' @param scale Scale parameter of exponential distribution for branch lengths
+#' @param analyse_topology Whether or not to analyse the topology
 #' @export
-prior_test=function(trees=mcmc(n=3),scale=1) {
+prior_test=function(trees=mcmc(n=3),scale=1,analyse_topology=T) {
   n=Ntip(trees[[1]])
-  clusters=rep(0,length(trees))
-  reps=vector('list',length(trees))
-  k=0
-  for (i in seq_along(trees)) {
-    assigned=FALSE
-    if (k>0) for (j in 1:k)
-      if (all.equal(trees[[i]], reps[[j]],use.edge.length = F)) {clusters[i]=j;assigned=TRUE;break}
-    if (!assigned) {k=k+1;reps[[k]]=trees[[i]];clusters[i]=k}
+  clusters=rep(1,length(trees))
+  if (analyse_topology) {
+    reps=vector('list',length(trees))
+    k=0
+    for (i in seq_along(trees)) {
+      assigned=FALSE
+      if (k>0) for (j in 1:k)
+        if (all.equal(trees[[i]], reps[[j]],use.edge.length = F)) {clusters[i]=j;assigned=TRUE;break}
+      if (!assigned) {k=k+1;reps[[k]]=trees[[i]];clusters[i]=k}
+    }
+    counts=table(clusters)
+    print(counts)
+    expected=round(exp(lfactorial(2*n-2)-(n-1)*log(2)-lfactorial(n-1)))
+    if (length(counts)<expected) print(sprintf('Found %d topologies but was expecting %d.',length(counts),expected))
+    t=chisq.test(counts)
+    print(t)
   }
-  counts=table(clusters)
-  print(counts)
-  expected=round(exp(lfactorial(2*n-2)-(n-1)*log(2)-lfactorial(n-1)))
-  if (length(counts)<expected) print(sprintf('Found %d topologies but was expecting %d.',length(counts),expected))
-  t=chisq.test(counts)
-  print(t)
 
   par(mfrow=c(3,2))
   sbl=sapply(trees,function(x) return(sum(x$edge.length)))

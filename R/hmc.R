@@ -36,15 +36,15 @@ hmc = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),scale=1,showProgress=
     mod <- cmdstan_model(system.file('stan','model.stan',package='ContPhylo',mustWork = T))
     fit <- mod$sample(
       data=list(n=n,scale=scale),
-      chains=1,parallel_chains=1,iter_warmup=niter,iter_sampling=niter,
+      chains=1,parallel_chains=1,iter_warmup=niter/2,iter_sampling=niter/2,
       init=list(list(a=a,b=b)),seed=1L,refresh=ifelse(showProgress,thin,0))
 #  })))
   mat=fit$draws(format = 'matrix')
-  res=vector('list',niter/thin)
+  res=vector('list',niter/2/thin)
   l=list()
   l$tip.label=paste0('t',1:n)
   class(l)<-'contphylo'
-  for (i in seq(thin,niter,thin)) {
+  for (i in seq(thin,niter/2,thin)) {
     l$coordinates=rbind(c(0,0),matrix(mat[i,2:(2*n-1)],ncol=2,byrow=F))
     res[[i/thin]]=contphylo2phylo(l)
   }
