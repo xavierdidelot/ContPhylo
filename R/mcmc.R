@@ -1,5 +1,5 @@
 #' MCMC algorithm
-#' @param data Object of class phyDat containing the genetic data
+#' @param dat Object of class phyDat containing the genetic data
 #' @param initTree Initial tree to use as start of MCMC
 #' @param niter Number of MCMC iterations
 #' @param thin Thining interval
@@ -64,7 +64,7 @@ mcmc = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1e
 }
 
 #' MCMC algorithm using package adaptMCMC
-#' @param data Object of class phyDat containing the genetic data
+#' @param dat Object of class phyDat containing the genetic data
 #' @param initTree Initial tree to use as start of MCMC
 #' @param niter Number of MCMC iterations
 #' @param thin Thining interval

@@ -14,6 +14,8 @@ mcmc(
 )
 }
 \arguments{
+\item{dat}{Object of class phyDat containing the genetic data}
+
 \item{initTree}{Initial tree to use as start of MCMC}
 
 \item{niter}{Number of MCMC iterations}
@@ -23,8 +25,6 @@ mcmc(
 \item{scale}{Scale of the exponential distribution for branch lengths}
 
 \item{showProgress}{Whether to show a progress bar}
-
-\item{data}{Object of class phyDat containing the genetic data}
 }
 \value{
 MCMC result
