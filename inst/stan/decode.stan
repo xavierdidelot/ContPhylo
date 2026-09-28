@@ -1,4 +1,3 @@
-functions {
   // Return (graft node, distance from graft node to the new attachment point).
   tuple(int, real) contour_traversal(array[] int child1,
                                      array[] int child2,
@@ -182,5 +181,4 @@ functions {
 
     return (edge_parent, edge_child, edge_length);
   }
-}
 

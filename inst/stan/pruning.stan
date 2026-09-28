@@ -1,5 +1,4 @@
-functions {
-  real pruning(
+real pruning(
       int n,
       array[,] int tip_state,
       array[] int pattern_count,
@@ -17,6 +16,9 @@ functions {
     array[n_nodes] int is_child;
     array[n - 1] int postorder;
 
+    vector[n_edges] decay;
+    vector[n_edges] off;
+
     int root = 0;
     int n_roots = 0;
     real log_lik = 0;
@@ -28,6 +30,11 @@ functions {
 
     if (size(tip_state) != n)
       reject("The first dimension of tip_state must equal n");
+
+    // Compute each branch's JC69 quantities only once per log-density
+    // evaluation, rather than once per site pattern.
+    decay = exp((-4.0 / 3.0) * edge_length);
+    off = 0.25 * (rep_vector(1.0, n_edges) - decay);
 
     for (v in 1:n_nodes) {
       n_children[v] = 0;
@@ -89,55 +96,67 @@ functions {
     }
 
     // Scaled Felsenstein pruning over compressed site patterns.
-    for (s in 1:n_patterns) {
-      array[n_nodes] vector[4] partial;
-      real log_scale = 0;
+    if (n_patterns > 0) {
+      for (s in 1:n_patterns) {
+        array[n_nodes] vector[4] partial;
+        real log_scale = 0;
 
-      for (tip in 1:n) {
-        int state = tip_state[tip, s];
+        for (step in 1:(n - 1)) {
+          int v = postorder[step];
+          int c1 = child_node[v, 1];
+          int c2 = child_node[v, 2];
+          int e1 = child_edge[v, 1];
+          int e2 = child_edge[v, 2];
 
-        if (state == 0) {
-          partial[tip] = rep_vector(1.0, 4);
-        } else {
-          partial[tip] = rep_vector(0.0, 4);
-          partial[tip][state] = 1.0;
+          vector[4] message1;
+          vector[4] message2;
+          real normalizer;
+
+          // For a tip, form its branch message directly without allocating
+          // and multiplying a separate tip partial vector.
+          if (c1 <= n) {
+            int state1 = tip_state[c1, s];
+
+            if (state1 == 0) {
+              message1 = rep_vector(1.0, 4);
+            } else {
+              message1 = rep_vector(off[e1], 4);
+              message1[state1] += decay[e1];
+            }
+          } else {
+            // Internal partials are normalized, so their elements sum to 1.
+            message1 = rep_vector(off[e1], 4) + decay[e1] * partial[c1];
+          }
+
+          if (c2 <= n) {
+            int state2 = tip_state[c2, s];
+
+            if (state2 == 0) {
+              message2 = rep_vector(1.0, 4);
+            } else {
+              message2 = rep_vector(off[e2], 4);
+              message2[state2] += decay[e2];
+            }
+          } else {
+            message2 = rep_vector(off[e2], 4) + decay[e2] * partial[c2];
+          }
+
+          partial[v] = message1 .* message2;
+          normalizer = sum(partial[v]);
+
+          if (normalizer <= 0)
+            reject("Non-positive pruning normalizer");
+
+          partial[v] /= normalizer;
+          log_scale += log(normalizer);
         }
+
+        // The normalized root partial sums to one. JC69 root frequencies
+        // are all 1/4, so the root contribution is simply -log(4).
+        log_lik += pattern_count[s] * (log_scale - log(4.0));
       }
-
-      for (step in 1:(n - 1)) {
-        int v = postorder[step];
-        int c1 = child_node[v, 1];
-        int c2 = child_node[v, 2];
-        int e1 = child_edge[v, 1];
-        int e2 = child_edge[v, 2];
-
-        real decay1 = exp(-4.0 * edge_length[e1] / 3.0);
-        real decay2 = exp(-4.0 * edge_length[e2] / 3.0);
-        real off1 = 0.25 * (1.0 - decay1);
-        real off2 = 0.25 * (1.0 - decay2);
-
-        vector[4] message1 =
-          rep_vector(off1 * sum(partial[c1]), 4) + decay1 * partial[c1];
-        vector[4] message2 =
-          rep_vector(off2 * sum(partial[c2]), 4) + decay2 * partial[c2];
-
-        real normalizer;
-        partial[v] = message1 .* message2;
-        normalizer = sum(partial[v]);
-
-        if (normalizer <= 0)
-          reject("Non-positive pruning normalizer");
-
-        partial[v] /= normalizer;
-        log_scale += log(normalizer);
-      }
-
-      // JC69 stationary root frequencies are all 1/4.
-      log_lik += pattern_count[s] *
-                 (log_scale + log(sum(partial[root])) - log(4.0));
     }
 
     return log_lik;
   }
-}
 
