@@ -5,7 +5,8 @@
 \title{HMC algorithm using stan}
 \usage{
 hmc(
-  n = 10,
+  dat = phyDatEmpty(10),
+  initTree,
   niter = 1000,
   thin = max(1, round(niter/1000)),
   scale = 1,
@@ -13,7 +14,9 @@ hmc(
 )
 }
 \arguments{
-\item{n}{Number of tips}
+\item{dat}{Object of class phyDat containing the genetic data}
+
+\item{initTree}{Initial tree to use as start of MCMC}
 
 \item{niter}{Number of iterations}
 

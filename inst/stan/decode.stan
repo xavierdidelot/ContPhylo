@@ -96,8 +96,7 @@ functions {
   //   a[i - 1] = coords[i, 1], b[i - 1] = coords[i, 2], for R leaf i = 2,...,n.
   // Output tuple:
   //   (edge parent IDs, edge child IDs, edge lengths), matching phylo numbering.
-  tuple(array[] int, array[] int, vector) build_contphylo(vector a,
-                                                          vector b) {
+  tuple(array[] int, array[] int, vector) decode(vector a,vector b) {
     int n = num_elements(a) + 1;
     int N = 2 * n - 1;
     int E = 2 * n - 2;
@@ -135,15 +134,11 @@ functions {
       old_parent = parent[graft];
 
       parent[i] = new_node;
-      // Unlike the R prototype, this is not clamped: clamping exp(b) would
-      // alter both the target density and its gradient.
       dist_to_parent[i] = exp(b[i - 1]);
 
       child1[new_node] = graft;
       child2[new_node] = i;
       parent[new_node] = old_parent;
-      // This value is irrelevant while new_node is the root. Setting the old
-      // root distance initially to zero is the finite analogue of R's NA.
       dist_to_parent[new_node] = dist_to_parent[graft] - graft_dist;
 
       if (old_parent != 0) {
@@ -187,49 +182,5 @@ functions {
 
     return (edge_parent, edge_child, edge_length);
   }
-}
-
-data {
-  int<lower=2> n;
-  real<lower=0> scale;
-}
-
-parameters {
-  // These correspond to R coordinates[2:n, 1] and coordinates[2:n, 2].
-  vector[n - 1] a;
-  vector[n - 1] b;
-}
-
-model {
-  tuple(array[2 * n - 2] int,
-        array[2 * n - 2] int,
-        vector[2 * n - 2]) tree = build_contphylo(a, b);
-
-  if (min(tree.3) < 0)
-  reject("Negative branch length: ", min(tree.3),"; a = ", a, "; b = ", b);
-  // Gamma prior on every final branch length.
-  target += exponential_lpdf(tree.3 | 1/scale);
-
-  // Change-of-variables Jacobian: log |det(df/dC)| = sum_i b_i.
-  target += sum(b);
-
-  // The constant -(n - 1) * log(2) from representation multiplicity is
-  // unnecessary for HMC and is therefore omitted.
-}
-
-generated quantities {
-  array[2 * n - 2] int edge_parent;
-  array[2 * n - 2] int edge_child;
-  vector[2 * n - 2] edge_length;
-  tuple(array[2 * n - 2] int,
-        array[2 * n - 2] int,
-        vector[2 * n - 2]) tree = build_contphylo(a, b);
-
-  edge_parent = tree.1;
-  edge_child = tree.2;
-  edge_length = tree.3;
-
-  real log_prior;
-  log_prior = exponential_lpdf(tree.3 | 1/scale)+sum(b);
 }
 

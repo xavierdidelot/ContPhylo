@@ -3,12 +3,12 @@ library(ContPhylo)
 library(ape)
 library(phangorn)
 set.seed(0)
-tree=rtree(5)
+tree=rtree(10)
 scale=0.1
 tree$edge.length=tree$edge.length*scale
 seqs=phangorn::simSeq(tree,l=1000,rate=1)
 njtree=NJ(dist.ml(seqs))
-r=mcmc2(seqs,niter = 1e4,scale=scale)
+r=hmc(seqs,initTree = tree,niter = 1e4,scale=scale)
 
 par(mfrow=c(2,2))
 plot(sapply(r,function(x) x$posterior),type='l',xlab='',ylab='Posterior')
