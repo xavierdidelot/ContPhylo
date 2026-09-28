@@ -1,24 +1,35 @@
 
 
-@book{Paradis2006,
-  author =        {Paradis, Emmanuel},
-  publisher =     {Springer},
-  title =         {Analysis of {{Phylogenetics}} and {{Evolution}} with
-                   {{R}}},
-  year =          {2006},
-}
-
-@article{Felsenstein1978b,
-  author =        {Felsenstein, Joseph},
-  journal =       {Systematic Zoology},
-  month =         mar,
-  number =        {1},
-  pages =         {27},
-  title =         {The {{Number}} of {{Evolutionary Trees}}},
-  volume =        {27},
-  year =          {1978},
-  doi =           {10.2307/2412810},
-  issn =          {00397989},
+@article{nascimentoBiologistsGuideBayesian2017,
+  author =        {Nascimento, Fabr{\'i}cia F. and Reis, Mario Dos and
+                   Yang, Ziheng},
+  journal =       {Nature Ecology and Evolution},
+  number =        {10},
+  pages =         {1446--1454},
+  publisher =     {Springer US},
+  title =         {A Biologist's Guide to {{Bayesian}} Phylogenetic
+                   Analysis},
+  volume =        {1},
+  year =          {2017},
+  abstract =      {Bayesian methods have become very popular in
+                   molecular phylogenetics due to the availability of
+                   user-friendly software for running sophisticated
+                   models of evolution. However, Bayesian phylogenetic
+                   models are complex, and analyses are often carried
+                   out using default settings, which may not be
+                   appropriate. Here we summarize the major features of
+                   Bayesian phylogenetic inference and discuss Bayesian
+                   computation using Markov chain Monte Carlo (MCMC)
+                   sampling, the diagnosis of an MCMC run, and ways of
+                   summarizing the MCMC sample. We discuss the
+                   specification of the prior, the choice of the
+                   substitution model and partitioning of the data.
+                   Finally, we provide a list of common Bayesian
+                   phylogenetic software packages and recommend
+                   appropriate applications.},
+  doi =           {10.1038/s41559-017-0280-x},
+  isbn =          {2397-334X},
+  issn =          {2397334X},
 }
 
 @book{Gilks1996,
@@ -141,6 +152,94 @@
   issn =          {1063-5157, 1076-836X},
 }
 
+@article{Andrieu2008,
+  author =        {Andrieu, Christophe and Thoms, Johannes},
+  journal =       {Statistics and Computing},
+  number =        {4},
+  pages =         {343--373},
+  title =         {A Tutorial on Adaptive {{MCMC}}},
+  volume =        {18},
+  year =          {2008},
+  abstract =      {We review adaptive Markov chain Monte Carlo
+                   algorithms (MCMC) as a mean to optimise their
+                   performance. Using simple toy examples we review
+                   their theoretical underpinnings, and in particular
+                   show why adaptive MCMC algorithms might fail when
+                   some fundamental properties are not satisfied. This
+                   leads to guidelines concerning the design of correct
+                   algorithms. We then review criteria and the useful
+                   framework of stochastic approximation, which allows
+                   one to systematically optimise generally used
+                   criteria, but also analyse the properties of adaptive
+                   MCMC algorithms. We then propose a series of novel
+                   adaptive algorithms which prove to be robust and
+                   reliable in practice. These algorithms are applied to
+                   artificial and high dimensional scenarios, but also
+                   to the classic mine disaster dataset inference
+                   problem. \copyright{} 2008 Springer Science+Business
+                   Media, LLC.},
+  doi =           {10.1007/s11222-008-9110-y},
+  issn =          {09603174},
+}
+
+@article{robertsOptimalScalingDiscrete1998,
+  author =        {Roberts, Gareth O. and Rosenthal, Jeffrey S.},
+  journal =       {Journal of the Royal Statistical Society Series B:
+                   Statistical Methodology},
+  month =         jan,
+  number =        {1},
+  pages =         {255--268},
+  title =         {Optimal {{Scaling}} of {{Discrete Approximations}} to
+                   {{Langevin Diffusions}}},
+  volume =        {60},
+  year =          {1998},
+  abstract =      {We consider the optimal scaling problem for proposal
+                   distributions in Hastings\textpm{} Metropolis
+                   algorithms derived from Langevin diffusions. We prove
+                   an asymptotic diffusion limit theorem and show that
+                   the relative ef\AE ciency of the algorithm can be
+                   characterized by its overall acceptance rate,
+                   independently of the target distribution. The
+                   asymptotically optimal acceptance rate is 0.574. We
+                   show that, as a function of dimension n, the
+                   complexity of the algorithm is O(n1/3), which
+                   compares favourably with the O(n) complexity of
+                   random walk Metropolis algorithms. We illustrate this
+                   comparison with some example simulations.},
+  doi =           {10.1111/1467-9868.00123},
+  issn =          {1369-7412, 1467-9868},
+}
+
+@book{nealMCMCUsingHamiltonian2011,
+  author =        {Neal, Radford M.},
+  month =         may,
+  title =         {{{MCMC}} Using {{Hamiltonian}} Dynamics},
+  year =          {2011},
+  abstract =      {Hamiltonian dynamics can be used to produce distant
+                   proposals for the Metropolis algorithm, thereby
+                   avoiding the slow exploration of the state space that
+                   results from the diffusive behaviour of simple
+                   random-walk proposals. Though originating in physics,
+                   Hamiltonian dynamics can be applied to most problems
+                   with continuous state spaces by simply introducing
+                   fictitious "momentum" variables. A key to its
+                   usefulness is that Hamiltonian dynamics preserves
+                   volume, and its trajectories can thus be used to
+                   define complex mappings without the need to account
+                   for a hard-to-compute Jacobian factor - a property
+                   that can be exactly maintained even when the dynamics
+                   is approximated by discretizing time. In this review,
+                   I discuss theoretical and practical aspects of
+                   Hamiltonian Monte Carlo, and present some of its
+                   variations, including using windows of states for
+                   deciding on acceptance or rejection, computing
+                   trajectories using fast approximations, tempering
+                   during the course of a trajectory to handle isolated
+                   modes, and short-cut methods that prevent useless
+                   trajectories from taking much computation time.},
+  doi =           {10.1201/b10905},
+}
+
 @article{Betancourt2017,
   author =        {Betancourt, Michael},
   journal =       {arxiv},
@@ -181,6 +280,95 @@
   issn =          {01968858},
 }
 
+@misc{dinhProbabilisticPathHamiltonian2017,
+  author =        {Dinh, Vu and Bilge, Arman and Zhang, Cheng and
+                   Matsen, Frederick A.},
+  month =         jun,
+  number =        {arXiv:1702.07814},
+  publisher =     {arXiv},
+  title =         {Probabilistic {{Path Hamiltonian Monte Carlo}}},
+  year =          {2017},
+  abstract =      {Hamiltonian Monte Carlo (HMC) is an efficient and
+                   effective means of sampling posterior distributions
+                   on Euclidean space, which has been extended to
+                   manifolds with boundary. However, some applications
+                   require an extension to more general spaces. For
+                   example, phylogenetic (evolutionary) trees are
+                   defined in terms of both a discrete graph and
+                   associated continuous parameters; although one can
+                   represent these aspects using a single connected
+                   space, this rather complex space is not suitable for
+                   existing HMC algorithms. In this paper, we develop
+                   Probabilistic Path HMC (PPHMC) as a first step to
+                   sampling distributions on spaces with intricate
+                   combinatorial structure. We define PPHMC on orthant
+                   complexes, show that the resulting Markov chain is
+                   ergodic, and provide a promising implementation for
+                   the case of phylogenetic trees in opensource
+                   software. We also show that a surrogate function to
+                   ease the transition across a boundary on which the
+                   log-posterior has discontinuous derivatives can
+                   greatly improve efficiency.},
+  doi =           {10.48550/arXiv.1702.07814},
+}
+
+@book{Paradis2006,
+  author =        {Paradis, Emmanuel},
+  publisher =     {Springer},
+  title =         {Analysis of {{Phylogenetics}} and {{Evolution}} with
+                   {{R}}},
+  year =          {2006},
+}
+
+@article{Felsenstein1978b,
+  author =        {Felsenstein, Joseph},
+  journal =       {Systematic Zoology},
+  month =         mar,
+  number =        {1},
+  pages =         {27},
+  title =         {The {{Number}} of {{Evolutionary Trees}}},
+  volume =        {27},
+  year =          {1978},
+  doi =           {10.2307/2412810},
+  issn =          {00397989},
+}
+
+@article{Felsenstein1981,
+  author =        {Felsenstein, Joseph},
+  journal =       {Journal of Molecular Evolution},
+  number =        {6},
+  pages =         {368--376},
+  title =         {Evolutionary Trees from {{DNA}} Sequences: {{A}}
+                   Maximum Likelihood Approach},
+  volume =        {17},
+  year =          {1981},
+  abstract =      {Summary The application of maximum likelihood
+                   techniques to the estimation of evolutionary trees
+                   from nucleic acid sequence data is discussed. A
+                   computationally feasible method for finding such
+                   maximum likelihood estimates is developed, and a
+                   computer program is available. This method has
+                   advantages over the traditional parsimony algorithms,
+                   which can give misleading results if rates of
+                   evolution differ in different lineages. It also
+                   allows the testing of hypotheses about the constancy
+                   of evolutionary rates by likelihood ratio tests, and
+                   gives rough indication of the error of the estimate
+                   of the tree.},
+  doi =           {10.1007/BF01734359},
+  isbn =          {0022-2844 (Print)\textbackslash r0022-2844 (Linking)},
+  issn =          {00222844},
+}
+
+@incollection{Jukes1969,
+  author =        {Jukes, T.H. and Cantor, C.R.},
+  booktitle =     {Mammalian Protein Metabolism},
+  pages =         {21--132},
+  publisher =     {Academic Press},
+  title =         {Evolution of Protein Molecules},
+  year =          {1969},
+}
+
 @article{Vihola2011,
   author =        {Vihola, Matti},
   journal =       {Stochastic Processes and their Applications},
@@ -210,36 +398,111 @@
   issn =          {03044149},
 }
 
-@article{Spencer2021,
-  author =        {Spencer, Simon E.F.},
-  journal =       {Australian and New Zealand Journal of Statistics},
-  number =        {3},
-  pages =         {468--484},
-  title =         {Accelerating Adaptation in the Adaptive
-                   {{Metropolis}}--{{Hastings}} Random Walk Algorithm},
-  volume =        {63},
-  year =          {2021},
-  abstract =      {The Metropolis--Hastings random walk algorithm
-                   remains popular with practitioners due to the wide
-                   variety of situations in which it can be successfully
-                   applied and the extreme ease with which it can be
-                   implemented. Adaptive versions of the algorithm use
-                   information from the early iterations of the Markov
-                   chain to improve the efficiency of the proposal. The
-                   aim of this paper is to reduce the number of
-                   iterations needed to adapt the proposal to the
-                   target, which is particularly important when the
-                   likelihood is time-consuming to evaluate. First, the
-                   accelerated shaping algorithm is a generalisation of
-                   both the adaptive proposal and adaptive Metropolis
-                   algorithms. It is designed to remove, from the
-                   estimate of the covariance matrix of the target,
-                   misleading information from the start of the chain.
-                   Second, the accelerated scaling algorithm rapidly
-                   changes the scale of the proposal to achieve a target
-                   acceptance rate. The usefulness of these approaches
-                   is illustrated with a range of examples.},
-  doi =           {10.1111/anzs.12344},
-  issn =          {1467842X},
+@article{Plummer2006,
+  author =        {Plummer, Martyn and Best, Nicky and Cowles, Kate and
+                   Vines, Karen},
+  journal =       {R News},
+  number =        {March},
+  pages =         {7--11},
+  title =         {{{CODA}}: Convergence Diagnosis and Output Analysis
+                   for {{MCMC}}},
+  volume =        {6},
+  year =          {2006},
+  abstract =      {[1st paragraph] At first sight, Bayesian inference
+                   with Markov Chain Monte Carlo (MCMC) appears to be
+                   straightforward. The user defines a full probability
+                   model, perhaps using one of the programs discussed in
+                   this issue; an underlying sampling engine takes the
+                   model definition and returns a sequence of dependent
+                   samples from the posterior distribution of the model
+                   parameters, given the supplied data. The user can
+                   derive any summary of the posterior distribution from
+                   this sample. For example, to calculate a 95\%
+                   credible interval for a parameter {$\alpha$}, it
+                   suffices to take 1000 MCMC iterations of {$\alpha$}
+                   and sort them so that {$\alpha$}121000. The credible
+                   interval estimate is then ({$\alpha$}25,
+                   {$\alpha$}975). However, there is a price to be paid
+                   for this simplicity. Unlike most numerical methods
+                   used in statistical inference, MCMC does not give a
+                   clear indication of whether it has converged. The
+                   underlying Markov chain theory only guarantees that
+                   the distribution of the output will converge to the
+                   posterior in the limit as the number of iterations
+                   increases to infinity. The user is generally ignorant
+                   about how quickly convergence occurs, and therefore
+                   has to fall back on post hoc testing of the sampled
+                   output. By convention, the sample is divided into two
+                   parts: a ``burn in'' period during which all samples
+                   are discarded, and the remainder of the run in which
+                   the chain is considered to have converged
+                   sufficiently close to the limiting distribution to be
+                   used. Two questions then arise: 1. How long should
+                   the burn in period be? 2. How many samples are
+                   required to accurately estimate posterior quantities
+                   of interest? The coda package for R contains a set of
+                   functions designed to help the user answer these
+                   questions. Some of these convergence diagnostics are
+                   simple graphical ways of summarizing the data. Others
+                   are formal statistical tests.},
+  doi =           {10.1159/000323281},
+  isbn =          {1609-3631},
+  issn =          {1662-4025},
+}
+
+@article{Warren2017,
+  author =        {Warren, Dan L. and Geneva, Anthony J. and
+                   Lanfear, Robert},
+  journal =       {Molecular Biology and Evolution},
+  month =         jan,
+  pages =         {msw279},
+  title =         {{{RWTY}} ({{R We There Yet}}): {{An R}} Package for
+                   Examining Convergence of {{Bayesian}} Phylogenetic
+                   Analyses},
+  year =          {2017},
+  doi =           {10.1093/molbev/msw279},
+  issn =          {0737-4038, 1537-1719},
+}
+
+@article{Carpenter2017,
+  author =        {Carpenter, Bob and Gelman, Andrew and
+                   Hoffman, Matthew D. and Lee, Daniel and Goodrich, Ben and
+                   Betancourt, Michael and Brubaker, Marcus A. and
+                   Guo, Jiqiang and Li, Peter and Riddell, Allen},
+  journal =       {Journal of Statistical Software},
+  number =        {1},
+  title =         {Stan: {{A}} Probabilistic Programming Language},
+  volume =        {76},
+  year =          {2017},
+  abstract =      {Stan is a probabilistic programming language for
+                   specifying statistical models. A Stan program
+                   imperatively defines a log probability function over
+                   parameters conditioned on specified data and
+                   constants. As of version 2.14.0, Stan provides full
+                   Bayesian inference for continuous-variable models
+                   through Markov chain Monte Carlo methods such as the
+                   No-U-Turn sampler, an adaptive form of Hamiltonian
+                   Monte Carlo sampling. Penalized maximum likelihood
+                   estimates are calculated using optimization methods
+                   such as the limited memory
+                   Broyden-Fletcher-Goldfarb-Shanno algorithm. Stan is
+                   also a platform for computing log densities and their
+                   gradients and Hessians, which can be used in
+                   alternative algorithms such as variational Bayes,
+                   expectation propagation, and marginal inference using
+                   approximate integration. To this end, Stan is set up
+                   so that the densities, gradients, and Hessians, along
+                   with intermediate quantities of the algorithm such as
+                   acceptance probabilities, are easily accessible. Stan
+                   can be called from the command line using the cmdstan
+                   package, through R using the rstan package, and
+                   through Python using the pystan package. All three
+                   interfaces support sampling and optimization-based
+                   inference with diagnostics and posterior analysis.
+                   rstan and pystan also provide access to log
+                   probabilities, gradients, Hessians, parameter
+                   transforms, and specialized plotting.},
+  doi =           {10.18637/jss.v076.i01},
+  issn =          {15487660},
 }
 

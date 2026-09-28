@@ -1,15 +1,24 @@
 #' MCMC algorithm
-#' @param n Number of tips
+#' @param data Object of class phyDat containing the genetic data
+#' @param initTree Initial tree to use as start of MCMC
 #' @param niter Number of MCMC iterations
 #' @param thin Thining interval
 #' @param scale Scale of the exponential distribution for branch lengths
 #' @param showProgress Whether to show a progress bar
 #' @returns MCMC result
 #' @export
-mcmc = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),scale=1,showProgress=T) {
-  tree=rtree(n)
+mcmc = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1e3)),scale=1,showProgress=T) {
+  if (missing(initTree)) {
+    n=length(dat)
+    tree=rtree(n)
+    tree$tip.label=names(dat)
+  } else {
+    n=Ntip(initTree)
+    tree=initTree
+  }
+  mypml=phangorn::pml(tree=tree,data=dat,model='JC')
   r=phylo2contphylo(tree)
-  p=prior(r,scale)
+  p=posterior(mypml,r,scale)
   res=vector('list',niter/thin)
   if (showProgress) pb <- txtProgressBar(min=0,max=niter,style = 3)
   adapt_target=0.234
@@ -27,7 +36,7 @@ mcmc = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),scale=1,showProgress
       new[w,move]=new[w,move]+rnorm(1,0,sd[move])
       new=rbind(c(0,0),new)
       r2$coordinates=new
-      p2=prior(r2,scale)
+      p2=posterior(mypml,r2,scale)
       mh=p2-p
       if (log(runif(1))<mh) {
         p=p2
@@ -45,6 +54,7 @@ mcmc = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),scale=1,showProgress
     }
     if (i%%thin==0) {
       res[[i/thin]]=contphylo2phylo(r)
+      res[[i/thin]]$posterior=p
       res[[i/thin]]$sd=sd
       res[[i/thin]]$paccepted=naccepted/i
     }
@@ -54,31 +64,43 @@ mcmc = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),scale=1,showProgress
 }
 
 #' MCMC algorithm using package adaptMCMC
-#' @param n Number of tips
+#' @param data Object of class phyDat containing the genetic data
+#' @param initTree Initial tree to use as start of MCMC
 #' @param niter Number of MCMC iterations
 #' @param thin Thining interval
 #' @param scale Scale of the exponential distribution for branch lengths
 #' @param showProgress Whether to show a progress bar
 #' @returns MCMC result
 #' @export
-mcmc2 = function(n=10,niter=1e3,thin=max(1,round(niter/1e3)),scale=1,showProgress=T) {
+mcmc2 = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1e3)),scale=1,showProgress=T) {
+  if (missing(initTree)) {
+    n=length(dat)
+    tree=rtree(n)
+    tree$tip.label=names(dat)
+  } else {
+    n=Ntip(initTree)
+    tree=initTree
+  }
+  mypml=phangorn::pml(tree=tree,data=dat,model='JC')
+  r=phylo2contphylo(tree)
+  init=c(r$coordinates[-1,1],r$coordinates[-1,2])
   target = function(v) {
     r=list()
     r$coordinates=rbind(c(0,0),matrix(v,ncol=2,byrow=F))
-    r$tip.label=paste0('t',1:n)
+    r$tip.label=tree$tip.label
     class(r)<-'contphylo'
-    p=prior(r,scale)
+    p=posterior(mypml,r,scale)
     return(p)
   }
-  init=runif(n*2-2)
   r=adaptMCMC::MCMC(p=target,n=niter,init=init,adapt=T,acc.rate=0.234,showProgressBar=showProgress)
   res=vector('list',niter/thin)
   l=list()
-  l$tip.label=paste0('t',1:n)
+  l$tip.label=tree$tip.label
   class(l)<-'contphylo'
   for (i in seq(thin,niter,thin)) {
     l$coordinates=rbind(c(0,0),matrix(r$samples[i,],ncol=2,byrow=F))
     res[[i/thin]]=contphylo2phylo(l)
+    res[[i/thin]]$posterior=r$log.p[i]
   }
   res[[1]]$cov.jump=r$cov.jump#interesting
   return(res)

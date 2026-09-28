@@ -7,7 +7,7 @@ trees=lapply(1:1000,function(x) rtopology(5,rooted=T,br=function (n) rexp(n,rate
 prior_test(trees,2)
 
 #My own MCMC
-trees=mcmc(n=5,niter=1e5,scale=2)
+trees=mcmc(phyDatEmpty(5),niter=1e5,scale=2)
 prior_test(trees,scale=2)
 par(mfrow=c(2,2))
 for (i in c(700,800,900,1000)) {
@@ -21,7 +21,7 @@ plot(sapply(trees,function(x) x$sd[1]),type='l',xlab='',ylab='sd[1]')
 plot(sapply(trees,function(x) x$sd[2]),type='l',xlab='',ylab='sd[2]')
 
 #MCMC from adaptMCMC package
-trees=mcmc2(n=5,niter=2e5,thin = 1e2,scale=2)
+trees=mcmc2(phyDatEmpty(5),niter=2e5,thin = 1e2,scale=2)
 mat=trees[[1]]$cov.jump
 image(1:nrow(mat),1:ncol(mat),mat,xlab='',ylab='')
 title('Covariance of last jump distribution')

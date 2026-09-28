@@ -5,7 +5,8 @@
 \title{MCMC algorithm using package adaptMCMC}
 \usage{
 mcmc2(
-  n = 10,
+  dat = phyDatEmpty(10),
+  initTree,
   niter = 1000,
   thin = max(1, round(niter/1000)),
   scale = 1,
@@ -13,7 +14,7 @@ mcmc2(
 )
 }
 \arguments{
-\item{n}{Number of tips}
+\item{initTree}{Initial tree to use as start of MCMC}
 
 \item{niter}{Number of MCMC iterations}
 
@@ -22,6 +23,8 @@ mcmc2(
 \item{scale}{Scale of the exponential distribution for branch lengths}
 
 \item{showProgress}{Whether to show a progress bar}
+
+\item{data}{Object of class phyDat containing the genetic data}
 }
 \value{
 MCMC result
