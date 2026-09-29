@@ -11,6 +11,7 @@ mcmc = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1e
   if (missing(initTree)) {
     n=length(dat)
     tree=rtree(n)
+    tree$edge.length=tree$edge.length*scale
     tree$tip.label=names(dat)
   } else {
     n=Ntip(initTree)
@@ -76,6 +77,7 @@ mcmc2 = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1
   if (missing(initTree)) {
     n=length(dat)
     tree=rtree(n)
+    tree$edge.length=tree$edge.length*scale
     tree$tip.label=names(dat)
   } else {
     n=Ntip(initTree)

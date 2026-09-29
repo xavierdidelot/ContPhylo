@@ -85,6 +85,7 @@ hmc = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1e3
   if (missing(initTree)) {
     n=length(dat)
     tree=rtree(n)
+    tree$edge.length=tree$edge.length*scale
     tree$tip.label=names(dat)
   } else {
     n=Ntip(initTree)
@@ -97,6 +98,7 @@ hmc = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1e3
   mod <- cmdstan_model(system.file('stan','posterior.stan',package='ContPhylo',mustWork = T))
   fit <- mod$sample(
     data = c(phyDat_to_stan(dat),list(scale = scale)),
+    adapt_delta = 0.99,
     chains = 1,
     parallel_chains = 1,
     iter_warmup = niter / 2,
@@ -104,13 +106,6 @@ hmc = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1e3
     init = list(list(a = a, b = b)),
     seed = 1L,
     refresh = ifelse(showProgress,thin,0))
-
-  #  mod <- cmdstan_model(system.file('stan','prior.stan',package='ContPhylo',mustWork = T))
-  #  fit <- mod$sample(
-  #    data=list(n=n,scale=scale),
-  #    chains=1,parallel_chains=1,iter_warmup=niter/2,iter_sampling=niter/2,
-  #    init=list(list(a=a,b=b)),seed=1L,refresh=ifelse(showProgress,thin,0))
-
   mat=fit$draws(format = 'matrix')
   lp=fit$lp()
   res=vector('list',niter/2/thin)
@@ -122,5 +117,6 @@ hmc = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1e3
     res[[i/thin]]=contphylo2phylo(l)
     res[[i/thin]]$posterior=lp[i]
   }
+  res[[1]]$fit=fit#interesting
   return(res)
 }
