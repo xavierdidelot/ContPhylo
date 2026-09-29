@@ -35,11 +35,13 @@ test_that("Testing stan functions.", {
   #Check stan posterior is same as R posterior when there is data
   n=10
   tree=rtree(n)
-  seqs=phangorn::simSeq(tree,l=10,rate=1)
+  scale=0.01
+  tree$edge.length=tree$edge.length*scale
+  seqs=phangorn::simSeq(tree,l=100,rate=1)
   mypml=phangorn::pml(tree=tree,data=seqs,model='JC')
   r=phylo2contphylo(tree)
-  p1=posterior(mypml,r,2)
-  p2=posterior_stan(mypml,r,2)
+  p1=posterior(mypml,r,scale)
+  p2=posterior_stan(mypml,r,scale)
   expect_equal(p1,p2,tolerance=1e-6)
 })
 
