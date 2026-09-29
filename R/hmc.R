@@ -33,6 +33,45 @@ prior_stan <- function(r,scale=1) {
   return(log_prior)
 }
 
+#' Compute posterior using stan
+#' @param mypml Object of class phangorn::pml containing the data
+#' @param r Object of class ContPhylo
+#' @param scale Scale of the exponential distribution for branch lengths
+#' @returns Log of the prior
+#' @export
+posterior_stan <- function(mypml,r,scale=1) {
+  a=r$coordinates[-1,1]
+  b=r$coordinates[-1,2]
+  n <- length(a) + 1L
+  invisible(capture.output(suppressMessages({
+    mod <- cmdstan_model(system.file('stan','posterior.stan',package='ContPhylo',mustWork = T))
+  })))
+  data_file <- tempfile(fileext = ".json")
+  pars_file <- tempfile(fileext = ".json")
+  output_file <- tempfile(fileext = ".csv")
+  gendata=phyDat_to_stan(mypml$data)
+  cmdstanr::write_stan_json(list(n=n,scale=scale,
+    n_patterns=gendata$n_patterns,tip_state=gendata$tip_state,
+    pattern_count=array(gendata$pattern_count,dim=length(gendata$pattern_count))), data_file)
+  parameters <- list(
+    a = array(a, dim = length(a)),
+    b = array(b, dim = length(b))
+  )
+  cmdstanr::write_stan_json(parameters, pars_file)
+  args <- c(
+    "log_prob",
+    paste0("constrained_params=", pars_file),
+    paste0("jacobian=", 'true'),
+    "data", paste0("file=", data_file),
+    "output", paste0("file=", output_file),
+    "refresh=0"
+  )
+  system2(mod$exe_file(), args = args,stdout=F,stderr=F)
+  result <- utils::read.csv(output_file, comment.char = "#", check.names = FALSE)
+  log_posterior=unname(result$lp__[[1]])
+  return(log_posterior)
+}
+
 #' HMC algorithm using stan
 #' @param dat Object of class phyDat containing the genetic data
 #' @param initTree Initial tree to use as start of MCMC
