@@ -12,5 +12,6 @@ posterior=function(mypml,r,scale=1) {
   p=p+sum(r$coordinates[,2])
   mypml=stats::update(mypml,tree=tree)
   p=p+mypml$logLik
+  #p=p+dnorm(dist.nodes(tree)[1,n+1],scale/2,0.1,log=T)#Encourages root position
   return(p)
 }

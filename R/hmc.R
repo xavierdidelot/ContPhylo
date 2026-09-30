@@ -50,7 +50,7 @@ posterior_stan <- function(mypml,r,scale=1) {
   pars_file <- tempfile(fileext = ".json")
   output_file <- tempfile(fileext = ".csv")
   gendata=phyDat_to_stan(mypml$data)
-  cmdstanr::write_stan_json(list(n=n,scale=scale,
+  cmdstanr::write_stan_json(list(n=n,scale=scale,#root_distance=scale/2,root_sd=0.1,
     n_patterns=gendata$n_patterns,tip_state=gendata$tip_state,
     pattern_count=array(gendata$pattern_count,dim=length(gendata$pattern_count))), data_file)
   parameters <- list(
@@ -94,10 +94,11 @@ hmc = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1e3
   r=phylo2contphylo(tree)
   a=r$coordinates[-1,1]
   b=r$coordinates[-1,2]
+  root_distance=initTree$edge.length[which(initTree$edge[,2]==1)]/2
 
   mod <- cmdstan_model(system.file('stan','posterior.stan',package='ContPhylo',mustWork = T))
   fit <- mod$sample(
-    data = c(phyDat_to_stan(dat),list(scale = scale)),
+    data = c(phyDat_to_stan(dat),list(scale = scale)),#,root_distance=root_distance,root_sd=1e-3)),
     adapt_delta = 0.99,
     chains = 1,
     parallel_chains = 1,
