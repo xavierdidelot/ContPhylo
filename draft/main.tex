@@ -465,10 +465,11 @@ of Lebesgue measure zero in $\mathcal{C}_n^2$.
 \section{Unrooted trees}
 
 We now consider unrooted binary phylogenetic trees with $n\geq 3$
-labelled leaves. Such a tree has $n-2$ internal nodes, $(2n-5)!!$
-possible topologies, and $2n-3$ branch lengths. We obtain an
-unconstrained parametrisation of the same dimension by distinguishing
-leaf $n$ and applying the rooted construction of Section~4 to the first
+labelled leaves. Such a tree has $n-2$ internal nodes, $2n-3$ branch lengths and $(2n-5)!!=(2n-5)!/(2^{n-3}(n-3)!)$
+possible topologies \citep{Felsenstein1978b}. We obtain an
+unconstrained parametrisation of  dimension $2n-3$ by distinguishing the last
+leaf $n$ and applying the rooted construction of 
+the previous section to the first
 $n-1$ leaves.
 
 Let $C=\left((a_i,b_i)_{i=2,\ldots,n-1},c\right) \in 
@@ -479,8 +480,8 @@ parameters $(a_i,b_i)_{i=2,\ldots,n-1}$. Attach leaf $n$ directly to the
 root of $R$ by a branch of length $\exp(c)$, and then forget the root
 designation. The former root has degree three and therefore becomes an
 ordinary internal node of the resulting unrooted tree. This construction
-is detailed in Algorithm~\ref{alg:decoding3}.
-A small example of applying Algorithm \ref{alg:decoding3}
+is detailed in Algorithm~\ref{alg:decoding3} and
+a small example of application
 is shown in Figure \ref{fig:unrooted}.
 
 \begin{figure}[t]
