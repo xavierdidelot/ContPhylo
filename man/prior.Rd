@@ -2,18 +2,18 @@
 % Please edit documentation in R/prior.R
 \name{prior}
 \alias{prior}
-\title{Prior function}
+\title{Prior function for a contphylo object}
 \usage{
 prior(r, scale = 1)
 }
 \arguments{
-\item{r}{Object of class ContPhylo}
+\item{r}{Object of class contphylo}
 
-\item{scale}{Scale of the exponential distribution for branch lengths}
+\item{scale}{Scale of the branch lengths}
 }
 \value{
 Log of the prior
 }
 \description{
-Prior function
+Prior function for a contphylo object
 }

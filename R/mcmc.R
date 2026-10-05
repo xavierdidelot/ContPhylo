@@ -3,7 +3,7 @@
 #' @param initTree Initial tree to use as start of MCMC
 #' @param niter Number of MCMC iterations
 #' @param thin Thining interval
-#' @param scale Scale of the exponential distribution for branch lengths
+#' @param scale Scale of the branch lengths
 #' @param showProgress Whether to show a progress bar
 #' @returns MCMC result
 #' @export
@@ -69,7 +69,7 @@ mcmc = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1e
 #' @param initTree Initial tree to use as start of MCMC
 #' @param niter Number of MCMC iterations
 #' @param thin Thining interval
-#' @param scale Scale of the exponential distribution for branch lengths
+#' @param scale Scale of the branch lengths
 #' @param showProgress Whether to show a progress bar
 #' @returns MCMC result
 #' @export
@@ -90,6 +90,7 @@ mcmc2 = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1
     r=list()
     r$coordinates=rbind(c(0,0),matrix(v,ncol=2,byrow=F))
     r$tip.label=tree$tip.label
+    r$type=2
     class(r)<-'contphylo'
     p=posterior(mypml,r,scale)
     return(p)
@@ -98,6 +99,7 @@ mcmc2 = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1
   res=vector('list',niter/thin)
   l=list()
   l$tip.label=tree$tip.label
+  l$type=2
   class(l)<-'contphylo'
   for (i in seq(thin,niter,thin)) {
     l$coordinates=rbind(c(0,0),matrix(r$samples[i,],ncol=2,byrow=F))

@@ -11,7 +11,7 @@ posterior(mypml, r, scale = 1)
 
 \item{r}{Object of class ContPhylo}
 
-\item{scale}{Scale of the exponential distribution for branch lengths}
+\item{scale}{Scale of branch lengths}
 }
 \value{
 Log of the posterior

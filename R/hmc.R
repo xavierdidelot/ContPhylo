@@ -1,6 +1,6 @@
 #' #' Compute prior using stan
 #' #' @param r Object of class ContPhylo
-#' #' @param scale Scale of the exponential distribution for branch lengths
+#' #' @param scale Scale of the branch lengths
 #' #' @returns Log of the prior
 #' #' @export
 #' prior_stan <- function(r,scale=1) {
@@ -36,7 +36,7 @@
 #' #' Compute posterior using stan
 #' #' @param mypml Object of class phangorn::pml containing the data
 #' #' @param r Object of class ContPhylo
-#' #' @param scale Scale of the exponential distribution for branch lengths
+#' #' @param scale Scale of the branch lengths
 #' #' @returns Log of the prior
 #' #' @export
 #' posterior_stan <- function(mypml,r,scale=1) {
@@ -77,7 +77,7 @@
 #' #' @param initTree Initial tree to use as start of MCMC
 #' #' @param niter Number of iterations
 #' #' @param thin Thining interval
-#' #' @param scale Scale of the exponential distribution for branch lengths
+#' #' @param scale Scale of the branch lengths
 #' #' @param showProgress Whether to show a progress bar
 #' #' @returns HMC result
 #' #' @export

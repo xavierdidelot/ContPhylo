@@ -22,7 +22,7 @@ mcmc2(
 
 \item{thin}{Thining interval}
 
-\item{scale}{Scale of the exponential distribution for branch lengths}
+\item{scale}{Scale of the branch lengths}
 
 \item{showProgress}{Whether to show a progress bar}
 }

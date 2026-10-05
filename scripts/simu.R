@@ -10,7 +10,7 @@ tree$edge.length=tree$edge.length*scale
 #tree=unroot(tree);tree=phytools::reroot(tree,1,tree$edge.length[which(tree$edge[,2]==1)]/2)
 seqs=phangorn::simSeq(tree,l=10000,rate=1)
 seqs=phyDatEmpty(Ntip(tree));names(seqs)<-tree$tip.label
-r=hmc(seqs,initTree = tree, niter = 1e3,scale=scale)
+r=mcmc2(seqs,initTree = tree, niter = 1e3,scale=scale)
 
 par(mfrow=c(3,2))
 plot(sapply(r,function(x) x$posterior),type='l',xlab='',ylab='Posterior')

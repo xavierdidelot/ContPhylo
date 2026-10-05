@@ -21,7 +21,7 @@ for (i in 2:n) {
   axisPhylo(2,backward = F)
 }
 dev.off()
-#browseURL('figUltra.pdf')
+browseURL('figUltra.pdf')
 
 set.seed(0)
 n=6
@@ -42,7 +42,7 @@ for (i in 2:n) {
   axisPhylo(2,backward = F)
 }
 dev.off()
-#browseURL('figRooted.pdf')
+browseURL('figRooted.pdf')
 
 set.seed(0)
 n=6
