@@ -1,14 +1,14 @@
 Package: ContPhylo
 Type: Package
-Title: Phylogenetic trees in real space
+Title: Phylogenetic trees in unconstrained Euclidean space
 Version: 0.1.0
 Date: 2026-09-16
 Authors@R: person("Xavier","Didelot",email="xavier.didelot@gmail.com",role=c("aut", "cre"))
 Maintainer: Xavier Didelot <xavier.didelot@gmail.com>
 Depends: R (>= 3.5.0)
-Imports: ape, cmdstanr
+Imports: ape
 Suggests: knitr, testthat
-Description: ContPhylo is a R package to work with phylogenetic trees in real space.
+Description: ContPhylo is a R package to work with phylogenetic trees in unconstrained Euclidean space.
 VignetteBuilder: knitr
 License: GPL (>=3)
 Encoding: UTF-8

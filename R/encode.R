@@ -1,9 +1,13 @@
 #' Convert a phylo into a contphylo
 #'
 #' @param x Object of class `phylo`.
+#' @param type Type of tree: 1 for ultrametric, 2 for rooted, 3 for unrooted.
 #' @return Object of class `contphylo`.
 #' @export
-phylo2contphylo <- function(x) {
+phylo2contphylo <- function(x,type=2) {
+  if ((type==1 || type==2) && !is.rooted(x)) stop('Tree needs to be rooted.')
+  if (type==3 && is.rooted(x)) stop('Tree needs to be unrooted.')
+  if (type==3) x=root(x,tail(x$tip.label,1),resolve.root=T)
   edge <- x$edge
   n <- length(x$tip.label)
   parent <- length_to_parent <- rep(NA, max(edge))
@@ -64,10 +68,11 @@ phylo2contphylo <- function(x) {
       tree_length <- tree_length - pendant_length
     }
   }
-  coordinates[-1,2] <- log(coordinates[-1,2])
+  if (type==1) coordinates=coordinates[,1,drop=F] else coordinates[-1,2] <- log(coordinates[-1,2])
   out=list()
   out$coordinates=coordinates
   out$tip.label=x$tip.label
+  out$type=type
   class(out)<-'contphylo'
   return(out)
 }

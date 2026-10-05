@@ -6,6 +6,7 @@ test_that("Testing convertion package functions.", {
     r=list()
     r$coordinates=rbind(c(0,0),matrix(c(seq(from=1,length.out=n-1,by=4),rep(0,n-1)),nrow=n-1,ncol=2))
     r$tip.label=paste0('t',1:n)
+    r$type=2
     class(r)<-'contphylo'
     p<-contphylo2phylo(r)
     mat1=cophenetic.phylo(p)
@@ -17,6 +18,7 @@ test_that("Testing convertion package functions.", {
     r=list()
     r$coordinates=rbind(c(0,0),matrix(c(1/2^(0:(n-2)),rep(0,n-1)),nrow=n-1,ncol=2))
     r$tip.label=paste0('t',1:n)
+    r$type=2
     class(r)<-'contphylo'
     p<-contphylo2phylo(r)
     expect_equal(sum(p$edge.length),n)
@@ -32,14 +34,51 @@ test_that("Testing convertion package functions.", {
       s=s+exp(r$coordinates[i,2])
     }
     r$tip.label=paste0('t',1:n)
+    r$type=2
     class(r)<-'contphylo'
     p<-contphylo2phylo(r)
     expect_equal(sum(p$edge.length),s)
   }
 
+  #Test properties after decode
+  for (n in 3:10) {
+    r=rcontphylo(n,1)
+    p=contphylo2phylo(r)
+    expect_equal(is.ultrametric(p),T)
+    expect_equal(is.rooted(p),T)
+    r=rcontphylo(n,2)
+    p=contphylo2phylo(r)
+    expect_equal(is.ultrametric(p),F)
+    expect_equal(is.rooted(p),T)
+    r=rcontphylo(n,3)
+    p=contphylo2phylo(r)
+    expect_equal(is.ultrametric(p),F)
+    expect_equal(is.rooted(p),F)
+  }
+
+  #Test type 2 forward and backward conversions
   for (n in 2:10) {
     r=rtree(n)
     r2=contphylo2phylo(phylo2contphylo(r))
+    mat1=cophenetic.phylo(r)
+    mat2=cophenetic.phylo(r2)
+    expect_equal(max(abs(as.vector(mat1)-as.vector(mat2))),0)
+  }
+
+  #Test type 1 forward and backward conversions
+  for (n in 2:10) {
+    r=rcoal(n)
+    r2=contphylo2phylo(phylo2contphylo(r,type=1))
+    mat1=cophenetic.phylo(r)
+    mat2=cophenetic.phylo(r2)
+    expect_equal(max(abs(as.vector(mat1)-as.vector(mat2))),0)
+  }
+
+  #Test type 3 forward and backward conversions
+  for (n in 3:10) {
+    r=rtree(n)
+    r=unroot(r)
+    r2=contphylo2phylo(phylo2contphylo(r,type=3))
     mat1=cophenetic.phylo(r)
     mat2=cophenetic.phylo(r2)
     expect_equal(max(abs(as.vector(mat1)-as.vector(mat2))),0)

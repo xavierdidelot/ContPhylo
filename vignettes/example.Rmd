@@ -10,7 +10,30 @@ vignette: >
   %\usepackage[utf8]{inputenc}
 ---
 
-## Starting from a phylo object
+## Case 1: ultrametric tree
+
+```{r}
+library(ContPhylo)
+library(ape)
+set.seed(0)
+p=rcoal(10)
+plot(p)
+axisPhylo(backward = F)
+```
+
+```{r}
+r=phylo2contphylo(p,type=1)
+plot(r)
+axisPhylo(backward = F)
+```
+
+```{r}
+p=contphylo2phylo(r)
+plot(p)
+axisPhylo(backward = F)
+```
+
+## Case 2: rooted tree
 
 ```{r}
 library(ContPhylo)
@@ -24,6 +47,7 @@ axisPhylo(backward = F)
 ```{r}
 r=phylo2contphylo(p)
 plot(r)
+axisPhylo(backward = F)
 ```
 
 ```{r}
@@ -32,12 +56,22 @@ plot(p)
 axisPhylo(backward = F)
 ```
 
-## Starting from a contphylo object
+
+## Case 3: unrooted tree
 
 ```{r}
+library(ContPhylo)
+library(ape)
 set.seed(0)
-r=rcontphylo(10)
+p=rtree(10,rooted = F)
+plot(p)
+axisPhylo(backward = F)
+```
+
+```{r}
+r=phylo2contphylo(p,type=3)
 plot(r)
+axisPhylo(backward = F)
 ```
 
 ```{r}
@@ -46,7 +80,3 @@ plot(p)
 axisPhylo(backward = F)
 ```
 
-```{r}
-r=phylo2contphylo(p)
-plot(r)
-```

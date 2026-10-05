@@ -1,7 +1,7 @@
 #' @name ContPhylo
-#' @title ContPhylo: Phylogenetic trees in continuous space.
+#' @title ContPhylo: Phylogenetic trees in unconstrained Euclidean space.
 #'
-#' @description ContPhylo is a R package to represent phylogenetic trees in continuous space.
+#' @description ContPhylo is a R package to represent phylogenetic trees in unconstrained Euclidean space.
 #'
 #' The main functions of the package are:
 #' \itemize{
@@ -17,7 +17,6 @@
 #' @import graphics
 #' @import utils
 #' @import ape
-#' @import cmdstanr
 #'
 
 NULL

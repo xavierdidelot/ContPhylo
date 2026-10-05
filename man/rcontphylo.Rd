@@ -4,10 +4,12 @@
 \alias{rcontphylo}
 \title{Generate a random contphylo}
 \usage{
-rcontphylo(n)
+rcontphylo(n, type = 2)
 }
 \arguments{
 \item{n}{Number of leaves}
+
+\item{type}{Type of tree: 1 for ultrametric, 2 for rooted, 3 for unrooted.}
 }
 \value{
 Object of class contphylo

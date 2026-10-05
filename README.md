@@ -3,25 +3,17 @@
 
 ## Introduction
 
-The aim of this package is to represent phylogenetic trees in real
-continuous space.
+The aim of this package is to represent phylogenetic trees in
+unconstrained Euclidean space.
 
-## Dependencies
-
-This package depends on [Stan](https://mc-stan.org/) through CmdStan.
-Although [other options might
-exist](https://mc-stan.org/docs/cmdstan-guide/cmdstan-installation.html),
-for instance using Conda, the simplest option is to install CmdStan via
-the R package [CmdStanR](https://mc-stan.org/cmdstanr/). You can do so
-with the commands
-
-``` r
+<!--## Dependencies
+&#10;This package depends on [Stan](https://mc-stan.org/) through CmdStan. Although [other options might exist](https://mc-stan.org/docs/cmdstan-guide/cmdstan-installation.html), for instance using Conda, the simplest option is to install CmdStan via the R package [CmdStanR](https://mc-stan.org/cmdstanr/). You can do so with the commands
+&#10;``` r
 install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
 cmdstanr::install_cmdstan()
 ```
-
-The last command will download and compile all the required
-dependencies.
+The last command will download and compile all the required dependencies.
+-->
 
 ## Installation
 

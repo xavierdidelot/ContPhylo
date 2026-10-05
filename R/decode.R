@@ -5,12 +5,19 @@
 #' @export
 contphylo2phylo = function(r) {
   stopifnot(inherits(r, "contphylo"))
+  type=r$type
+  #Type of tree: 1 for ultrametric, 2 for rooted, 3 for unrooted.
   coords=r$coordinates
   n=nrow(coords)
   if (n<2) stop('Need at least two leaves.')
+  if (type==3 && n<3) stop('Need at least three leaves for unrooted trees.')
   m=matrix(NA,n*2-1,4)#child1,child2,father,dist_to_father
+  if (type==1) heights=rep(0,n*2-1)#for ultrametric case only
   for (i in 2:n) {
-    if (i==2) {
+    if (type==3 && i==n) {
+      graft=which(!is.na(m[,1])&is.na(m[,3]))
+      graft_dist=0
+    } else if (i==2) {
       graft=1
       graft_dist=abs(coords[i,1])
     } else {
@@ -19,8 +26,10 @@ contphylo2phylo = function(r) {
       graft_dist=g[2]
     }
     m[i,3]=n+i-1
-    m[i,4]=exp(coords[i,2])
-    #if (m[i,4]==0) m[i,4]=1e-10;if (is.infinite(m[i,4])) m[i,4]=1e10#to review
+    if (type==1) {
+      m[i,4]=graft_dist+heights[graft]
+      heights[n+i-1]=m[i,4]
+    } else m[i,4]=exp(coords[i,2])
     m[n+i-1,1]=graft
     m[n+i-1,2]=i
     m[n+i-1,3]=m[graft,3]
@@ -47,6 +56,7 @@ contphylo2phylo = function(r) {
   p$edge.length=m[-(n+1),4]
   p$tip.label=r$tip.label
   class(p)='phylo'
+  if (type==3) p=unroot(p)
   return(p)
 }
 
