@@ -4,10 +4,10 @@
 \alias{priorT}
 \title{Prior function for a phylo object}
 \usage{
-priorT(tree, type = 2, scale = 1)
+priorT(tree, model = 2, scale = 1)
 }
 \arguments{
-\item{type}{Type of tree: 1 for ultrametric, 2 for rooted, 3 for unrooted.}
+\item{model}{Model of tree: 1 for ultrametric, 2 for rooted, 3 for unrooted.}
 
 \item{scale}{Scale of the branch lengths}
 

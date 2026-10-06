@@ -5,7 +5,8 @@
 \title{MCMC algorithm}
 \usage{
 mcmc(
-  dat = phyDatEmpty(10),
+  dat = phyDatEmpty(5),
+  model = 2,
   initTree,
   niter = 1000,
   thin = max(1, round(niter/1000)),
@@ -15,6 +16,8 @@ mcmc(
 }
 \arguments{
 \item{dat}{Object of class phyDat containing the genetic data}
+
+\item{model}{Model of tree: 1 for ultrametric, 2 for rooted, 3 for unrooted}
 
 \item{initTree}{Initial tree to use as start of MCMC}
 

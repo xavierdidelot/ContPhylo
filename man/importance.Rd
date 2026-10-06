@@ -4,12 +4,12 @@
 \alias{importance}
 \title{Importance sampler}
 \usage{
-importance(n = 5, type = 2, scale = 1, nrep = 1000)
+importance(n = 5, model = 2, scale = 1, nrep = 1000)
 }
 \arguments{
 \item{n}{Number of leaves}
 
-\item{type}{Type of tree: 1 for ultrametric, 2 for rooted, 3 for unrooted.}
+\item{model}{Model of tree: 1 for ultrametric, 2 for rooted, 3 for unrooted.}
 
 \item{scale}{Scale parameter of exponential distribution for branch lengths}
 

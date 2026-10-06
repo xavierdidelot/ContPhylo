@@ -4,12 +4,12 @@
 \alias{phylo2contphylo}
 \title{Convert a phylo into a contphylo}
 \usage{
-phylo2contphylo(x, type = 2)
+phylo2contphylo(x, model = 2)
 }
 \arguments{
 \item{x}{Object of class `phylo`.}
 
-\item{type}{Type of tree: 1 for ultrametric, 2 for rooted, 3 for unrooted.}
+\item{model}{Model of tree: 1 for ultrametric, 2 for rooted, 3 for unrooted.}
 }
 \value{
 Object of class `contphylo`.

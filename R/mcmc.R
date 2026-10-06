@@ -1,5 +1,6 @@
 #' MCMC algorithm
 #' @param dat Object of class phyDat containing the genetic data
+#' @param model Model of tree: 1 for ultrametric, 2 for rooted, 3 for unrooted
 #' @param initTree Initial tree to use as start of MCMC
 #' @param niter Number of MCMC iterations
 #' @param thin Thining interval
@@ -7,18 +8,19 @@
 #' @param showProgress Whether to show a progress bar
 #' @returns MCMC result
 #' @export
-mcmc = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1e3)),scale=1,showProgress=T) {
+mcmc = function(dat=phyDatEmpty(5),model=2,initTree,niter=1e3,thin=max(1,round(niter/1e3)),scale=1,showProgress=T) {
   if (missing(initTree)) {
     n=length(dat)
-    tree=rtree(n)
+    if (model==1) tree=rcoal(n) else tree=rtree(n)
     tree$edge.length=tree$edge.length*scale
     tree$tip.label=names(dat)
+    if (model==3) tree=unroot(tree)
   } else {
     n=Ntip(initTree)
     tree=initTree
   }
   mypml=phangorn::pml(tree=tree,data=dat,model='JC')
-  r=phylo2contphylo(tree)
+  r=phylo2contphylo(tree,model=model)
   p=posterior(mypml,r,scale)
   res=vector('list',niter/thin)
   if (showProgress) pb <- txtProgressBar(min=0,max=niter,style = 3)
@@ -30,13 +32,10 @@ mcmc = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1e
   naccepted=c(0,0)
   for (i in 1:niter) {
     if (showProgress) setTxtProgressBar(pb, i)
-    for (move in 1:2) {
+    for (move in 1:(1+(model>1))) {
       r2=r
-      new=r$coordinates[-1,]
-      w=sample.int(nrow(new),1)
-      new[w,move]=new[w,move]+rnorm(1,0,sd[move])
-      new=rbind(c(0,0),new)
-      r2$coordinates=new
+      w=1+sample.int(n-1-(model==3 && move==1),1)
+      r2$coordinates[w,move]=r2$coordinates[w,move]+rnorm(1,0,sd[move])
       p2=posterior(mypml,r2,scale)
       mh=p2-p
       if (log(runif(1))<mh) {
@@ -66,6 +65,7 @@ mcmc = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1e
 
 #' MCMC algorithm using package adaptMCMC
 #' @param dat Object of class phyDat containing the genetic data
+#' @param model Model of tree: 1 for ultrametric, 2 for rooted, 3 for unrooted
 #' @param initTree Initial tree to use as start of MCMC
 #' @param niter Number of MCMC iterations
 #' @param thin Thining interval
@@ -73,24 +73,29 @@ mcmc = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1e
 #' @param showProgress Whether to show a progress bar
 #' @returns MCMC result
 #' @export
-mcmc2 = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1e3)),scale=1,showProgress=T) {
+mcmc2 = function(dat=phyDatEmpty(5),model=2,initTree,niter=1e3,thin=max(1,round(niter/1e3)),scale=1,showProgress=T) {
   if (missing(initTree)) {
     n=length(dat)
-    tree=rtree(n)
+    if (model==1) tree=rcoal(n) else tree=rtree(n)
     tree$edge.length=tree$edge.length*scale
     tree$tip.label=names(dat)
+    if (model==3) tree=unroot(tree)
   } else {
     n=Ntip(initTree)
     tree=initTree
   }
   mypml=phangorn::pml(tree=tree,data=dat,model='JC')
-  r=phylo2contphylo(tree)
-  init=c(r$coordinates[-1,1],r$coordinates[-1,2])
+  r=phylo2contphylo(tree,model=model)
+  if (model==1) init=c(r$coordinates[-1,1])
+  if (model==2) init=c(r$coordinates[-1,1],r$coordinates[-1,2])
+  if (model==3) init=c(r$coordinates[c(-1,-n),1],r$coordinates[-1,2])
   target = function(v) {
     r=list()
-    r$coordinates=rbind(c(0,0),matrix(v,ncol=2,byrow=F))
+    if (model==1) r$coordinates=matrix(c(0,v),ncol=1)
+    if (model==2) r$coordinates=rbind(c(0,0),matrix(v,ncol=2,byrow=F))
+    if (model==3) r$coordinates=rbind(c(0,0),matrix(c(v[1:(n-2)],0,v[(n-1):(2*n-3)]),ncol=2,byrow=F))
     r$tip.label=tree$tip.label
-    r$type=2
+    r$model=model
     class(r)<-'contphylo'
     p=posterior(mypml,r,scale)
     return(p)
@@ -99,11 +104,15 @@ mcmc2 = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1
   res=vector('list',niter/thin)
   l=list()
   l$tip.label=tree$tip.label
-  l$type=2
+  l$model=model
   class(l)<-'contphylo'
   for (i in seq(thin,niter,thin)) {
-    l$coordinates=rbind(c(0,0),matrix(r$samples[i,],ncol=2,byrow=F))
+    v=r$samples[i,]
+    if (model==1) l$coordinates=matrix(c(0,v),ncol=1)
+    if (model==2) l$coordinates=rbind(c(0,0),matrix(v,ncol=2,byrow=F))
+    if (model==3) l$coordinates=rbind(c(0,0),matrix(c(v[1:(n-2)],0,v[(n-1):(2*n-3)]),ncol=2,byrow=F))
     res[[i/thin]]=contphylo2phylo(l)
+    if (model==3) res[[i/thin]]=unroot(res[[i/thin]])
     res[[i/thin]]$posterior=r$log.p[i]
   }
   res[[1]]$cov.jump=r$cov.jump#interesting

@@ -1,9 +1,10 @@
 #' Test that a given set of trees (eg output from mcmc()) is distributed according to prior distribution
 #' @param trees List of trees
+#' @param model Model of tree: 1 for ultrametric, 2 for rooted, 3 for unrooted
 #' @param scale Scale parameter of exponential distribution for branch lengths
 #' @param analyse_topology Whether or not to analyse the topology
 #' @export
-prior_test=function(trees=mcmc(n=3),scale=1,analyse_topology=T) {
+prior_test=function(trees,model=2,scale=1,analyse_topology=T) {
   n=Ntip(trees[[1]])
   clusters=rep(1,length(trees))
   if (analyse_topology) {
@@ -28,7 +29,10 @@ prior_test=function(trees=mcmc(n=3),scale=1,analyse_topology=T) {
   plot(sbl,type='l',main='Sum branch lengths',xlab='',ylab='')
   hist(sbl,main='Sum branch lengths',xlab='',probability=T,breaks=20)
   xs=seq(min(sbl),max(sbl),length.out=1000)
-  lines(xs,dgamma(xs,shape=(2*n-2),scale=scale))
+  dcoal=function(x) {(n-1)/2*exp(-x/2)*(1-exp(-x/2))^(n-2)}
+  if (model==1) lines(xs,dcoal (xs/scale))
+  if (model==2) lines(xs,dgamma(xs,shape=(2*n-2),scale=scale))
+  if (model==3) lines(xs,dgamma(xs,shape=(2*n-3),scale=scale))
   ess=coda::effectiveSize(coda::as.mcmc(sbl))
   print(sprintf('ESS of sum of branch lengths: %f',ess))
 
@@ -44,7 +48,11 @@ prior_test=function(trees=mcmc(n=3),scale=1,analyse_topology=T) {
   ma=max(clusters)
   map=sample(1:ma,ma)
   plot(map[clusters],xlab='',ylab='')
+  b=counts[map]
+  names(b)<-1:length(b)
+  barplot(b)
 
+  if (F) {
   #Checking that consensus tree looks completely star-like
   m=trees
   class(m)<-'multiPhylo'
@@ -52,4 +60,5 @@ prior_test=function(trees=mcmc(n=3),scale=1,analyse_topology=T) {
   cons=phangorn::add_edge_length(cons_topo, m, rooted = T,fun=mean)
   plot(cons,show.tip.label = T)
   axisPhylo(1)
+  }
 }

@@ -1,28 +1,28 @@
 #' Generate a random contphylo
 #' @param n Number of leaves
-#' @param type Type of tree: 1 for ultrametric, 2 for rooted, 3 for unrooted.
+#' @param model Model of tree: 1 for ultrametric, 2 for rooted, 3 for unrooted.
 #' @returns Object of class contphylo
 #' @export
-rcontphylo = function(n,type=2) {
+rcontphylo = function(n,model=2) {
   r=list()
-  if (type==1) {
+  if (model==1) {
     dim=n-1
     rn=rnorm(dim)
     r$coordinates=matrix(c(0,rn),nrow=n,ncol=1)
   }
-  if (type==2) {
+  if (model==2) {
     dim=2*n-2
     rn=rnorm(dim)
     r$coordinates=rbind(c(0,0),matrix(rn,n-1,2))
   }
-  if (type==3) {
+  if (model==3) {
     dim=2*n-3
     rn=rnorm(dim)
     r$coordinates=rbind(c(0,0),matrix(rn[-1],n-2,2),c(0,tail(rn,1)))
   }
   r$p=sum(dnorm(rn,log=T))
   r$tip.label=paste0('t',1:n)
-  r$type=type
+  r$model=model
   class(r)<-'contphylo'
   return(r)
 }

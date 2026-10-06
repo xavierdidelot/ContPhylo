@@ -7,7 +7,7 @@ trees=lapply(1:1000,function(x) rtopology(5,rooted=T,br=function (n) rexp(n,rate
 prior_test(trees,2)
 
 #My own MCMC
-trees=mcmc(phyDatEmpty(5),niter=1e5,scale=2)
+trees=mcmc(phyDatEmpty(5),niter=1e5,scale=2,model=3)
 prior_test(trees,scale=2)
 par(mfrow=c(2,2))
 for (i in c(700,800,900,1000)) {

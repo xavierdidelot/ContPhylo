@@ -22,7 +22,7 @@ axisPhylo(backward = F)
 ```
 
 ```{r}
-r=phylo2contphylo(p,type=1)
+r=phylo2contphylo(p,model=1)
 plot(r)
 axisPhylo(backward = F)
 ```
@@ -69,7 +69,7 @@ axisPhylo(backward = F)
 ```
 
 ```{r}
-r=phylo2contphylo(p,type=3)
+r=phylo2contphylo(p,model=3)
 plot(r)
 axisPhylo(backward = F)
 ```
