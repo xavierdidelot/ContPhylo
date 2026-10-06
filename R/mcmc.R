@@ -8,7 +8,7 @@
 #' @param showProgress Whether to show a progress bar
 #' @returns MCMC result
 #' @export
-mcmc = function(dat=phyDatEmpty(5),model=2,initTree,niter=1e3,thin=max(1,round(niter/1e3)),scale=1,showProgress=T) {
+mcmc = function(dat=phyDatEmpty(5),model=2,initTree,niter=1e3,thin=max(1,round(niter/2e3)),scale=1,showProgress=T) {
   if (missing(initTree)) {
     n=length(dat)
     if (model==1) tree=rcoal(n) else tree=rtree(n)
@@ -73,7 +73,7 @@ mcmc = function(dat=phyDatEmpty(5),model=2,initTree,niter=1e3,thin=max(1,round(n
 #' @param showProgress Whether to show a progress bar
 #' @returns MCMC result
 #' @export
-mcmc2 = function(dat=phyDatEmpty(5),model=2,initTree,niter=1e3,thin=max(1,round(niter/1e3)),scale=1,showProgress=T) {
+mcmc2 = function(dat=phyDatEmpty(5),model=2,initTree,niter=1e3,thin=max(1,round(niter/2e3)),scale=1,showProgress=T) {
   if (missing(initTree)) {
     n=length(dat)
     if (model==1) tree=rcoal(n) else tree=rtree(n)

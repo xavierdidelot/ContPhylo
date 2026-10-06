@@ -9,7 +9,7 @@ mcmc2(
   model = 2,
   initTree,
   niter = 1000,
-  thin = max(1, round(niter/1000)),
+  thin = max(1, round(niter/2000)),
   scale = 1,
   showProgress = T
 )

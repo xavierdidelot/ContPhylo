@@ -22,11 +22,10 @@ prior=function(r,scale=1) {
 priorT=function(tree,model=2,scale=1) {
   n=Ntip(tree)
   if (model==1) {
-    p=(n-1)*log(2)+lfactorial(n-1)-lfactorial(2*n-2)#topology
     heights=unname(dist.nodes(tree)[1,(n+1):(2*n-1)])
     heights=sort(heights)
     difs=diff(c(0,heights))
-    p=p+sum(dexp(difs,rate=choose(n:2,2)/scale,log=T))#coalescent intervals
+    p=sum(-difs*choose(n:2,2)/scale)#coalescent intervals
   }
 
   if (model==2) {

@@ -741,7 +741,42 @@ in phylogenetic tree space.
 %with those arguments away from the measure-zero set of contour-region
 %boundaries.
 
-\section{Sampling}
+\section{Sampling coalescent trees}
+
+The coalescent model \citep{Kingman1982,Kingman1982a} is the backward-in-time
+genealogical process for a sample of size $n$ taken from large populations evolving under
+many forward-in-time models, such as the Wright-Fisher model \citep{Wright1931,Fisher1930}. Under this model, any pair of individuals
+finds a common ancestor at rate $\theta=1/N_\mathrm{e}$ where $N_\mathrm{e}$ is 
+called the effective population size. The model starts with the $n$ individuals
+at time zero and builds the tree backward-in-time, so that the tree is ultrametric.
+Initially there are $n$ individuals which means $n \choose 2$ pairs 
+and therefore the height of the first node 
+is Exponentially distributed with rate ${n \choose 2} \theta$. Any of the $n \choose 2$
+pairs is then likely to coalesce together, leaving $n-1$ ancestors. By repeating this process
+and noting $t_k$ for the duration of the time interval during which there are $k$
+ancestors, the density of a tree is obtained as:
+
+\begin{equation}
+p_T(T)=\prod_{i=2}^n \exp\left({n \choose 2} \theta \right)
+\label{eq:coalescent}
+\end{equation}
+
+Under the coalescent model, the distribution of the sum of branch lengths
+is \citep{Tavare1984}: 
+
+\begin{equation}
+p(B=b)=\frac{n-1}{2\theta}\exp\left(\frac{-b}{2\theta}\right)\left(1-\exp\left(\frac{-b}{2\theta}\right)\right)^{n-2}
+\label{eq:coalescent-sumblen}
+\end{equation}
+
+The distribution of the length of a single terminal branch is \citep{caliebeLengthDistributionExternal2007}:
+
+\begin{equation}
+p(t)=\frac{2}{n(n-1)}\sum_{k=2}^n (k-1) \sum_{j=k}^n \left[\lambda_j \prod_{r=k,r\neq j}^n \frac{\lambda_r}{\lambda_r-\lambda_j}\right]\exp(-\lambda_j t) \mathrm{~with~}\lambda_j=\frac{1}{\theta}{j \choose 2}
+\label{eq:coalescent-blen}
+\end{equation}
+
+\section{Other}
 
 We consider rooted trees, such that all of the $(2n-3)!!$ topologies are equally
 likely and the branch lengths $\ell_i$ follow an Exponential distribution with mean $\theta$, so that:
@@ -752,7 +787,7 @@ p_T(T)=\frac{1}{(2n-3)!!}\prod_{i=1}^{2n-2}\theta^{-1}\exp\left(-\frac{\ell_i}{\
 To sample from this distribution, we use the adaptive Metropolis sampler \citep{Vihola2011}. 
 This algorithm uses a multivariate normal distribution as the proposal kernel
 $q(C'|C)$ which is symmetric ($q(C'|C)=q(C|C')$), so that the acceptance probability 
-is simply $\mathrm{min}(1,p_C(C')/p_C(C))$ calculated using Equation \ref{eq:tree-densityC}.
+is simply $\mathrm{min}(1,p_C(C')/p_C(C))$ calculated using Equation \ref{eq:densityC}.
 The mean of the proposal kernel is the current value $C$ and 
 its covariance matrix is tuned to achieve an acceptance
 rate of 0.234 \citep{Andrieu2008}. 

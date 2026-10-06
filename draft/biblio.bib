@@ -1,5 +1,357 @@
 
 
+@book{Paradis2006,
+  author =        {Paradis, Emmanuel},
+  publisher =     {Springer},
+  title =         {Analysis of {{Phylogenetics}} and {{Evolution}} with
+                   {{R}}},
+  year =          {2006},
+}
+
+@article{hohnaGuidedTreeTopology2012,
+  author =        {H{\"o}hna, Sebastian and Drummond, Alexei J.},
+  journal =       {Systematic Biology},
+  month =         jan,
+  number =        {1},
+  pages =         {1--11},
+  title =         {Guided {{Tree Topology Proposals}} for {{Bayesian
+                   Phylogenetic Inference}}},
+  volume =        {61},
+  year =          {2012},
+  doi =           {10.1093/sysbio/syr074},
+  issn =          {1076-836X, 1063-5157},
+}
+
+@article{zhangUsingParsimonyGuidedTree2020,
+  author =        {Zhang, Chi and Huelsenbeck, John P and
+                   Ronquist, Fredrik},
+  editor =        {Morre, Brian},
+  journal =       {Systematic Biology},
+  month =         sep,
+  number =        {5},
+  pages =         {1016--1032},
+  title =         {Using {{Parsimony-Guided Tree Proposals}} to
+                   {{Accelerate Convergence}} in {{Bayesian Phylogenetic
+                   Inference}}},
+  volume =        {69},
+  year =          {2020},
+  abstract =      {Abstract Sampling across tree space is one of the
+                   major challenges in Bayesian phylogenetic inference
+                   using Markov chain Monte Carlo (MCMC) algorithms.
+                   Standard MCMC tree moves consider small random
+                   perturbations of the topology, and select from
+                   candidate trees at random or based on the distance
+                   between the old and new topologies. MCMC algorithms
+                   using such moves tend to get trapped in tree space,
+                   making them slow in finding the globally most
+                   probable trees (known as ``convergence'') and in
+                   estimating the correct proportions of the different
+                   types of them (known as ``mixing''). Here, we
+                   introduce a new class of moves, which propose trees
+                   based on their parsimony scores. The proposal
+                   distribution derived from the parsimony scores is a
+                   quickly computable albeit rough approximation of the
+                   conditional posterior distribution over candidate
+                   trees. We demonstrate with simulations that
+                   parsimony-guided moves correctly sample the uniform
+                   distribution of topologies from the prior. We then
+                   evaluate their performance against standard moves
+                   using six challenging empirical data sets, for which
+                   we were able to obtain accurate reference estimates
+                   of the posterior using long MCMC runs, a mix of
+                   topology proposals, and Metropolis coupling. On these
+                   data sets, ranging in size from 357 to 934 taxa and
+                   from 1740 to 5681 sites, we find that single chains
+                   using parsimony-guided moves usually converge an
+                   order of magnitude faster than chains using standard
+                   moves. They also exhibit better mixing, that is, they
+                   cover the most probable trees more quickly. Our
+                   results show that tree moves based on quick and dirty
+                   estimates of the posterior probability can
+                   significantly outperform standard moves. Future
+                   research will have to show to what extent the
+                   performance of such moves can be improved further by
+                   finding better ways of approximating the posterior
+                   probability, taking the trade-off between accuracy
+                   and speed into account. [Bayesian phylogenetic
+                   inference; MCMC; parsimony; tree proposal.]},
+  doi =           {10.1093/sysbio/syaa002},
+  issn =          {1063-5157, 1076-836X},
+}
+
+@article{Billera2001,
+  author =        {Billera, Louis J. and Holmes, Susan P. and
+                   Vogtmann, Karen},
+  journal =       {Advances in Applied Mathematics},
+  month =         nov,
+  number =        {4},
+  pages =         {733--767},
+  title =         {Geometry of the {{Space}} of {{Phylogenetic Trees}}},
+  volume =        {27},
+  year =          {2001},
+  doi =           {10.1006/aama.2001.0759},
+  issn =          {01968858},
+}
+
+@misc{dinhProbabilisticPathHamiltonian2017,
+  author =        {Dinh, Vu and Bilge, Arman and Zhang, Cheng and
+                   Matsen, Frederick A.},
+  month =         jun,
+  number =        {arXiv:1702.07814},
+  publisher =     {arXiv},
+  title =         {Probabilistic {{Path Hamiltonian Monte Carlo}}},
+  year =          {2017},
+  abstract =      {Hamiltonian Monte Carlo (HMC) is an efficient and
+                   effective means of sampling posterior distributions
+                   on Euclidean space, which has been extended to
+                   manifolds with boundary. However, some applications
+                   require an extension to more general spaces. For
+                   example, phylogenetic (evolutionary) trees are
+                   defined in terms of both a discrete graph and
+                   associated continuous parameters; although one can
+                   represent these aspects using a single connected
+                   space, this rather complex space is not suitable for
+                   existing HMC algorithms. In this paper, we develop
+                   Probabilistic Path HMC (PPHMC) as a first step to
+                   sampling distributions on spaces with intricate
+                   combinatorial structure. We define PPHMC on orthant
+                   complexes, show that the resulting Markov chain is
+                   ergodic, and provide a promising implementation for
+                   the case of phylogenetic trees in opensource
+                   software. We also show that a surrogate function to
+                   ease the transition across a boundary on which the
+                   log-posterior has discontinuous derivatives can
+                   greatly improve efficiency.},
+  doi =           {10.48550/arXiv.1702.07814},
+}
+
+@article{Felsenstein1978b,
+  author =        {Felsenstein, Joseph},
+  journal =       {Systematic Zoology},
+  month =         mar,
+  number =        {1},
+  pages =         {27},
+  title =         {The {{Number}} of {{Evolutionary Trees}}},
+  volume =        {27},
+  year =          {1978},
+  doi =           {10.2307/2412810},
+  issn =          {00397989},
+}
+
+@article{Kingman1982,
+  author =        {Kingman, J.F.C.},
+  journal =       {Stochastic Processes and their Applications},
+  month =         sep,
+  number =        {3},
+  pages =         {235--248},
+  title =         {The Coalescent},
+  volume =        {13},
+  year =          {1982},
+  doi =           {10.1016/0304-4149(82)90011-4},
+  issn =          {03044149},
+}
+
+@article{Kingman1982a,
+  author =        {Kingman, J. F. C.},
+  journal =       {Journal of Applied Probability},
+  number =        {A},
+  pages =         {27--43},
+  title =         {On the Genealogy of Large Populations},
+  volume =        {19},
+  year =          {1982},
+  abstract =      {A new Markov chain is introduced which can be used to
+                   describe the family relationships among n individuals
+                   drawn from a particular generation of a large haploid
+                   population. The properties of this process can be
+                   studied, simultaneously for all n, by coupling
+                   techniques. Recent results in neutral mutation theory
+                   are seen as consequences of the genealogy described
+                   by the chain.},
+  doi =           {10.2307/3213548},
+  issn =          {0021-9002},
+}
+
+@article{Wright1931,
+  author =        {Wright, S},
+  journal =       {Genetics},
+  month =         mar,
+  number =        {2},
+  pages =         {97--159},
+  title =         {Evolution in {{Mendelian Populations}}.},
+  volume =        {16},
+  year =          {1931},
+  issn =          {0016-6731},
+}
+
+@book{Fisher1930,
+  address =       {Oxford},
+  author =        {Fisher, Ronald Aylmer},
+  edition =       {A complete variorum ed., [repr.]},
+  publisher =     {Oxford Univ. Press},
+  title =         {The Genetical Theory of Natural Selection},
+  year =          {1930},
+  isbn =          {978-0-19-850440-5},
+}
+
+@article{Tavare1984,
+  author =        {Tavar{\'e}, Simon},
+  journal =       {Theoretical Population Biology},
+  number =        {2},
+  pages =         {119--164},
+  title =         {Line-of-{{Descent}} and {{Genealogical Processes}},
+                   and {{Their Applications}} in {{Population Genetics
+                   Models}}},
+  volume =        {26},
+  year =          {1984},
+}
+
+@article{caliebeLengthDistributionExternal2007,
+  author =        {Caliebe, Amke and Neininger, Ralph and
+                   Krawczak, Michael and R{\"o}sler, Uwe},
+  journal =       {Theoretical Population Biology},
+  month =         sep,
+  number =        {2},
+  pages =         {245--252},
+  title =         {On the Length Distribution of External Branches in
+                   Coalescence Trees: {{Genetic}} Diversity within
+                   Species},
+  volume =        {72},
+  year =          {2007},
+  abstract =      {Let Zn denote the length of an external branch,
+                   chosen at random from a Kingman n-coalescent. Based
+                   on a recursion for the distribution of Zn, we show
+                   that nZn converges in distribution, as n tends to
+                   infinity, to a non-negative random variable Z with
+                   density x7!8=\dh 2 \th{} x\TH 3, xX0.},
+  doi =           {10.1016/j.tpb.2007.05.003},
+  issn =          {00405809},
+}
+
+@article{Vihola2011,
+  author =        {Vihola, Matti},
+  journal =       {Stochastic Processes and their Applications},
+  number =        {12},
+  pages =         {2839--2860},
+  publisher =     {Elsevier B.V.},
+  title =         {On the Stability and Ergodicity of Adaptive Scaling
+                   {{Metropolis}} Algorithms},
+  volume =        {121},
+  year =          {2011},
+  abstract =      {The stability and ergodicity properties of two
+                   adaptive random walk Metropolis algorithms are
+                   considered. Both algorithms adjust the scaling of the
+                   proposal distribution continuously based on the
+                   observed acceptance probability. Unlike the
+                   previously proposed forms of the algorithms, the
+                   adapted scaling parameter is not constrained within a
+                   predefined compact interval. The first algorithm is
+                   based on scale adaptation only, while the second one
+                   also incorporates covariance adaptation. A strong law
+                   of large numbers is shown to hold assuming that the
+                   target density is smooth enough and has either
+                   compact support or super-exponentially decaying
+                   tails. \copyright{} 2011 Elsevier B.V. All rights
+                   reserved.},
+  doi =           {10.1016/j.spa.2011.08.006},
+  issn =          {03044149},
+}
+
+@article{Andrieu2008,
+  author =        {Andrieu, Christophe and Thoms, Johannes},
+  journal =       {Statistics and Computing},
+  number =        {4},
+  pages =         {343--373},
+  title =         {A Tutorial on Adaptive {{MCMC}}},
+  volume =        {18},
+  year =          {2008},
+  abstract =      {We review adaptive Markov chain Monte Carlo
+                   algorithms (MCMC) as a mean to optimise their
+                   performance. Using simple toy examples we review
+                   their theoretical underpinnings, and in particular
+                   show why adaptive MCMC algorithms might fail when
+                   some fundamental properties are not satisfied. This
+                   leads to guidelines concerning the design of correct
+                   algorithms. We then review criteria and the useful
+                   framework of stochastic approximation, which allows
+                   one to systematically optimise generally used
+                   criteria, but also analyse the properties of adaptive
+                   MCMC algorithms. We then propose a series of novel
+                   adaptive algorithms which prove to be robust and
+                   reliable in practice. These algorithms are applied to
+                   artificial and high dimensional scenarios, but also
+                   to the classic mine disaster dataset inference
+                   problem. \copyright{} 2008 Springer Science+Business
+                   Media, LLC.},
+  doi =           {10.1007/s11222-008-9110-y},
+  issn =          {09603174},
+}
+
+@article{Plummer2006,
+  author =        {Plummer, Martyn and Best, Nicky and Cowles, Kate and
+                   Vines, Karen},
+  journal =       {R News},
+  number =        {March},
+  pages =         {7--11},
+  title =         {{{CODA}}: Convergence Diagnosis and Output Analysis
+                   for {{MCMC}}},
+  volume =        {6},
+  year =          {2006},
+  abstract =      {[1st paragraph] At first sight, Bayesian inference
+                   with Markov Chain Monte Carlo (MCMC) appears to be
+                   straightforward. The user defines a full probability
+                   model, perhaps using one of the programs discussed in
+                   this issue; an underlying sampling engine takes the
+                   model definition and returns a sequence of dependent
+                   samples from the posterior distribution of the model
+                   parameters, given the supplied data. The user can
+                   derive any summary of the posterior distribution from
+                   this sample. For example, to calculate a 95\%
+                   credible interval for a parameter {$\alpha$}, it
+                   suffices to take 1000 MCMC iterations of {$\alpha$}
+                   and sort them so that {$\alpha$}121000. The credible
+                   interval estimate is then ({$\alpha$}25,
+                   {$\alpha$}975). However, there is a price to be paid
+                   for this simplicity. Unlike most numerical methods
+                   used in statistical inference, MCMC does not give a
+                   clear indication of whether it has converged. The
+                   underlying Markov chain theory only guarantees that
+                   the distribution of the output will converge to the
+                   posterior in the limit as the number of iterations
+                   increases to infinity. The user is generally ignorant
+                   about how quickly convergence occurs, and therefore
+                   has to fall back on post hoc testing of the sampled
+                   output. By convention, the sample is divided into two
+                   parts: a ``burn in'' period during which all samples
+                   are discarded, and the remainder of the run in which
+                   the chain is considered to have converged
+                   sufficiently close to the limiting distribution to be
+                   used. Two questions then arise: 1. How long should
+                   the burn in period be? 2. How many samples are
+                   required to accurately estimate posterior quantities
+                   of interest? The coda package for R contains a set of
+                   functions designed to help the user answer these
+                   questions. Some of these convergence diagnostics are
+                   simple graphical ways of summarizing the data. Others
+                   are formal statistical tests.},
+  doi =           {10.1159/000323281},
+  isbn =          {1609-3631},
+  issn =          {1662-4025},
+}
+
+@article{Warren2017,
+  author =        {Warren, Dan L. and Geneva, Anthony J. and
+                   Lanfear, Robert},
+  journal =       {Molecular Biology and Evolution},
+  month =         jan,
+  pages =         {msw279},
+  title =         {{{RWTY}} ({{R We There Yet}}): {{An R}} Package for
+                   Examining Convergence of {{Bayesian}} Phylogenetic
+                   Analyses},
+  year =          {2017},
+  doi =           {10.1093/molbev/msw279},
+  issn =          {0737-4038, 1537-1719},
+}
+
 @article{nascimentoBiologistsGuideBayesian2017,
   author =        {Nascimento, Fabr{\'i}cia F. and Reis, Mario Dos and
                    Yang, Ziheng},
@@ -79,107 +431,6 @@
   doi =           {10.2307/1271145},
   isbn =          {0-412-05551-1},
   issn =          {00401706},
-}
-
-@article{hohnaGuidedTreeTopology2012,
-  author =        {H{\"o}hna, Sebastian and Drummond, Alexei J.},
-  journal =       {Systematic Biology},
-  month =         jan,
-  number =        {1},
-  pages =         {1--11},
-  title =         {Guided {{Tree Topology Proposals}} for {{Bayesian
-                   Phylogenetic Inference}}},
-  volume =        {61},
-  year =          {2012},
-  doi =           {10.1093/sysbio/syr074},
-  issn =          {1076-836X, 1063-5157},
-}
-
-@article{zhangUsingParsimonyGuidedTree2020,
-  author =        {Zhang, Chi and Huelsenbeck, John P and
-                   Ronquist, Fredrik},
-  editor =        {Morre, Brian},
-  journal =       {Systematic Biology},
-  month =         sep,
-  number =        {5},
-  pages =         {1016--1032},
-  title =         {Using {{Parsimony-Guided Tree Proposals}} to
-                   {{Accelerate Convergence}} in {{Bayesian Phylogenetic
-                   Inference}}},
-  volume =        {69},
-  year =          {2020},
-  abstract =      {Abstract Sampling across tree space is one of the
-                   major challenges in Bayesian phylogenetic inference
-                   using Markov chain Monte Carlo (MCMC) algorithms.
-                   Standard MCMC tree moves consider small random
-                   perturbations of the topology, and select from
-                   candidate trees at random or based on the distance
-                   between the old and new topologies. MCMC algorithms
-                   using such moves tend to get trapped in tree space,
-                   making them slow in finding the globally most
-                   probable trees (known as ``convergence'') and in
-                   estimating the correct proportions of the different
-                   types of them (known as ``mixing''). Here, we
-                   introduce a new class of moves, which propose trees
-                   based on their parsimony scores. The proposal
-                   distribution derived from the parsimony scores is a
-                   quickly computable albeit rough approximation of the
-                   conditional posterior distribution over candidate
-                   trees. We demonstrate with simulations that
-                   parsimony-guided moves correctly sample the uniform
-                   distribution of topologies from the prior. We then
-                   evaluate their performance against standard moves
-                   using six challenging empirical data sets, for which
-                   we were able to obtain accurate reference estimates
-                   of the posterior using long MCMC runs, a mix of
-                   topology proposals, and Metropolis coupling. On these
-                   data sets, ranging in size from 357 to 934 taxa and
-                   from 1740 to 5681 sites, we find that single chains
-                   using parsimony-guided moves usually converge an
-                   order of magnitude faster than chains using standard
-                   moves. They also exhibit better mixing, that is, they
-                   cover the most probable trees more quickly. Our
-                   results show that tree moves based on quick and dirty
-                   estimates of the posterior probability can
-                   significantly outperform standard moves. Future
-                   research will have to show to what extent the
-                   performance of such moves can be improved further by
-                   finding better ways of approximating the posterior
-                   probability, taking the trade-off between accuracy
-                   and speed into account. [Bayesian phylogenetic
-                   inference; MCMC; parsimony; tree proposal.]},
-  doi =           {10.1093/sysbio/syaa002},
-  issn =          {1063-5157, 1076-836X},
-}
-
-@article{Andrieu2008,
-  author =        {Andrieu, Christophe and Thoms, Johannes},
-  journal =       {Statistics and Computing},
-  number =        {4},
-  pages =         {343--373},
-  title =         {A Tutorial on Adaptive {{MCMC}}},
-  volume =        {18},
-  year =          {2008},
-  abstract =      {We review adaptive Markov chain Monte Carlo
-                   algorithms (MCMC) as a mean to optimise their
-                   performance. Using simple toy examples we review
-                   their theoretical underpinnings, and in particular
-                   show why adaptive MCMC algorithms might fail when
-                   some fundamental properties are not satisfied. This
-                   leads to guidelines concerning the design of correct
-                   algorithms. We then review criteria and the useful
-                   framework of stochastic approximation, which allows
-                   one to systematically optimise generally used
-                   criteria, but also analyse the properties of adaptive
-                   MCMC algorithms. We then propose a series of novel
-                   adaptive algorithms which prove to be robust and
-                   reliable in practice. These algorithms are applied to
-                   artificial and high dimensional scenarios, but also
-                   to the classic mine disaster dataset inference
-                   problem. \copyright{} 2008 Springer Science+Business
-                   Media, LLC.},
-  doi =           {10.1007/s11222-008-9110-y},
-  issn =          {09603174},
 }
 
 @article{robertsOptimalScalingDiscrete1998,
@@ -266,204 +517,6 @@
                    it fails.},
 }
 
-@article{Billera2001,
-  author =        {Billera, Louis J. and Holmes, Susan P. and
-                   Vogtmann, Karen},
-  journal =       {Advances in Applied Mathematics},
-  month =         nov,
-  number =        {4},
-  pages =         {733--767},
-  title =         {Geometry of the {{Space}} of {{Phylogenetic Trees}}},
-  volume =        {27},
-  year =          {2001},
-  doi =           {10.1006/aama.2001.0759},
-  issn =          {01968858},
-}
-
-@misc{dinhProbabilisticPathHamiltonian2017,
-  author =        {Dinh, Vu and Bilge, Arman and Zhang, Cheng and
-                   Matsen, Frederick A.},
-  month =         jun,
-  number =        {arXiv:1702.07814},
-  publisher =     {arXiv},
-  title =         {Probabilistic {{Path Hamiltonian Monte Carlo}}},
-  year =          {2017},
-  abstract =      {Hamiltonian Monte Carlo (HMC) is an efficient and
-                   effective means of sampling posterior distributions
-                   on Euclidean space, which has been extended to
-                   manifolds with boundary. However, some applications
-                   require an extension to more general spaces. For
-                   example, phylogenetic (evolutionary) trees are
-                   defined in terms of both a discrete graph and
-                   associated continuous parameters; although one can
-                   represent these aspects using a single connected
-                   space, this rather complex space is not suitable for
-                   existing HMC algorithms. In this paper, we develop
-                   Probabilistic Path HMC (PPHMC) as a first step to
-                   sampling distributions on spaces with intricate
-                   combinatorial structure. We define PPHMC on orthant
-                   complexes, show that the resulting Markov chain is
-                   ergodic, and provide a promising implementation for
-                   the case of phylogenetic trees in opensource
-                   software. We also show that a surrogate function to
-                   ease the transition across a boundary on which the
-                   log-posterior has discontinuous derivatives can
-                   greatly improve efficiency.},
-  doi =           {10.48550/arXiv.1702.07814},
-}
-
-@book{Paradis2006,
-  author =        {Paradis, Emmanuel},
-  publisher =     {Springer},
-  title =         {Analysis of {{Phylogenetics}} and {{Evolution}} with
-                   {{R}}},
-  year =          {2006},
-}
-
-@article{Felsenstein1978b,
-  author =        {Felsenstein, Joseph},
-  journal =       {Systematic Zoology},
-  month =         mar,
-  number =        {1},
-  pages =         {27},
-  title =         {The {{Number}} of {{Evolutionary Trees}}},
-  volume =        {27},
-  year =          {1978},
-  doi =           {10.2307/2412810},
-  issn =          {00397989},
-}
-
-@article{Felsenstein1981,
-  author =        {Felsenstein, Joseph},
-  journal =       {Journal of Molecular Evolution},
-  number =        {6},
-  pages =         {368--376},
-  title =         {Evolutionary Trees from {{DNA}} Sequences: {{A}}
-                   Maximum Likelihood Approach},
-  volume =        {17},
-  year =          {1981},
-  abstract =      {Summary The application of maximum likelihood
-                   techniques to the estimation of evolutionary trees
-                   from nucleic acid sequence data is discussed. A
-                   computationally feasible method for finding such
-                   maximum likelihood estimates is developed, and a
-                   computer program is available. This method has
-                   advantages over the traditional parsimony algorithms,
-                   which can give misleading results if rates of
-                   evolution differ in different lineages. It also
-                   allows the testing of hypotheses about the constancy
-                   of evolutionary rates by likelihood ratio tests, and
-                   gives rough indication of the error of the estimate
-                   of the tree.},
-  doi =           {10.1007/BF01734359},
-  isbn =          {0022-2844 (Print)\textbackslash r0022-2844 (Linking)},
-  issn =          {00222844},
-}
-
-@incollection{Jukes1969,
-  author =        {Jukes, T.H. and Cantor, C.R.},
-  booktitle =     {Mammalian Protein Metabolism},
-  pages =         {21--132},
-  publisher =     {Academic Press},
-  title =         {Evolution of Protein Molecules},
-  year =          {1969},
-}
-
-@article{Vihola2011,
-  author =        {Vihola, Matti},
-  journal =       {Stochastic Processes and their Applications},
-  number =        {12},
-  pages =         {2839--2860},
-  publisher =     {Elsevier B.V.},
-  title =         {On the Stability and Ergodicity of Adaptive Scaling
-                   {{Metropolis}} Algorithms},
-  volume =        {121},
-  year =          {2011},
-  abstract =      {The stability and ergodicity properties of two
-                   adaptive random walk Metropolis algorithms are
-                   considered. Both algorithms adjust the scaling of the
-                   proposal distribution continuously based on the
-                   observed acceptance probability. Unlike the
-                   previously proposed forms of the algorithms, the
-                   adapted scaling parameter is not constrained within a
-                   predefined compact interval. The first algorithm is
-                   based on scale adaptation only, while the second one
-                   also incorporates covariance adaptation. A strong law
-                   of large numbers is shown to hold assuming that the
-                   target density is smooth enough and has either
-                   compact support or super-exponentially decaying
-                   tails. \copyright{} 2011 Elsevier B.V. All rights
-                   reserved.},
-  doi =           {10.1016/j.spa.2011.08.006},
-  issn =          {03044149},
-}
-
-@article{Plummer2006,
-  author =        {Plummer, Martyn and Best, Nicky and Cowles, Kate and
-                   Vines, Karen},
-  journal =       {R News},
-  number =        {March},
-  pages =         {7--11},
-  title =         {{{CODA}}: Convergence Diagnosis and Output Analysis
-                   for {{MCMC}}},
-  volume =        {6},
-  year =          {2006},
-  abstract =      {[1st paragraph] At first sight, Bayesian inference
-                   with Markov Chain Monte Carlo (MCMC) appears to be
-                   straightforward. The user defines a full probability
-                   model, perhaps using one of the programs discussed in
-                   this issue; an underlying sampling engine takes the
-                   model definition and returns a sequence of dependent
-                   samples from the posterior distribution of the model
-                   parameters, given the supplied data. The user can
-                   derive any summary of the posterior distribution from
-                   this sample. For example, to calculate a 95\%
-                   credible interval for a parameter {$\alpha$}, it
-                   suffices to take 1000 MCMC iterations of {$\alpha$}
-                   and sort them so that {$\alpha$}121000. The credible
-                   interval estimate is then ({$\alpha$}25,
-                   {$\alpha$}975). However, there is a price to be paid
-                   for this simplicity. Unlike most numerical methods
-                   used in statistical inference, MCMC does not give a
-                   clear indication of whether it has converged. The
-                   underlying Markov chain theory only guarantees that
-                   the distribution of the output will converge to the
-                   posterior in the limit as the number of iterations
-                   increases to infinity. The user is generally ignorant
-                   about how quickly convergence occurs, and therefore
-                   has to fall back on post hoc testing of the sampled
-                   output. By convention, the sample is divided into two
-                   parts: a ``burn in'' period during which all samples
-                   are discarded, and the remainder of the run in which
-                   the chain is considered to have converged
-                   sufficiently close to the limiting distribution to be
-                   used. Two questions then arise: 1. How long should
-                   the burn in period be? 2. How many samples are
-                   required to accurately estimate posterior quantities
-                   of interest? The coda package for R contains a set of
-                   functions designed to help the user answer these
-                   questions. Some of these convergence diagnostics are
-                   simple graphical ways of summarizing the data. Others
-                   are formal statistical tests.},
-  doi =           {10.1159/000323281},
-  isbn =          {1609-3631},
-  issn =          {1662-4025},
-}
-
-@article{Warren2017,
-  author =        {Warren, Dan L. and Geneva, Anthony J. and
-                   Lanfear, Robert},
-  journal =       {Molecular Biology and Evolution},
-  month =         jan,
-  pages =         {msw279},
-  title =         {{{RWTY}} ({{R We There Yet}}): {{An R}} Package for
-                   Examining Convergence of {{Bayesian}} Phylogenetic
-                   Analyses},
-  year =          {2017},
-  doi =           {10.1093/molbev/msw279},
-  issn =          {0737-4038, 1537-1719},
-}
-
 @article{Carpenter2017,
   author =        {Carpenter, Bob and Gelman, Andrew and
                    Hoffman, Matthew D. and Lee, Daniel and Goodrich, Ben and
@@ -504,5 +557,41 @@
                    transforms, and specialized plotting.},
   doi =           {10.18637/jss.v076.i01},
   issn =          {15487660},
+}
+
+@article{Felsenstein1981,
+  author =        {Felsenstein, Joseph},
+  journal =       {Journal of Molecular Evolution},
+  number =        {6},
+  pages =         {368--376},
+  title =         {Evolutionary Trees from {{DNA}} Sequences: {{A}}
+                   Maximum Likelihood Approach},
+  volume =        {17},
+  year =          {1981},
+  abstract =      {Summary The application of maximum likelihood
+                   techniques to the estimation of evolutionary trees
+                   from nucleic acid sequence data is discussed. A
+                   computationally feasible method for finding such
+                   maximum likelihood estimates is developed, and a
+                   computer program is available. This method has
+                   advantages over the traditional parsimony algorithms,
+                   which can give misleading results if rates of
+                   evolution differ in different lineages. It also
+                   allows the testing of hypotheses about the constancy
+                   of evolutionary rates by likelihood ratio tests, and
+                   gives rough indication of the error of the estimate
+                   of the tree.},
+  doi =           {10.1007/BF01734359},
+  isbn =          {0022-2844 (Print)\textbackslash r0022-2844 (Linking)},
+  issn =          {00222844},
+}
+
+@incollection{Jukes1969,
+  author =        {Jukes, T.H. and Cantor, C.R.},
+  booktitle =     {Mammalian Protein Metabolism},
+  pages =         {21--132},
+  publisher =     {Academic Press},
+  title =         {Evolution of Protein Molecules},
+  year =          {1969},
 }
 

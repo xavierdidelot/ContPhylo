@@ -6,6 +6,28 @@
 #' @export
 prior_test=function(trees,model=2,scale=1,analyse_topology=T) {
   n=Ntip(trees[[1]])
+  par(mfrow=c(3,2))
+  sbl=sapply(trees,function(x) return(sum(x$edge.length)))
+  plot(sbl,type='l',main='Sum branch lengths',xlab='',ylab='')
+  hist(sbl,main='Sum branch lengths',xlab='',probability=T,breaks=20)
+  xs=seq(min(sbl),max(sbl),length.out=1000)
+  dcoal=function(x) {(n-1)/(2*scale)*exp(-x/(2*scale))*(1-exp(-x/(2*scale)))^(n-2)}
+  if (model==1) lines(xs,dcoal(xs))
+  if (model==2) lines(xs,dgamma(xs,shape=(2*n-2),scale=scale))
+  if (model==3) lines(xs,dgamma(xs,shape=(2*n-3),scale=scale))
+  ess=coda::effectiveSize(coda::as.mcmc(sbl))
+  print(sprintf('ESS of sum of branch lengths: %f',ess))
+
+  b1=sapply(trees,function(x) {wi=which(x$tip.label==trees[[1]]$tip.label[1]);w=which(x$edge[,2]==wi);return(x$edge.length[w])})
+  #b1=as.vector(sapply(trees,function(x) {w=which(x$edge[,2]<=n);return(x$edge.length[w])}))
+  plot(b1,type='l',main='Single branch length',xlab='',ylab='')
+  hist(b1,main='Single branch length',xlab='',probability=T,breaks=20)
+  xs=seq(min(b1),max(b1),length.out=1000)
+  if (model==1) lines(xs,sapply(xs,function (t) p_t(t,n,scale)))
+  if (model>1)  lines(xs,dexp(xs,rate=1/scale))
+  ess=coda::effectiveSize(coda::as.mcmc(b1))
+  print(sprintf('ESS of single branch length: %f',ess))
+
   clusters=rep(1,length(trees))
   if (analyse_topology) {
     reps=vector('list',length(trees))
@@ -22,35 +44,15 @@ prior_test=function(trees,model=2,scale=1,analyse_topology=T) {
     if (length(counts)<expected) print(sprintf('Found %d topologies but was expecting %d.',length(counts),expected))
     t=chisq.test(counts)
     print(t)
+
+    #Trace of topology
+    ma=max(clusters)
+    map=sample(1:ma,ma)
+    plot(map[clusters],xlab='',ylab='')
+    b=counts[map]
+    names(b)<-1:length(b)
+    barplot(b)
   }
-
-  par(mfrow=c(3,2))
-  sbl=sapply(trees,function(x) return(sum(x$edge.length)))
-  plot(sbl,type='l',main='Sum branch lengths',xlab='',ylab='')
-  hist(sbl,main='Sum branch lengths',xlab='',probability=T,breaks=20)
-  xs=seq(min(sbl),max(sbl),length.out=1000)
-  dcoal=function(x) {(n-1)/2*exp(-x/2)*(1-exp(-x/2))^(n-2)}
-  if (model==1) lines(xs,dcoal (xs/scale))
-  if (model==2) lines(xs,dgamma(xs,shape=(2*n-2),scale=scale))
-  if (model==3) lines(xs,dgamma(xs,shape=(2*n-3),scale=scale))
-  ess=coda::effectiveSize(coda::as.mcmc(sbl))
-  print(sprintf('ESS of sum of branch lengths: %f',ess))
-
-  b1=sapply(trees,function(x) {w=which(x$edge[,2]==1);return(x$edge.length[w])})
-  plot(b1,type='l',main='Single branch length',xlab='',ylab='')
-  hist(b1,main='Single branch length',xlab='',probability=T,breaks=20)
-  xs=seq(min(b1),max(b1),length.out=1000)
-  lines(xs,dexp(xs,rate=1/scale))
-  ess=coda::effectiveSize(coda::as.mcmc(b1))
-  print(sprintf('ESS of single branch length: %f',ess))
-
-  #Trace of topology
-  ma=max(clusters)
-  map=sample(1:ma,ma)
-  plot(map[clusters],xlab='',ylab='')
-  b=counts[map]
-  names(b)<-1:length(b)
-  barplot(b)
 
   if (F) {
   #Checking that consensus tree looks completely star-like
@@ -61,4 +63,25 @@ prior_test=function(trees,model=2,scale=1,analyse_topology=T) {
   plot(cons,show.tip.label = T)
   axisPhylo(1)
   }
+}
+
+p_t <- function(t, n, theta) {
+  stopifnot(n >= 2, theta > 0)
+  lambda <- 1/theta * choose(1:n, 2)          # lambda[j] for j = 1..n (lambda[1] = 0, unused)
+  # inner term for given k: vector over t
+  dens_k <- function(k) {
+    js <- k:n
+    out <- numeric(length(t))
+    for (j in js) {
+      rs <- setdiff(k:n, j)
+      coef <- lambda[j] * prod(lambda[rs] / (lambda[rs] - lambda[j]))
+      out <- out + coef * exp(-lambda[j] * t)
+    }
+    out
+  }
+  total <- numeric(length(t))
+  for (k in 2:n) {
+    total <- total + (k - 1) * dens_k(k)
+  }
+  2 / (n * (n - 1)) * total
 }
