@@ -753,11 +753,11 @@ Initially there are $n$ individuals which means $n \choose 2$ pairs
 and therefore the height of the first node 
 is Exponentially distributed with rate ${n \choose 2} \theta$. Any of the $n \choose 2$
 pairs is then likely to coalesce together, leaving $n-1$ ancestors. By repeating this process
-and noting $t_k$ for the duration of the time interval during which there are $k$
+and noting $\tau_k$ for the duration of the time interval during which there are $k$
 ancestors, the density of a tree is obtained as:
 
 \begin{equation}
-p_T(T)=\prod_{i=2}^n \exp\left({n \choose 2} \theta \right)
+p_T(T)=\prod_{i=2}^n \exp\left(-\tau_k {n \choose 2} \theta \right)
 \label{eq:coalescent}
 \end{equation}
 

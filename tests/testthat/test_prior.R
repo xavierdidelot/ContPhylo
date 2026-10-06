@@ -15,6 +15,11 @@ test_that("Testing prior function.", {
   names(data)=t$tip.label
   mypml=phangorn::pml(tree=t,data,model='JC')
   expect_equal(prior(r,scale=2),posterior(mypml,r,scale=2))
+
+  t=rcoal(3,br=c(1,2))
+  a=priorT(t,model=1,scale=1)
+  b=dexp(1,3,T)+dexp(2,1,T)+log(1/3)
+  expect_equal(a,b)
 })
 
 
