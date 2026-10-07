@@ -11,10 +11,8 @@
 mcmc = function(dat=phyDatEmpty(5),model=2,initTree,niter=1e3,thin=max(1,round(niter/2e3)),scale=1,showProgress=T) {
   if (missing(initTree)) {
     n=length(dat)
-    if (model==1) tree=rcoal(n) else tree=rtree(n)
-    tree$edge.length=tree$edge.length*scale
+    tree=randtree(n,model,scale)
     tree$tip.label=names(dat)
-    if (model==3) tree=unroot(tree)
   } else {
     n=Ntip(initTree)
     tree=initTree
@@ -76,10 +74,8 @@ mcmc = function(dat=phyDatEmpty(5),model=2,initTree,niter=1e3,thin=max(1,round(n
 mcmc2 = function(dat=phyDatEmpty(5),model=2,initTree,niter=1e3,thin=max(1,round(niter/2e3)),scale=1,showProgress=T) {
   if (missing(initTree)) {
     n=length(dat)
-    if (model==1) tree=rcoal(n) else tree=rtree(n)
-    tree$edge.length=tree$edge.length*scale
+    tree=randtree(n,model,scale)
     tree$tip.label=names(dat)
-    if (model==3) tree=unroot(tree)
   } else {
     n=Ntip(initTree)
     tree=initTree
@@ -100,7 +96,7 @@ mcmc2 = function(dat=phyDatEmpty(5),model=2,initTree,niter=1e3,thin=max(1,round(
     p=posterior(mypml,r,scale)
     return(p)
   }
-  r=adaptMCMC::MCMC(p=target,n=niter,init=init,adapt=T,acc.rate=0.234,showProgressBar=showProgress)
+  r=adaptMCMC::MCMC(p=target,n=niter,init=init,adapt=T,scale=abs(init)/10,acc.rate=0.234,showProgressBar=showProgress)
   res=vector('list',niter/thin)
   l=list()
   l$tip.label=tree$tip.label

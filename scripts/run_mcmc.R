@@ -2,16 +2,14 @@ rm(list=ls())
 library(ape)
 library(ContPhylo)
 
-n=3#number of leaves in tree
+n=5#number of leaves in tree
 model=1#model of tree
-scale=1#scaling factor on branch lengths
-simu=2 #set to 1 for independent trees, 2 for my mcmc, 3 for adaptMCMC
+scale=1e4#scaling factor on branch lengths
+simu=3#set to 1 for independent trees, 2 for my mcmc, 3 for adaptMCMC
 
 if (simu==1) {
   #Random independent trees
-  if (model==1) trees=lapply(1:1000,function(x) {y=rcoal(n);y$edge.length=y$edge.length*scale;return(y)})
-  if (model==2) trees=lapply(1:1000,function(x) rtopology(n,rooted=T,br=function (n) rexp(n,rate=1/scale)))
-  if (model==3) trees=lapply(1:1000,function(x) rtopology(n,rooted=F,br=function (n) rexp(n,rate=1/scale)))
+  trees=lapply(1:1000,function(x) randtree(n,model,scale))
 }
 
 if (simu==2) {
@@ -27,7 +25,7 @@ if (simu==2) {
   plot(sapply(trees,function(x) x$paccepted[2]),type='l',xlab='',ylab='paccepted[2]')
   plot(sapply(trees,function(x) x$sd[1]),type='l',xlab='',ylab='sd[1]')
   plot(sapply(trees,function(x) x$sd[2]),type='l',xlab='',ylab='sd[2]')
-  trees=trees[(length(trees)/2):length(trees)]
+  trees=trees[(length(trees)/2+1):length(trees)]
 }
 
 if (simu==3) {
@@ -36,11 +34,11 @@ if (simu==3) {
   mat=trees[[1]]$cov.jump
   image(1:nrow(mat),1:ncol(mat),mat,xlab='',ylab='')
   title('Covariance of last jump distribution')
-  trees=trees[(length(trees)/2):length(trees)]
+  trees=trees[(length(trees)/2+1):length(trees)]
 }
 
 pdf('mcmc.pdf',7,7)
-prior_test(trees,model=model,scale=scale)
+prior_test(trees,model=model,scale=scale,analyse_topology = T)
 dev.off()
 browseURL('mcmc.pdf')
 

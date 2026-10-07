@@ -12,9 +12,11 @@ prior_test=function(trees,model=2,scale=1,analyse_topology=T) {
   hist(sbl,main='Sum branch lengths',xlab='',probability=T,breaks=20)
   xs=seq(min(sbl),max(sbl),length.out=1000)
   dcoal=function(x) {(n-1)/(2*scale)*exp(-x/(2*scale))*(1-exp(-x/(2*scale)))^(n-2)}
+  par(xpd=NA)
   if (model==1) lines(xs,dcoal(xs))
   if (model==2) lines(xs,dgamma(xs,shape=(2*n-2),scale=scale))
   if (model==3) lines(xs,dgamma(xs,shape=(2*n-3),scale=scale))
+  par(xpd=F)
   ess=coda::effectiveSize(coda::as.mcmc(sbl))
   print(sprintf('ESS of sum of branch lengths: %f',ess))
 
@@ -45,7 +47,7 @@ prior_test=function(trees,model=2,scale=1,analyse_topology=T) {
     t=chisq.test(counts)
     print(t)
 
-    #Trace of topology
+    #Trace and barplot of topology
     ma=max(clusters)
     map=sample(1:ma,ma)
     plot(map[clusters],xlab='',ylab='')
@@ -65,6 +67,7 @@ prior_test=function(trees,model=2,scale=1,analyse_topology=T) {
   }
 }
 
+#This is the distribution of a terminal branch length under the coalescent
 p_t <- function(t, n, theta) {
   stopifnot(n >= 2, theta > 0)
   lambda <- 1/theta * choose(1:n, 2)          # lambda[j] for j = 1..n (lambda[1] = 0, unused)
