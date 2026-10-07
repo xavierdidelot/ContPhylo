@@ -6,13 +6,13 @@ set.seed(1)
 
 n=5
 model=1
-scale=0.001
-l=00
+scale=0.01
+l=10000
 
 tree=randtree(n,model,scale)
 if (l==0) {seqs=phyDatEmpty(Ntip(tree));names(seqs)<-tree$tip.label} else
 seqs=phangorn::simSeq(tree,l=l,rate=1)
-r=mcmc2(seqs,initTree = tree, model=model,niter = 1e4,scale=scale)
+r=mcmc2(seqs,initTree=tree,model=model,niter=1e4,scale=scale)
 
 par(mfrow=c(3,2))
 plot(sapply(r,function(x) x$posterior),type='l',xlab='',ylab='Posterior')

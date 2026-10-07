@@ -84,8 +84,7 @@
 #' hmc = function(dat=phyDatEmpty(10),initTree,niter=1e3,thin=max(1,round(niter/1e3)),scale=1,showProgress=T) {
 #'   if (missing(initTree)) {
 #'     n=length(dat)
-#'     tree=rtree(n)
-#'     tree$edge.length=tree$edge.length*scale
+#'     tree=randtree(n,model,scale)
 #'     tree$tip.label=names(dat)
 #'   } else {
 #'     n=Ntip(initTree)
