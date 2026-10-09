@@ -4,7 +4,7 @@
 \alias{mle}
 \title{MLE algorithm}
 \usage{
-mle(dat = phyDatEmpty(5), model = 2, initTree)
+mle(dat = phyDatEmpty(5), model = 2, initTree, showProgress = T)
 }
 \arguments{
 \item{dat}{Object of class phyDat containing the genetic data}
@@ -12,6 +12,8 @@ mle(dat = phyDatEmpty(5), model = 2, initTree)
 \item{model}{Model of tree: 1 for ultrametric, 2 for rooted, 3 for unrooted}
 
 \item{initTree}{Initial tree to use as start of MCMC}
+
+\item{showProgress}{Whether to show progress or not}
 }
 \value{
 MLE result

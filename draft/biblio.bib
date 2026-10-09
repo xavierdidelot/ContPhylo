@@ -227,6 +227,121 @@
   issn =          {00405809},
 }
 
+@article{Paradis2019,
+  author =        {Paradis, Emmanuel and Schliep, Klaus},
+  journal =       {Bioinformatics},
+  number =        {3},
+  pages =         {526--528},
+  title =         {Ape 5.0: {{An}} Environment for Modern Phylogenetics
+                   and Evolutionary Analyses in {{R}}},
+  volume =        {35},
+  year =          {2019},
+  abstract =      {After more than fifteen years of existence, the R
+                   package ape has continuously grown its contents, and
+                   has been used by a growing community of users. The
+                   release of version 5.0 has marked a leap towards a
+                   modern software for evolutionary analyses. Efforts
+                   have been put to improve efficiency, flexibility,
+                   support for 'big data' (R's long vectors), ease of
+                   use and quality check before a new release. These
+                   changes will hopefully make ape a useful software for
+                   the study of biodiversity and evolution in a context
+                   of increasing data quantity. Availability and
+                   implementation: ape is distributed through the
+                   Comprehensive R Archive Network:
+                   http://cran.r-project.org/package{$\frac{1}{4}$}ape.
+                   Further information may be found at Since its first
+                   release in August 2002, the R (R Core Team, 2017)
+                   package ape (Paradis et al., 2004) has developed
+                   steadily to provide a set of tools for researchers in
+                   evolutionary biology who seek to integrate analyses
+                   of DNA sequences, phenotypes and phylogenetic trees.
+                   With the release of its version 5.0, ape has marked a
+                   leap towards a modern software for evolutionary
+                   analyses. In the perspective of this release, efforts
+                   were put in improving the existing functionalities,
+                   providing easy-to-use functions for some basic tasks
+                   (e.g. finding data files), and improving the quality
+                   checks with respect to the published packages that
+                   depend on ape. There is evidence of a substantial
+                   number of users of ape coming from two sources.
+                   First, the number of downloads of ape during a few
+                   days after a new release has been observed to be
+                   around 22 000 (data from
+                   https://cranlogs.r-pkg.org/). Second, ape has been
+                   cited in more than 600 journals from all fields of
+                   life and environmental sciences , and some titles in
+                   human sciences (data from Web of Science) suggesting
+                   it is widely used in the scientific community. With
+                   its version 5.0, ape supports all types of
+                   phylogenetic trees and networks. The function
+                   read.tree, already present in the first release of
+                   ape, can read trees with nodes of degree two (which
+                   was not possible before), and the new function
+                   read.evonet can read phylogenetic networks from
+                   extended Newick format files (Cardona et al., 2008).
+                   In addition, the R code to read Newick and NEXUS
+                   files (which have served during almost fifteen years)
+                   has been replaced by a more efficient C code. ape has
+                   its own data object class to store and manipulate DNA
+                   sequences (called 'DNAbin'). In the recent versions,
+                   we have implemented R 'long vectors' for the 'DNAbin'
+                   class so that sequences longer than 2.1 Gb
+                   (gigabases) can be read and analysed. The new limit
+                   for a sequence length is \%4.4 Pb ({$\frac{1}{4}$}
+                   4:4 \^A 10 15 bases) which is more than one thousand
+                   larger than the currently available data from GenBank
+                   and the Genome Projects combined (estimated to be
+                   between 2 and 3 Tb). Furthermore, ape is able, in
+                   theory, to manipulate \% 4:4 \^A 10 15 sequences each
+                   of 4.4 Pb which amounts to a total of \% 2 \^A 10 31
+                   bases. Clearly, this quantity is much larger than the
+                   quantity of active memory of all machines available
+                   in the world combined. In addition to these technical
+                   improvements, functions to convert the data classes
+                   used in BioConductor (Huber et al., 2015) are now
+                   provided. To further integrate phylogenetics with the
+                   analysis of high-throughput sequencing data, there is
+                   also a new function to read FASTQ files (read.fastq)
+                   to help screen DNA reads and their qualities. Reading
+                   data from files is a common bottleneck in data
+                   analysis which becomes crucial in the context of
+                   modern genomic data.},
+  doi =           {10.1093/bioinformatics/bty633},
+  issn =          {14602059},
+}
+
+@article{schliepPhangornPhylogeneticAnalysis2011,
+  author =        {Schliep, Klaus Peter},
+  journal =       {Bioinformatics},
+  month =         feb,
+  number =        {4},
+  pages =         {592--593},
+  title =         {Phangorn: Phylogenetic Analysis in {{R}}},
+  volume =        {27},
+  year =          {2011},
+  abstract =      {Abstract Summary: ~phangorn is a package for
+                   phylogenetic reconstruction and analysis in the R
+                   language. Previously it was only possible to estimate
+                   phylogenetic trees with distance methods in R.
+                   phangorn, now offers the possibility of
+                   reconstructing phylogenies with distance based
+                   methods, maximum parsimony or maximum likelihood (ML)
+                   and performing Hadamard conjugation. Extending the
+                   general ML framework, this package provides the
+                   possibility of estimating mixture and partition
+                   models. Furthermore, phangorn offers several
+                   functions for comparing trees, phylogenetic models or
+                   splits, simulating character data and performing
+                   congruence analyses. Availability: ~phangorn can be
+                   obtained through the CRAN homepage
+  http://cran.r-project.org/web/packages/phangorn/index.html. phangorn is
+  licensed under GPL 2. Contact: ~klaus.kschliep@snv.jussieu.fr Supplementary
+  information: ~Supplementary data are available at Bioinformatics online.},
+  doi =           {10.1093/bioinformatics/btq706},
+  issn =          {1367-4811, 1367-4803},
+}
+
 @article{Vihola2011,
   author =        {Vihola, Matti},
   journal =       {Stochastic Processes and their Applications},

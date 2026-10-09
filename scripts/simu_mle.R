@@ -2,10 +2,10 @@ rm(list=ls())
 library(ContPhylo)
 library(ape)
 library(phangorn)
-set.seed(0)
+#set.seed(0)
 
-n=5
-model=1
+n=4
+model=3
 scale=0.01
 l=1000
 
