@@ -72,6 +72,12 @@ test_that("Testing convertion package functions.", {
     mat1=cophenetic.phylo(r)
     mat2=cophenetic.phylo(r2)
     expect_equal(max(abs(as.vector(mat1)-as.vector(mat2))),0)
+    r3=phangorn::upgma(mat1)
+    mat3=cophenetic.phylo(r3)
+    expect_equal(max(abs(as.vector(mat1)-as.vector(mat3))),0)
+    r4=contphylo2phylo(phylo2contphylo(r3,model=1))
+    mat4=cophenetic.phylo(r4)
+    expect_equal(max(abs(as.vector(mat1)-as.vector(mat4))),0)
   }
 
   #Test model 3 forward and backward conversions

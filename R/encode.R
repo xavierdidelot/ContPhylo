@@ -23,6 +23,21 @@ phylo2contphylo <- function(x,model=2) {
   }
 
   root <- setdiff(edge[, 1], edge[, 2])
+
+  min_tip <- function(node) {
+    if (node <= n) return(node)
+    min(vapply(children[[node]], min_tip, numeric(1)))
+  }
+
+  canonicalise <- function(node) {
+    if (node <= n) return(invisible())
+    mins <- vapply(children[[node]], min_tip, numeric(1))
+    children[[node]] <<- children[[node]][order(mins)]
+    for (child in children[[node]]) canonicalise(child)
+  }
+
+  canonicalise(root)
+
   tree_length <- sum(x$edge.length)
   coordinates <- matrix(NA_real_, n, 2)
   coordinates[1, ] <- c(0,0)
