@@ -27,8 +27,8 @@ continuity = function(n=10,epsmax=0.1,repeats=100,showProgress=T) {
     d3=distory::dist.multiPhylo(list(p1,p2))#geodesic distance from Billera et al 2001
     res[i,]=c(eps,d1,d2,d3)
     colnames(res)<-c('eps','mydist','scoredist','geodesic')
-    pairs(res)
   }
-  close(pb)
+  pairs(res)
+  if (showProgress) close(pb)
   return(res)
 }

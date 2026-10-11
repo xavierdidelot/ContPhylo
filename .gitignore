@@ -58,3 +58,4 @@ draft/main.synctex.gz
 draft/main.blg
 inst/stan/prior
 inst/stan/posterior
+*.RData

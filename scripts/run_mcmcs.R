@@ -36,15 +36,14 @@ ranked_key <- function(tree, ref = sort(tree$tip.label), tol = 1e-8) {
 key_string <- function(key) paste(key, collapse = " ")
 
 n=5#number of leaves in tree
-model=1#model of tree
 scale=0.01#scaling factor on branch lengths
 
-pdf('mcmcs.pdf',7,7)
-let=1
-par(mfrow=c(3,3))
+alltrees=vector('list',3)
+allcounts=vector('list',3)
 for (model in 1:3) {
   trees=mcmc2(phyDatEmpty(n),model=model,scale=scale,niter=2e5,thin=10)
   trees=trees[(length(trees)/2+1):length(trees)]
+  alltrees[[model]]=trees
 
   clusters=rep(1,length(trees))
   reps=vector('list',length(trees))
@@ -61,9 +60,20 @@ for (model in 1:3) {
     }
     if (!assigned) {k=k+1;reps[[k]]=i;clusters[i]=k}
   }
-  counts=table(clusters)
-  expected=round(exp(lfactorial(2*n-2)-(n-1)*log(2)-lfactorial(n-1)))
-  ma=max(clusters)
+  allcounts[[model]]=table(clusters)
+}
+save.image('scripts/run_mcmcs.RData')
+
+rm(list=ls())
+load('scripts/run_mcmcs.RData')
+set.seed(0)
+pdf('scripts/priors.pdf',7,7)
+let=1
+par(mfrow=c(3,3))
+for (model in 1:3) {
+  trees=alltrees[[model]]
+  counts=allcounts[[model]]
+  ma=length(counts)
   map=sample(1:ma,ma)
   b=counts[map]
   names(b)<-1:length(b)
@@ -91,4 +101,4 @@ for (model in 1:3) {
   fig_label(LETTERS[let],cex=2);let=let+1
 }
 dev.off()
-browseURL('mcmcs.pdf')
+browseURL('scripts/priors.pdf')

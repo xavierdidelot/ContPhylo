@@ -57,7 +57,7 @@ Running title: Euclidean parametrisation of phylogenetic trees
 
 \vspace*{2cm}
 Keywords: phylogenetic trees; Euclidean parametrisation; 
-equidistant trees; rooted trees; unrooted trees
+sampling tree distributions; Bayesian phylogenetic inference
 
 \newpage
 \section*{Abstract}
@@ -76,9 +76,10 @@ onto the corresponding spaces of phylogenetic trees.
 We also determine the number of representations of
 a generic tree and calculate the Jacobian of each parametrisation. These
 results provide explicit change-of-variables formulae between Euclidean
-coordinates and the phylogenetic tree spaces, allowing probability
-distributions on tree space to be represented in unconstrained Euclidean
-coordinates, and thus paving the way for the application of methods previously unexploited in phylogenetics.
+coordinates and the phylogenetic tree spaces, and we show how probability
+distributions on tree space can be sampled using generic algorithms that target
+unconstrained Euclidean coordinates. This approach paves the way for the 
+development and application of new methodology in Bayesian phylogenetic inference.
 
 \newpage
 \section{Introduction}
@@ -777,11 +778,12 @@ Simulation procedure. Then inference. Figure showing result, maybe including tra
 
 \begin{figure}[p!]
 %\includegraphics{posterior}
-\caption{TODO
+\caption{Toy example of Bayesian phylogenetic inference.
+TODO
 \label{fig:posterior}}
 \end{figure}
 
-
+Gelman-Rubin using two runs?
 We also checked that the effective sample size
 was greater than 1000 for individual branch lengths 
 \citep{Plummer2006}. The approximate effective sample size
@@ -869,6 +871,10 @@ However, ...
 The focus here was on providing parametrisations that enable the use of new algorithms, not
 on the application of these algorithms. Implementation is in R and not optimised.
 Scalability not the aim but future work.
+
+The toy example of Bayesian phylogenetic inference was aimed as a proof-of-concept,
+not as a practical approach compared to current state-of-the-art methods
+such as BEAST or MrBayes. But...
 
 This includes in particular some adaptive methods where proposal parameters are learned 
 during sampling \citep{Andrieu2008}, as well as gradient-based approaches such as 
