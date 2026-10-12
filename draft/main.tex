@@ -85,13 +85,16 @@ development and application of new methodology in Bayesian phylogenetic inferenc
 \section{Introduction}
 
 Phylogenetic trees are typically represented as the combination of a discrete topology and continuous branch
-lengths \citep{Paradis2006}. This representation is natural, but it makes
-tree space difficult to explore using methods designed for vectors in a
-fixed Euclidean space. In particular, changing topology ordinarily requires
+lengths \citep{liebermanPhylogeneticsTheoryPractice2011}. 
+This representation is natural, but it makes tree space difficult to explore. 
+In particular, changing topology ordinarily requires
 purpose-built operations such as nearest-neighbour interchange (NNI) or subtree pruning
-and regrafting (SPR), whose performance can depend strongly on the design and
-tuning of the proposals
-\citep{hohnaGuidedTreeTopology2012,zhangUsingParsimonyGuidedTree2020}.
+and regrafting (SPR), whose performance can depend strongly on how exactly they are designed
+\citep{hohnaGuidedTreeTopology2012,zhangUsingParsimonyGuidedTree2020,
+meyerAdaptiveTreeProposals2021}.
+It also means that many recent computational methods can not be directly used in 
+phylogenetics as they are designed to operate on vectors in a
+fixed Euclidean space.
 
 A geometric description of tree space is provided by the
 Billera--Holmes--Vogtmann (BHV) space \citep{Billera2001}. Each tree topology
@@ -101,7 +104,7 @@ construction makes clear that topology changes can be viewed continuously:
 an edge belonging to one topology contracts before an edge belonging to
 another topology grows. The resulting space is nevertheless stratified, and
 computational methods that move between its orthants generally require
-specialised treatment \citep{dinhProbabilisticPathHamiltonian2017}.
+specialised treatment \citep{dinhProbabilisticPathHamiltonian2017,Helekal2025}.
 
 Here we develop a different representation in which both topology and branch
 lengths are encoded by a single vector of unconstrained real parameters. The
@@ -112,18 +115,28 @@ continuous movement of a real-valued coordinate moves the graft point along
 branches and through the tree nodes. In this way, changes of topology arise without
 introducing a separate discrete topology variable.
 
-We apply this contour-grafting construction to rooted equidistant trees,
-rooted trees with unrestricted branch lengths, and unrooted trees. Our aim is
+We show that this contour-grafting construction can be used to represent
+the three most widely used classes of phylogenetic trees, namely
+rooted ultrametric trees,
+rooted trees with unrestricted branch lengths and unrooted trees. Our aim is
 to describe the resulting parametrisations and their geometric and
 measure-theoretic properties, including their behaviour at topology
 boundaries and the relationship between Euclidean coordinates and standard
-local coordinates on tree space. We focus on the theory of the parametrisations rather than on any application they enable.
+local coordinates on tree space. We show how the new parametrisation
+can be used to sample phylogenetic tree distributions and to perform
+Bayesian phylogenetic inference, but our main focus here is on the theory 
+of the parametrisations rather than on the applications they enable.
 
 The remainder of the article is organised as follows. Section~2 introduces
 the recursive contour-grafting construction. Sections~3--5 apply it to rooted
-equidistant, rooted unrestricted, and unrooted trees, respectively. Section~6
-compares the three parametrisations.
-Finally, Section 7 provides numerical validation.
+ultrametric, rooted unrestricted, and unrooted trees, respectively. Section~6
+establishes the link between probability densities in tree space and in the 
+new parametrisations. Section~7 shows that the phylogenetic tree space
+can be effectively sampled via the new parametrisations, and Section~8
+shows a small toy example of performing Bayesian phylogenetic inference.
+Section~9 describes details of how the methods were implemented
+and Finally Section~10 discusses how the theory presented here could be 
+used as a starting point for the development of new phylogenetic methods.
 
 \section{Recursive contour-grafting construction}
 
@@ -579,6 +592,8 @@ J_n^\mathrm{U}=\left|
 \end{equation}
 almost everywhere.
 
+\section{Distribution for each tree types}
+
 \begin{table}[t]
 \begin{center}
 \begin{tabular}{|c||c|c|c|c|}
@@ -598,9 +613,6 @@ Unrooted  (U) & $((a_i,b_i)_{i=2,...,n-1},c)$ & $2n-3$& $2^{n-2}$
 The main properties of the three constructions for equidistant trees,
 rooted trees and unrooted trees
 are summarised and compared in Table~\ref{tab:comparison}.
-
-\section{Distribution for each tree types}
-
 We now specify a probability model for each tree type.
 For equidistant tree, we use
 the coalescent model \citep{Kingman1982,Kingman1982a} which is the backward-in-time
@@ -690,13 +702,15 @@ a density $p^j_n(C)$ in unconstrained Euclidean space and a density $p^j_n(T)$
 in phylogenetic space, for each of the three types of trees.
 
 To sample from the distributions in Equation \ref{eq:link} 
-we use an adaptive Metropolis sampler \citep{Vihola2011}. 
+we use an adaptive Metropolis sampler \citep{Haario2001,Vihola2011}. 
 This algorithm uses a multivariate normal distribution as the proposal kernel
 $q(C'|C)$ which is symmetric (meaning that $q(C'|C)=q(C|C')$), so that the acceptance probability 
 is simply $\mathrm{min}(1,p_C(C')/p_C(C))$ calculated using Equation \ref{eq:link}.
 The mean of the proposal kernel is the current value $C$ and 
 its covariance matrix is tuned to achieve an acceptance
-rate of 0.234 \citep{Andrieu2008}. 
+rate of 0.234, which has been shown to be optimal under certain conditions \citep{Andrieu2008}. 
+Note that this sampler by definition only operates on continuous parameters and 
+could therefore not be applied directly to the phylogenetic tree spaces as usually defined.
 For each of the three models we take $n=5$ to generate a small example, 
 with $\theta=0.1$ as the the scale of the branch lengths.
 In each case the sampler was run for $2\times10^{5}$ iterations, with the first half discarded
@@ -724,26 +738,24 @@ and Figure \ref{fig:priors}C shows that the sum of branch lengths in the sampled
 trees follows the expected distribution given in Equation \ref{eq:coalescent-sumblen}.
 
 Under the rooted tree model (Equation \ref{eq:tree-distrib2}) all topologies
-are equally likely and for $n=5$ there are $(2n-3)!!=105$ of them.
+are equally likely by definition and for $n=5$ there are $(2n-3)!!=105$ of them.
 Figure \ref{fig:priors}D shows that all of them have been sampled approximately
 uniformly as expected. Furthermore, Figures \ref{fig:priors}E and \ref{fig:priors}F
-show that terminal branch lengths and the sum of branch lengths follow
+show that terminal branch lengths and the sum of branch lengths in sampled trees follow
 the correct distributions from Equation \ref{eq:rooted-blen}.
-%
 Finally, under the unrooted tree model (Equation \ref{eq:tree-distrib3}) all topologies
-are equally likely and for $n=5$ there are $(2n-5)!!=15$ of them.
+are also equally likely and for $n=5$ there are $(2n-5)!!=15$ of them.
 Figure \ref{fig:priors}G shows that all of them have been sampled approximately
-uniformly as expected. Furthermore, Figures \ref{fig:priors}H and \ref{fig:priors}I
+the same number of times as expected. Figures \ref{fig:priors}H and \ref{fig:priors}I
 show that terminal branch lengths and the sum of branch lengths follow
-the correct distributions from Equation \ref{eq:unrooted-blen}.
-
-For each of the three tree models, 
+the distributions from Equation \ref{eq:unrooted-blen} expected under the unrooted tree model.
+For each of the three tree types, 
 we used a chi-square test to confirm that the sampled topologies
-(Figures \ref{fig:priors}A, D and G) are as expected and we used an
+(Figures \ref{fig:priors}A, D and G) are uniform as expected and we used an
 Anderson-Darling simple hypothesis test to confirm that the sampled
 terminal branch lengths (Figures \ref{fig:priors}B, E and H)
 and sums of branch lengths (Figures \ref{fig:priors}C, F and I)
-are all as expected.
+all follow their corresponding expected distributions.
 
 These results provide numerical validation of the formulas for redundancy and
 Jacobians of each of the three models (Table \ref{tab:comparison}). They also
@@ -753,8 +765,8 @@ from the desired phylogenetic distributions in Equations \ref{eq:tree-distrib1},
 \ref{eq:tree-distrib2} and \ref{eq:tree-distrib3}. This includes in particular the ability
 to explore the tree space over different topologies despite the Jacobian calculations 
 applying only within each topology. 
-Finally, this suggest the possibility of using our parametrisations
-within a Bayesian phylogenetic inferential framework.
+Finally, the possibility to sample phylogenetic trees using our parametrisations
+suggests that they could be used within a Bayesian phylogenetic inferential framework.
 
 \section{Toy example of Bayesian phylogenetic inference}
 
@@ -763,18 +775,35 @@ parametrisations can be used to perform Bayesian phylogenetic inference.
 After observing data $D$ made of $n$ aligned genetic sequences of length $L$, the 
 distribution of phylogenetic trees becomes the posterior with density
 \begin{equation}\label{eq:posterior}
-p_n^j(C|D) \propto p_n^j(C) p(D|T=\Phi^j_n(C))
+p_n^j(C|D)=\frac{p_n^j(C) p(D|T=\Phi^j_n(C))}{p_n^j(D)} \propto p_n^j(C) p(D|T=\Phi^j_n(C))
 \end{equation}
 The first term in this product is the prior density from Equation \ref{eq:link} and the 
 second term is the likelihood of the data given the phylogenetic tree $T=\Phi_n^j(C)$
 obtained using Algorithm \ref{alg:decoding1}. This likelihood can be calculated efficiently
 using the Felsenstein pruning algorithm \citep{Felsenstein1981} which is used in
-most phylogenetic inference tools. Many substitution models can be used to calculate
-this likelihood \citep{nascimentoBiologistsGuideBayesian2017} and here we use the simplest 
-Jukes-Cantor model \citep{Jukes1969} which avoids having to infer additional
-parameters.
+most phylogenetic inference tools. 
 
-Simulation procedure. Then inference. Figure showing result, maybe including trace.
+For this toy example we focus on the equidistant model as it is the simplest with
+just $n-1$ parameters (Table \ref{tab:comparison}). We generate a tree from the 
+coalescent model (Equation \ref{eq:tree-distrib1}) with $n=10$ leaves and 
+scaling factor $\theta=0.01$. 
+A sequence of length $L=10,000$ bp is generated for the root of this tree by
+picking each of the four nucleotides \{A,C,G,T\} uniformly at random for each position.
+A sequence is then generated for each of the 10 leaves by evolving the sequence
+along the branches of the tree. 
+Many substitution models can be used for this purpose \citep{nascimentoBiologistsGuideBayesian2017} and here we use the simplest 
+Jukes-Cantor model \citep{Jukes1969} which avoids having to infer additional
+parameters since it considers all substitutions from any nucleotide to any other
+to be equally likely. The dataset $D$ consists of the 10 sequences obtained for the
+leaves of the tree.
+
+We perform inference using the same adaptive Metropolis sampler as described in the
+previous section, with the parameter being the $n-1=9$ values in the real-valued vector $C$,
+and the target being the posterior distribution in Equation \ref{eq:posterior}.
+
+
+Then inference. Figure \ref{fig:posterior} 
+showing result, maybe including trace.
 
 \begin{figure}[p!]
 %\includegraphics{posterior}
@@ -789,7 +818,6 @@ was greater than 1000 for individual branch lengths
 \citep{Plummer2006}. The approximate effective sample size
 of the tree topology was also greater than 1000
 \citep{Warren2017}.
-
 
 \section{Implementation}
 
@@ -807,7 +835,7 @@ We used \verb+ape+ and \verb+phangorn+ to store, manipulate
 and visualise phylogenetic trees \citep{Paradis2019,schliepPhangornPhylogeneticAnalysis2011}.
 We used the adaptive Metropolis sampler \citep{Vihola2011} 
 implemented \verb+adaptMCMC+ \citep{adaptMCMC}. 
-The effective sample size of continuous parameters was computed using \verb+coda+ 
+The effective sample size for continuous parameters was computed using \verb+coda+ 
 \citep{Plummer2006} and for the tree topology using \verb+rwty+ \citep{Warren2017}.
 
 \section{Discussion}
@@ -825,8 +853,7 @@ each such subspace, the resulting topology is fixed and the function is continuo
 The boundaries between subspaces correspond to grafting at tree nodes or
 contour endpoints. At these boundaries an edge contracts to zero, so
 adjacent binary topologies meet at the same tree in the completed space.
-The functions are therefore continuous globally, although they need not be
-differentiable across subspace boundaries.
+The functions are therefore continuous globally.
 The rooted equidistant construction is the simplest case. Each added
 leaf requires only its graft coordinate, because equidistance uniquely
 determines the new terminal-branch length. The creation-ordered
@@ -841,7 +868,8 @@ root with length $\exp(c)$, and then forgets the root designation. It
 therefore removes one graft coordinate relative to the rooted case and
 has the minimal dimension $2n-3$, with similar Jacobian as in the rooted case (Equation \ref{eq:jacobian3}).
 
-In all three constructions, the redundancy of representations arise from the contour traversal. For both types of 
+In all three constructions, the redundancy of representations arise from the contour traversal. 
+For both types of 
 rooted tree, every graft point has two contour coordinates, so
 the $n-1$ successive grafts give $2^{n-1}$ representations. In the
 unrooted construction, only the rooted subtree on $n-1$ leaves is
@@ -874,7 +902,8 @@ Scalability not the aim but future work.
 
 The toy example of Bayesian phylogenetic inference was aimed as a proof-of-concept,
 not as a practical approach compared to current state-of-the-art methods
-such as BEAST or MrBayes. But...
+such as MrBayes \citep{Ronquist2012} or BEAST \citep{baeleBEASTBayesianPhylogenetic2025}.
+But...
 
 This includes in particular some adaptive methods where proposal parameters are learned 
 during sampling \citep{Andrieu2008}, as well as gradient-based approaches such as 

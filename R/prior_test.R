@@ -32,14 +32,7 @@ prior_test=function(trees,model=2,scale=1,analyse_topology=T) {
 
   clusters=rep(1,length(trees))
   if (analyse_topology) {
-    reps=vector('list',length(trees))
-    k=0
-    for (i in seq_along(trees)) {
-      assigned=FALSE
-      if (k>0) for (j in 1:k)
-        if (all.equal(trees[[i]], reps[[j]],use.edge.length = F)) {clusters[i]=j;assigned=TRUE;break}
-      if (!assigned) {k=k+1;reps[[k]]=trees[[i]];clusters[i]=k}
-    }
+    clusters=topologies(trees)
     counts=table(clusters)
     print(counts)
     expected=round(exp(lfactorial(2*n-2)-(n-1)*log(2)-lfactorial(n-1)))
@@ -48,12 +41,9 @@ prior_test=function(trees,model=2,scale=1,analyse_topology=T) {
     print(t)
 
     #Trace and barplot of topology
-    ma=max(clusters)
-    map=sample(1:ma,ma)
-    plot(map[clusters],xlab='',ylab='')
-    b=counts[map]
-    names(b)<-1:length(b)
-    barplot(b)
+    plot(clusters,xlab='',ylab='')
+    names(counts)<-1:length(counts)
+    barplot(counts)
   }
 
   if (F) {

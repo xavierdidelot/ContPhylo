@@ -34,7 +34,7 @@ if ((length(seqs)>2||model==1) && all(!is.na(dist))) {
   plot(0,0,main=sprintf('Distance-based tree not available'),xlab='',ylab='')
 }
 
-r=mcmc2(seqs,model=model,niter=2e5,scale=scale,initTree = disttree)
+r=mcmc2(seqs,model=model,niter=2e5,scale=scale,initTree = tree)
 #r=r[(length(r)/2+1):length(r)]
 
 plot(sapply(r,function(x) x$posterior),type='l',xlab='',ylab='Posterior')
@@ -43,21 +43,10 @@ p=posterior(phangorn::pml(tree=r[[length(r)]],data=seqs,model='JC'),r=phylo2cont
 plot(r[[length(r)]],main=sprintf('Final tree, lpost=%.2f',p),cex=1.5)
 axisPhylo(1,backward = F)
 
-clusters=rep(1,length(r))
-reps=vector('list',length(r))
-k=0
-for (i in seq_along(r)) {
-  assigned=FALSE
-  if (k>0) for (j in 1:k)
-    if (all.equal(r[[i]], reps[[j]],use.edge.length = F)) {clusters[i]=j;assigned=TRUE;break}
-  if (!assigned) {k=k+1;reps[[k]]=r[[i]];clusters[i]=k}
-}
-ma=max(clusters)
-map=sample(1:ma,ma)
-plot(map[clusters],xlab='',ylab='')
+clusters=topologies(r)
+plot(clusters,xlab='',ylab='')
 counts=table(clusters)
-b=counts[map]
-names(b)<-1:length(b)
-barplot(b)
+names(counts)<-1:length(counts)
+barplot(counts)
 dev.off()
 browseURL('simu.pdf')

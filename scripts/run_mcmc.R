@@ -3,9 +3,9 @@ library(ape)
 library(ContPhylo)
 
 n=5#number of leaves in tree
-model=1#model of tree
+model=3#model of tree
 scale=1e4#scaling factor on branch lengths
-simu=3#set to 1 for independent trees, 2 for my mcmc, 3 for adaptMCMC
+simu=1#set to 1 for independent trees, 2 for my mcmc, 3 for adaptMCMC
 
 if (simu==1) {
   #Random independent trees

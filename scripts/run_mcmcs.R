@@ -5,36 +5,6 @@ source('scripts/fig_label.R')
 
 set.seed(0)
 
-# Canonical integer key for a ranked labeled topology.
-# `ref` is the common tip-label ordering shared by all trees.
-ranked_key <- function(tree, ref = sort(tree$tip.label), tol = 1e-8) {
-  n    <- Ntip(tree)
-  tree <- reorder(tree, "postorder")          # node ids unchanged
-  lab  <- c(match(tree$tip.label, ref), rep(Inf, n - 1L))  # min ref-id below each node
-
-  p  <- tree$edge[, 1]
-  ch <- tree$edge[, 2]
-  for (i in seq_along(p)) {                    # postorder: children before parents
-    if (lab[ch[i]] < lab[p[i]]) lab[p[i]] <- lab[ch[i]]
-  }
-
-  # the two child minima for each internal node
-  o   <- order(p)
-  cm  <- lab[ch][o]
-  par <- p[o][c(TRUE, FALSE)]                  # internal nodes n+1, ..., 2n-1
-  a   <- cm[c(TRUE, FALSE)]
-  b   <- cm[c(FALSE, TRUE)]
-
-  age <- branching.times(tree)[par - n]        # ordered by node id n+1, ...
-  ord <- order(-age)                           # oldest (root) first
-  if (any(diff(age[ord]) > -tol))
-    warning("Tied (or nearly tied) coalescence times: ranking is ambiguous.")
-
-  as.vector(rbind(pmin(a, b), pmax(a, b))[, ord])
-}
-
-key_string <- function(key) paste(key, collapse = " ")
-
 n=5#number of leaves in tree
 scale=0.01#scaling factor on branch lengths
 
@@ -45,21 +15,7 @@ for (model in 1:3) {
   trees=trees[(length(trees)/2+1):length(trees)]
   alltrees[[model]]=trees
 
-  clusters=rep(1,length(trees))
-  reps=vector('list',length(trees))
-  k=0
-  if (model==1) {
-    ref   <- sort(trees[[1]]$tip.label)
-    keys  <- vapply(trees, function(t) key_string(ranked_key(t, ref)), character(1))
-  }
-  for (i in seq_along(trees)) {
-    assigned=FALSE
-    if (k>0) for (j in 1:k) {
-      if (model>1  && all.equal(trees[[i]], trees[[reps[[j]]]],use.edge.length = F)) {clusters[i]=j;assigned=TRUE;break}
-      if (model==1 && keys[[i]]==keys[[reps[[j]]]]) {clusters[i]=j;assigned=TRUE;break}
-    }
-    if (!assigned) {k=k+1;reps[[k]]=i;clusters[i]=k}
-  }
+  clusters=topologies(trees,ranked=(model==1))
   allcounts[[model]]=table(clusters)
 }
 save.image('scripts/run_mcmcs.RData')
