@@ -26,7 +26,7 @@ priorT=function(tree,model=2,scale=1) {
     heights=sort(max(heights)-heights)
     difs=diff(heights)
     p=sum(-difs*choose(n:2,2)/scale)#coalescent intervals
-    p=p+(n-1)*log(scale)
+    p=p-(n-1)*log(scale)
   }
 
   if (model==2) {

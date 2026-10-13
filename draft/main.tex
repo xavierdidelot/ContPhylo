@@ -618,19 +618,19 @@ For equidistant tree, we use
 the coalescent model \citep{Kingman1982,Kingman1982a} which is the backward-in-time
 genealogical process for a sample of size $n$ taken from large populations evolving under
 many forward-in-time models, such as the Wright-Fisher model \citep{Wright1931,Fisher1930}. Under this model, any pair of individuals
-finds a common ancestor at rate $\theta$ where $\theta$ is a
+finds a common ancestor at rate $1/\theta$ where $\theta$ is a
 scaling factor on branch lengths. 
 The model starts with the $n$ individuals
 at time zero and builds the tree backward-in-time, so that the tree is equidistant.
 Initially there are $n$ individuals which means $n \choose 2$ pairs 
 and therefore the height of the first node 
-is Exponentially distributed with rate ${n \choose 2} \theta$. Any of the $n \choose 2$
+is Exponentially distributed with rate ${n \choose 2}/\theta$. Any of the $n \choose 2$
 pairs is then likely to coalesce together, leaving $n-1$ ancestors. By repeating this process
 and noting $\tau_k$ for the duration of the time interval during which there are $k$
 ancestors, the density of a tree is obtained as:
 
 \begin{equation}
-p_n^\mathrm{E}(T)=\theta^{n-1}\prod_{i=2}^n \exp\left(-\tau_k {n \choose 2} \theta \right)
+p_n^\mathrm{E}(T)=\prod_{k=2}^n \frac{1}{\theta}\exp\left(-\frac{\tau_k {k \choose 2}}{\theta} \right)
 \label{eq:tree-distrib1}
 \end{equation}
 
