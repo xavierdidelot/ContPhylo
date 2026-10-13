@@ -24,18 +24,17 @@ phylo2contphylo <- function(x,model=2) {
 
   root <- setdiff(edge[, 1], edge[, 2])
 
-  min_tip <- function(node) {
-    if (node <= n) return(node)
-    min(vapply(children[[node]], min_tip, numeric(1)))
+  tip_key <- function(node) {
+    if (node <= n) return(as.numeric(node))
+    min(vapply(children[[node]], tip_key, numeric(1)))
   }
 
   canonicalise <- function(node) {
     if (node <= n) return(invisible())
-    mins <- vapply(children[[node]], min_tip, numeric(1))
-    children[[node]] <<- children[[node]][order(mins)]
+    keys <- vapply(children[[node]], tip_key, numeric(1))
+    children[[node]] <<- children[[node]][order(keys)]
     for (child in children[[node]]) canonicalise(child)
   }
-
   canonicalise(root)
 
   tree_length <- sum(x$edge.length)
@@ -66,10 +65,19 @@ phylo2contphylo <- function(x,model=2) {
     graft_distance <- length_to_parent[sibling]
     grandparent <- parent[p]
 
+    subtree_length <- function(node) {
+      s <- 0
+      for (child in children[[node]]) s <- s + length_to_parent[child] + subtree_length(child)
+      s
+    }
+
     if (is.na(grandparent)) {
       tree_length <- tree_length - pendant_length - graft_distance
       coordinates[i, ] <- c(2 * tree_length + graft_distance,
                             pendant_length)
+      if (model == 3 && i == n) {
+        coordinates[i, ] <- c(NA, pendant_length + graft_distance)
+      }
       root <- sibling
       parent[sibling] <- NA
       children[[p]] <- integer()
@@ -79,7 +87,8 @@ phylo2contphylo <- function(x,model=2) {
       parent[sibling] <- grandparent
       length_to_parent[sibling] <- graft_distance + upper_length
       children[[p]] <- integer()
-      coordinates[i, ] <- c(contour_offset(sibling) + upper_length,
+      coordinates[i, ] <- c(contour_offset(sibling) + length_to_parent[sibling] +
+                              2 * subtree_length(sibling) + graft_distance,
                             pendant_length)
       tree_length <- tree_length - pendant_length
     }

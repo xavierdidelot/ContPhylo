@@ -17,21 +17,29 @@ contphylo2phylo = function(r) {
     if (model==3 && i==n) {
       graft=which(!is.na(m[,1])&is.na(m[,3]))
       graft_dist=0
+      direction=1
     } else if (i==2) {
       graft=1
       graft_dist=abs(coords[i,1])
+      direction=-sign(coords[i,1])
     } else {
       g=contour_traversal(m,coords[i,1])
       graft=g[1]
       graft_dist=g[2]
+      direction=g[3]
     }
     m[i,3]=n+i-1
     if (model==1) {
       m[i,4]=graft_dist+heights[graft]
       heights[n+i-1]=m[i,4]
     } else m[i,4]=exp(coords[i,2])
-    m[n+i-1,1]=graft
-    m[n+i-1,2]=i
+    if (direction==1) {
+      m[n+i-1,1]=i
+      m[n+i-1,2]=graft
+    } else {
+      m[n+i-1,1]=graft
+      m[n+i-1,2]=i
+    }
     m[n+i-1,3]=m[graft,3]
     m[n+i-1,4]=m[graft,4]-graft_dist
     if (!is.na(m[m[graft,3],1])&&m[m[graft,3],1]==graft) m[m[graft,3],1]=n+i-1
@@ -60,13 +68,17 @@ contphylo2phylo = function(r) {
   return(p)
 }
 
-#' Perform contour traversal
+# Perform contour traversal
+# m is matrix with one row per nodes and columns child1,child2,father,dist_to_father
+# d is distance to travel on coutour traversal
+# Return (node,distance,direction)
+# #direction=+1 for down and -1 for up
 contour_traversal = function(m,d) {
   root=which(!is.na(m[,1])&is.na(m[,3]))
   remainder=d
   from=root
   cur=m[root,1]
-  if (d<0) return(c(root,-d))
+  if (d<0) return(c(root,-d,1))
   while (T) {
     if (cur==root && from==m[root,2]) break
     if (cur==root && from==m[root,1]) {
@@ -76,11 +88,11 @@ contour_traversal = function(m,d) {
     }
     if (remainder<m[cur,4] && from==m[cur,3]) {
       remainder=m[cur,4]-remainder
-      return(c(cur,remainder))
+      return(c(cur,remainder,1))
     }
     if (is.na(m[cur,1]) && remainder<m[cur,4]*2) {
       remainder=remainder-m[cur,4]
-      return(c(cur,remainder))
+      return(c(cur,remainder,-1))
     }
     if (is.na(m[cur,1])) {
       remainder=remainder-2*m[cur,4]
@@ -99,7 +111,7 @@ contour_traversal = function(m,d) {
       next
     }
     if (from==m[cur,2]) {
-      if (remainder < m[cur,4]) return(c(cur,remainder))
+      if (remainder < m[cur,4]) return(c(cur,remainder,-1))
       remainder=remainder-m[cur,4]
       from=cur
       cur=m[cur,3]
@@ -108,6 +120,6 @@ contour_traversal = function(m,d) {
     stop('not happening')
     break
   }
-  return(c(cur,remainder))
+  return(c(cur,remainder,-1))
 }
 
