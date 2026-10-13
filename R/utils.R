@@ -66,6 +66,7 @@ summary.contphylo <- function(object, ...) {
 #' @export
 sum_bra_len <- function(x) {
   stopifnot(inherits(x, "contphylo"))
+  if (x$model==1) x=phylo2contphylo(contphylo2phylo(x),2)
   l=0
   coords=x$coordinates
   for (i in 2:nrow(coords)) {

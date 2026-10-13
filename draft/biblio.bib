@@ -1,11 +1,17 @@
 
 
-@book{Paradis2006,
-  author =        {Paradis, Emmanuel},
-  publisher =     {Springer},
-  title =         {Analysis of {{Phylogenetics}} and {{Evolution}} with
-                   {{R}}},
-  year =          {2006},
+@book{liebermanPhylogeneticsTheoryPractice2011,
+  address =       {Hoboken, N.J},
+  edition =       {2nd ed},
+  editor =        {Wiley, E. O. and Lieberman, Bruce S.},
+  publisher =     {Wiley-Blackwell},
+  title =         {Phylogenetics: Theory and Practice of Phylogenetic
+                   Systematics},
+  year =          {2011},
+  doi =           {10.1002/9781118017883},
+  isbn =          {9780470905968 9781118017869 9781118017883
+                   9781118017876 9781283026642 9781118148105
+                   9786613026644},
 }
 
 @article{hohnaGuidedTreeTopology2012,
@@ -79,6 +85,48 @@
   issn =          {1063-5157, 1076-836X},
 }
 
+@article{meyerAdaptiveTreeProposals2021,
+  author =        {Meyer, X},
+  editor =        {Brown, Jeremy},
+  journal =       {Systematic Biology},
+  month =         aug,
+  number =        {5},
+  pages =         {1015--1032},
+  title =         {Adaptive {{Tree Proposals}} for {{Bayesian
+                   Phylogenetic Inference}}},
+  volume =        {70},
+  year =          {2021},
+  abstract =      {Abstract Bayesian inference of phylogeny with Markov
+                   chain Monte Carlo plays a key role in the study of
+                   evolution. Yet, this method still suffers from a
+                   practical challenge identified more than two decades
+                   ago: designing tree topology proposals that
+                   efficiently sample tree spaces. In this article, I
+                   introduce the concept of adaptive tree proposals for
+                   unrooted topologies, that is, tree proposals adapting
+                   to the posterior distribution as it is estimated. I
+                   use this concept to elaborate two adaptive variants
+                   of existing proposals and an adaptive proposal based
+                   on a novel design philosophy in which the structure
+                   of the proposal is informed by the posterior
+                   distribution of trees. I investigate the performance
+                   of these proposals by first presenting a metric that
+                   captures the performance of each proposal within a
+                   mixture of proposals. Using this metric, I compare
+                   the performance of the adaptive proposals to the
+                   performance of standard and parsimony-guided
+                   proposals on 11 empirical data sets. Using adaptive
+                   proposals led to consistent performance gains and
+                   resulted in up to 18-fold increases in mixing
+                   efficiency and 6-fold increases in convergence rate
+                   without increasing the computational cost of these
+                   analyses. [Bayesian phylogenetic inference; Markov
+                   chain Monte Carlo; posterior probability
+                   distribution; tree proposals.]},
+  doi =           {10.1093/sysbio/syab004},
+  issn =          {1063-5157, 1076-836X},
+}
+
 @article{Billera2001,
   author =        {Billera, Louis J. and Holmes, Susan P. and
                    Vogtmann, Karen},
@@ -123,6 +171,44 @@
                    log-posterior has discontinuous derivatives can
                    greatly improve efficiency.},
   doi =           {10.48550/arXiv.1702.07814},
+}
+
+@article{Helekal2025,
+  author =        {Helekal, David and Koskela, Jere and Didelot, Xavier},
+  journal =       {Systematic Biology},
+  pages =         {897--916},
+  title =         {Inference of Multiple Mergers While Dating a Pathogen
+                   Phylogeny},
+  volume =        {74},
+  year =          {2025},
+  abstract =      {The vast majority of pathogen phylogenetic studies do
+                   not consider the possibility of multiple merger
+                   events being present, where a single node of the tree
+                   leads to more than two descendent branches. These
+                   events are however likely to occur when studying a
+                   relatively small population or if there is high
+                   variability in the reproductive chances. Here we
+                   consider the problem of detecting the presence of
+                   multiple mergers in the context of dating a
+                   phylogeny, that is determining the date of each of
+                   the nodes. We use the Lambda-coalescent theory as a
+                   modelling framework and show how Bayesian inference
+                   can be efficiently performed using a Billera-Holmes-
+                   Vogtmann space embedding and a customised Markov
+                   Chain Monte Carlo sampling scheme. We applied this
+                   new analysis methodology to a large number of
+                   simulated datasets to show that it is possible to
+                   infer if and when multiple merger events occurred,
+                   and that the phylogenetic dating is improved as a
+                   result of taking this information into account. We
+                   also analysed real datasets of Vibrio cholerae and
+                   Mycobacterium tuberculosis to demonstrate the
+                   relevance of our approach to real pathogen
+                   evolutionary epidemiology. We have implemented our
+                   new methodology in a R package which is freely
+                   available at https://github.com/dhelekal/MMCTime.},
+  doi =           {10.1093/sysbio/syaf003},
+  issn =          {1063-5157},
 }
 
 @article{Felsenstein1978b,
@@ -225,6 +311,266 @@
                    density x7!8=\dh 2 \th{} x\TH 3, xX0.},
   doi =           {10.1016/j.tpb.2007.05.003},
   issn =          {00405809},
+}
+
+@article{Haario2001,
+  author =        {Haario, Heikki and Saksman, Eero and
+                   Tamminen, Johanna},
+  journal =       {Bernoulli},
+  number =        {2},
+  pages =         {223--242},
+  title =         {An Adaptive {{Metropolis}} Algorithm},
+  volume =        {7},
+  year =          {2001},
+  abstract =      {A proper choice of a proposal distribution for Markov
+                   chain Monte Carlo methods, for example for the
+                   Metropolis-Hastings algorithm, is well known to be a
+                   crucial factor for the convergence of the algorithm.
+                   In this paper we introduce an adaptive Metropolis
+                   (AM) algorithm, where the Gaussian proposal
+                   distribution is updated along the process using the
+                   full information cumulated so far. Due to the
+                   adaptive nature of the process, the AM algorithm is
+                   non-Markovian, but we establish here that it has the
+                   correct ergodic properties. We also include the
+                   results of our numerical tests, which indicate that
+                   the AM algorithm competes well with traditional
+                   Metropolis-Hastings algorithms, and demonstrate that
+                   the AM algorithm is easy to use in practical
+                   computation. \copyright{} 2001 ISI/BS.},
+  doi =           {10.2307/3318737},
+  issn =          {13507265},
+}
+
+@article{Vihola2011,
+  author =        {Vihola, Matti},
+  journal =       {Stochastic Processes and their Applications},
+  number =        {12},
+  pages =         {2839--2860},
+  publisher =     {Elsevier B.V.},
+  title =         {On the Stability and Ergodicity of Adaptive Scaling
+                   {{Metropolis}} Algorithms},
+  volume =        {121},
+  year =          {2011},
+  abstract =      {The stability and ergodicity properties of two
+                   adaptive random walk Metropolis algorithms are
+                   considered. Both algorithms adjust the scaling of the
+                   proposal distribution continuously based on the
+                   observed acceptance probability. Unlike the
+                   previously proposed forms of the algorithms, the
+                   adapted scaling parameter is not constrained within a
+                   predefined compact interval. The first algorithm is
+                   based on scale adaptation only, while the second one
+                   also incorporates covariance adaptation. A strong law
+                   of large numbers is shown to hold assuming that the
+                   target density is smooth enough and has either
+                   compact support or super-exponentially decaying
+                   tails. \copyright{} 2011 Elsevier B.V. All rights
+                   reserved.},
+  doi =           {10.1016/j.spa.2011.08.006},
+  issn =          {03044149},
+}
+
+@article{Andrieu2008,
+  author =        {Andrieu, Christophe and Thoms, Johannes},
+  journal =       {Statistics and Computing},
+  number =        {4},
+  pages =         {343--373},
+  title =         {A Tutorial on Adaptive {{MCMC}}},
+  volume =        {18},
+  year =          {2008},
+  abstract =      {We review adaptive Markov chain Monte Carlo
+                   algorithms (MCMC) as a mean to optimise their
+                   performance. Using simple toy examples we review
+                   their theoretical underpinnings, and in particular
+                   show why adaptive MCMC algorithms might fail when
+                   some fundamental properties are not satisfied. This
+                   leads to guidelines concerning the design of correct
+                   algorithms. We then review criteria and the useful
+                   framework of stochastic approximation, which allows
+                   one to systematically optimise generally used
+                   criteria, but also analyse the properties of adaptive
+                   MCMC algorithms. We then propose a series of novel
+                   adaptive algorithms which prove to be robust and
+                   reliable in practice. These algorithms are applied to
+                   artificial and high dimensional scenarios, but also
+                   to the classic mine disaster dataset inference
+                   problem. \copyright{} 2008 Springer Science+Business
+                   Media, LLC.},
+  doi =           {10.1007/s11222-008-9110-y},
+  issn =          {09603174},
+}
+
+@article{Degnan2005,
+  author =        {Degnan, James H and Salter, Laura A},
+  journal =       {Evolution},
+  pages =         {24--37},
+  title =         {Gene Tree Distributions under the Coalescent Process},
+  volume =        {59},
+  year =          {2005},
+  abstract =      {Under the coalescent model for population divergence,
+                   lineage sorting can cause considerable variability in
+                   gene trees generated from any given species tree. In
+                   this paper, we derive a method for computing the
+                   distribution of gene tree topologies given a
+                   bifurcating species tree for trees with an arbitrary
+                   number of taxa in the case that there is one gene
+                   sampled per species. Applications for gene tree
+                   distributions include determining exact probabilities
+                   of topological equivalence between gene trees and
+                   species trees and inferring species trees from
+                   multiple datasets. In addition, we examine the shapes
+                   of gene tree distributions and their sensitivity to
+                   changes in branch lengths, species tree shape, and
+                   tree size. The method for computing gene tree
+                   distributions is implemented in the computer program
+                   COAL.},
+}
+
+@article{nascimentoBiologistsGuideBayesian2017,
+  author =        {Nascimento, Fabr{\'i}cia F. and Reis, Mario Dos and
+                   Yang, Ziheng},
+  journal =       {Nature Ecology and Evolution},
+  number =        {10},
+  pages =         {1446--1454},
+  publisher =     {Springer US},
+  title =         {A Biologist's Guide to {{Bayesian}} Phylogenetic
+                   Analysis},
+  volume =        {1},
+  year =          {2017},
+  abstract =      {Bayesian methods have become very popular in
+                   molecular phylogenetics due to the availability of
+                   user-friendly software for running sophisticated
+                   models of evolution. However, Bayesian phylogenetic
+                   models are complex, and analyses are often carried
+                   out using default settings, which may not be
+                   appropriate. Here we summarize the major features of
+                   Bayesian phylogenetic inference and discuss Bayesian
+                   computation using Markov chain Monte Carlo (MCMC)
+                   sampling, the diagnosis of an MCMC run, and ways of
+                   summarizing the MCMC sample. We discuss the
+                   specification of the prior, the choice of the
+                   substitution model and partitioning of the data.
+                   Finally, we provide a list of common Bayesian
+                   phylogenetic software packages and recommend
+                   appropriate applications.},
+  doi =           {10.1038/s41559-017-0280-x},
+  isbn =          {2397-334X},
+  issn =          {2397334X},
+}
+
+@article{Felsenstein1981,
+  author =        {Felsenstein, Joseph},
+  journal =       {Journal of Molecular Evolution},
+  number =        {6},
+  pages =         {368--376},
+  title =         {Evolutionary Trees from {{DNA}} Sequences: {{A}}
+                   Maximum Likelihood Approach},
+  volume =        {17},
+  year =          {1981},
+  abstract =      {Summary The application of maximum likelihood
+                   techniques to the estimation of evolutionary trees
+                   from nucleic acid sequence data is discussed. A
+                   computationally feasible method for finding such
+                   maximum likelihood estimates is developed, and a
+                   computer program is available. This method has
+                   advantages over the traditional parsimony algorithms,
+                   which can give misleading results if rates of
+                   evolution differ in different lineages. It also
+                   allows the testing of hypotheses about the constancy
+                   of evolutionary rates by likelihood ratio tests, and
+                   gives rough indication of the error of the estimate
+                   of the tree.},
+  doi =           {10.1007/BF01734359},
+  isbn =          {0022-2844 (Print)\textbackslash r0022-2844 (Linking)},
+  issn =          {00222844},
+}
+
+@incollection{Jukes1969,
+  author =        {Jukes, T.H. and Cantor, C.R.},
+  booktitle =     {Mammalian Protein Metabolism},
+  pages =         {21--132},
+  publisher =     {Academic Press},
+  title =         {Evolution of Protein Molecules},
+  year =          {1969},
+}
+
+@article{Plummer2006,
+  author =        {Plummer, Martyn and Best, Nicky and Cowles, Kate and
+                   Vines, Karen},
+  journal =       {R News},
+  number =        {March},
+  pages =         {7--11},
+  title =         {{{CODA}}: Convergence Diagnosis and Output Analysis
+                   for {{MCMC}}},
+  volume =        {6},
+  year =          {2006},
+  abstract =      {[1st paragraph] At first sight, Bayesian inference
+                   with Markov Chain Monte Carlo (MCMC) appears to be
+                   straightforward. The user defines a full probability
+                   model, perhaps using one of the programs discussed in
+                   this issue; an underlying sampling engine takes the
+                   model definition and returns a sequence of dependent
+                   samples from the posterior distribution of the model
+                   parameters, given the supplied data. The user can
+                   derive any summary of the posterior distribution from
+                   this sample. For example, to calculate a 95\%
+                   credible interval for a parameter {$\alpha$}, it
+                   suffices to take 1000 MCMC iterations of {$\alpha$}
+                   and sort them so that {$\alpha$}121000. The credible
+                   interval estimate is then ({$\alpha$}25,
+                   {$\alpha$}975). However, there is a price to be paid
+                   for this simplicity. Unlike most numerical methods
+                   used in statistical inference, MCMC does not give a
+                   clear indication of whether it has converged. The
+                   underlying Markov chain theory only guarantees that
+                   the distribution of the output will converge to the
+                   posterior in the limit as the number of iterations
+                   increases to infinity. The user is generally ignorant
+                   about how quickly convergence occurs, and therefore
+                   has to fall back on post hoc testing of the sampled
+                   output. By convention, the sample is divided into two
+                   parts: a ``burn in'' period during which all samples
+                   are discarded, and the remainder of the run in which
+                   the chain is considered to have converged
+                   sufficiently close to the limiting distribution to be
+                   used. Two questions then arise: 1. How long should
+                   the burn in period be? 2. How many samples are
+                   required to accurately estimate posterior quantities
+                   of interest? The coda package for R contains a set of
+                   functions designed to help the user answer these
+                   questions. Some of these convergence diagnostics are
+                   simple graphical ways of summarizing the data. Others
+                   are formal statistical tests.},
+  doi =           {10.1159/000323281},
+  isbn =          {1609-3631},
+  issn =          {1662-4025},
+}
+
+@article{Warren2017,
+  author =        {Warren, Dan L. and Geneva, Anthony J. and
+                   Lanfear, Robert},
+  journal =       {Molecular Biology and Evolution},
+  month =         jan,
+  pages =         {msw279},
+  title =         {{{RWTY}} ({{R We There Yet}}): {{An R}} Package for
+                   Examining Convergence of {{Bayesian}} Phylogenetic
+                   Analyses},
+  year =          {2017},
+  doi =           {10.1093/molbev/msw279},
+  issn =          {0737-4038, 1537-1719},
+}
+
+@article{Bouckaert2010,
+  author =        {Bouckaert, Remco R},
+  journal =       {Bioinformatics},
+  number =        {10},
+  pages =         {1372--1373},
+  title =         {{{DensiTree}} : Making Sense of Sets of Phylogenetic
+                   Trees},
+  volume =        {26},
+  year =          {2010},
+  doi =           {10.1093/bioinformatics/btq110},
 }
 
 @article{Paradis2019,
@@ -342,210 +688,97 @@
   issn =          {1367-4811, 1367-4803},
 }
 
-@article{Vihola2011,
-  author =        {Vihola, Matti},
-  journal =       {Stochastic Processes and their Applications},
-  number =        {12},
-  pages =         {2839--2860},
-  publisher =     {Elsevier B.V.},
-  title =         {On the Stability and Ergodicity of Adaptive Scaling
-                   {{Metropolis}} Algorithms},
-  volume =        {121},
-  year =          {2011},
-  abstract =      {The stability and ergodicity properties of two
-                   adaptive random walk Metropolis algorithms are
-                   considered. Both algorithms adjust the scaling of the
-                   proposal distribution continuously based on the
-                   observed acceptance probability. Unlike the
-                   previously proposed forms of the algorithms, the
-                   adapted scaling parameter is not constrained within a
-                   predefined compact interval. The first algorithm is
-                   based on scale adaptation only, while the second one
-                   also incorporates covariance adaptation. A strong law
-                   of large numbers is shown to hold assuming that the
-                   target density is smooth enough and has either
-                   compact support or super-exponentially decaying
-                   tails. \copyright{} 2011 Elsevier B.V. All rights
-                   reserved.},
-  doi =           {10.1016/j.spa.2011.08.006},
-  issn =          {03044149},
+@misc{adaptMCMC,
+  author =        {Scheidegger, Andreas},
+  title =         {{{adaptMCMC}}: {{Implementation}} of a {{Generic
+                   Adaptive Monte Carlo Markov Chain Sampler}}},
+  year =          {2012},
 }
 
-@article{Andrieu2008,
-  author =        {Andrieu, Christophe and Thoms, Johannes},
-  journal =       {Statistics and Computing},
-  number =        {4},
-  pages =         {343--373},
-  title =         {A Tutorial on Adaptive {{MCMC}}},
-  volume =        {18},
-  year =          {2008},
-  abstract =      {We review adaptive Markov chain Monte Carlo
-                   algorithms (MCMC) as a mean to optimise their
-                   performance. Using simple toy examples we review
-                   their theoretical underpinnings, and in particular
-                   show why adaptive MCMC algorithms might fail when
-                   some fundamental properties are not satisfied. This
-                   leads to guidelines concerning the design of correct
-                   algorithms. We then review criteria and the useful
-                   framework of stochastic approximation, which allows
-                   one to systematically optimise generally used
-                   criteria, but also analyse the properties of adaptive
-                   MCMC algorithms. We then propose a series of novel
-                   adaptive algorithms which prove to be robust and
-                   reliable in practice. These algorithms are applied to
-                   artificial and high dimensional scenarios, but also
-                   to the classic mine disaster dataset inference
-                   problem. \copyright{} 2008 Springer Science+Business
-                   Media, LLC.},
-  doi =           {10.1007/s11222-008-9110-y},
-  issn =          {09603174},
+@article{Ronquist2012,
+  author =        {Ronquist, Fredrik and Teslenko, Maxim and
+                   {van der Mark}, Paul and Ayres, Daniel L and
+                   Darling, Aaron and H{\"o}hna, Sebastian and
+                   Larget, Bret and Liu, Liang and Suchard, Marc A and
+                   Huelsenbeck, John P},
+  journal =       {Systematic biology},
+  month =         may,
+  number =        {3},
+  pages =         {539--42},
+  title =         {{{MrBayes}} 3.2: Efficient {{Bayesian}} Phylogenetic
+                   Inference and Model Choice across a Large Model
+                   Space.},
+  volume =        {61},
+  year =          {2012},
+  abstract =      {Since its introduction in 2001, MrBayes has grown in
+                   popularity as a software package for Bayesian
+                   phylogenetic inference using Markov chain Monte Carlo
+                   (MCMC) methods. With this note, we announce the
+                   release of version 3.2, a major upgrade to the latest
+                   official release presented in 2003. The new version
+                   provides convergence diagnostics and allows multiple
+                   analyses to be run in parallel with convergence
+                   progress monitored on the fly. The introduction of
+                   new proposals and automatic optimization of tuning
+                   parameters has improved convergence for many
+                   problems. The new version also sports significantly
+                   faster likelihood calculations through streaming
+                   single-instruction-multiple-data extensions (SSE) and
+                   support of the BEAGLE library, allowing likelihood
+                   calculations to be delegated to graphics processing
+                   units (GPUs) on compatible hardware. Speedup factors
+                   range from around 2 with SSE code to more than 50
+                   with BEAGLE for codon problems. Checkpointing across
+                   all models allows long runs to be completed even when
+                   an analysis is prematurely terminated. New models
+                   include relaxed clocks, dating, model averaging
+                   across time-reversible substitution models, and
+                   support for hard, negative, and partial (backbone)
+                   tree constraints. Inference of species trees from
+                   gene trees is supported by full incorporation of the
+                   Bayesian estimation of species trees (BEST)
+                   algorithms. Marginal model likelihoods for Bayes
+                   factor tests can be estimated accurately across the
+                   entire model space using the stepping stone method.
+                   The new version provides more output options than
+                   previously, including samples of ancestral states,
+                   site rates, site d(N)/d(S) rations, branch rates, and
+                   node dates. A wide range of statistics on tree
+                   parameters can also be output for visualization in
+                   FigTree and compatible software.},
+  doi =           {10.1093/sysbio/sys029},
+  issn =          {1076-836X},
 }
 
-@article{Plummer2006,
-  author =        {Plummer, Martyn and Best, Nicky and Cowles, Kate and
-                   Vines, Karen},
-  journal =       {R News},
-  number =        {March},
-  pages =         {7--11},
-  title =         {{{CODA}}: Convergence Diagnosis and Output Analysis
-                   for {{MCMC}}},
-  volume =        {6},
-  year =          {2006},
-  abstract =      {[1st paragraph] At first sight, Bayesian inference
-                   with Markov Chain Monte Carlo (MCMC) appears to be
-                   straightforward. The user defines a full probability
-                   model, perhaps using one of the programs discussed in
-                   this issue; an underlying sampling engine takes the
-                   model definition and returns a sequence of dependent
-                   samples from the posterior distribution of the model
-                   parameters, given the supplied data. The user can
-                   derive any summary of the posterior distribution from
-                   this sample. For example, to calculate a 95\%
-                   credible interval for a parameter {$\alpha$}, it
-                   suffices to take 1000 MCMC iterations of {$\alpha$}
-                   and sort them so that {$\alpha$}121000. The credible
-                   interval estimate is then ({$\alpha$}25,
-                   {$\alpha$}975). However, there is a price to be paid
-                   for this simplicity. Unlike most numerical methods
-                   used in statistical inference, MCMC does not give a
-                   clear indication of whether it has converged. The
-                   underlying Markov chain theory only guarantees that
-                   the distribution of the output will converge to the
-                   posterior in the limit as the number of iterations
-                   increases to infinity. The user is generally ignorant
-                   about how quickly convergence occurs, and therefore
-                   has to fall back on post hoc testing of the sampled
-                   output. By convention, the sample is divided into two
-                   parts: a ``burn in'' period during which all samples
-                   are discarded, and the remainder of the run in which
-                   the chain is considered to have converged
-                   sufficiently close to the limiting distribution to be
-                   used. Two questions then arise: 1. How long should
-                   the burn in period be? 2. How many samples are
-                   required to accurately estimate posterior quantities
-                   of interest? The coda package for R contains a set of
-                   functions designed to help the user answer these
-                   questions. Some of these convergence diagnostics are
-                   simple graphical ways of summarizing the data. Others
-                   are formal statistical tests.},
-  doi =           {10.1159/000323281},
-  isbn =          {1609-3631},
-  issn =          {1662-4025},
-}
-
-@article{Warren2017,
-  author =        {Warren, Dan L. and Geneva, Anthony J. and
-                   Lanfear, Robert},
-  journal =       {Molecular Biology and Evolution},
-  month =         jan,
-  pages =         {msw279},
-  title =         {{{RWTY}} ({{R We There Yet}}): {{An R}} Package for
-                   Examining Convergence of {{Bayesian}} Phylogenetic
-                   Analyses},
-  year =          {2017},
-  doi =           {10.1093/molbev/msw279},
-  issn =          {0737-4038, 1537-1719},
-}
-
-@article{nascimentoBiologistsGuideBayesian2017,
-  author =        {Nascimento, Fabr{\'i}cia F. and Reis, Mario Dos and
-                   Yang, Ziheng},
-  journal =       {Nature Ecology and Evolution},
-  number =        {10},
-  pages =         {1446--1454},
-  publisher =     {Springer US},
-  title =         {A Biologist's Guide to {{Bayesian}} Phylogenetic
-                   Analysis},
-  volume =        {1},
-  year =          {2017},
-  abstract =      {Bayesian methods have become very popular in
-                   molecular phylogenetics due to the availability of
-                   user-friendly software for running sophisticated
-                   models of evolution. However, Bayesian phylogenetic
-                   models are complex, and analyses are often carried
-                   out using default settings, which may not be
-                   appropriate. Here we summarize the major features of
-                   Bayesian phylogenetic inference and discuss Bayesian
-                   computation using Markov chain Monte Carlo (MCMC)
-                   sampling, the diagnosis of an MCMC run, and ways of
-                   summarizing the MCMC sample. We discuss the
-                   specification of the prior, the choice of the
-                   substitution model and partitioning of the data.
-                   Finally, we provide a list of common Bayesian
-                   phylogenetic software packages and recommend
-                   appropriate applications.},
-  doi =           {10.1038/s41559-017-0280-x},
-  isbn =          {2397-334X},
-  issn =          {2397334X},
-}
-
-@book{Gilks1996,
-  author =        {Gilks, W R and Richardson, S and
-                   Spiegelhalter, David J},
-  publisher =     {Chapman \& Hall/CRC},
-  title =         {Markov {{Chain Monte Carlo}} in {{Practice}}},
-  volume =        {39},
-  year =          {1996},
-  abstract =      {In a family study of breast cancer, epidemiologists
-                   in Southern California increase the power for
-                   detecting a gene-environment interaction. In Gambia,
-                   a study helps a vaccination program reduce the
-                   incidence of Hepatitis B carriage. Archaeologists in
-                   Austria place a Bronze Age site in its true temporal
-                   location on the calendar scale. And in France,
-                   researchers map a rare disease with relatively little
-                   variation.Each of these studies applied Markov chain
-                   Monte Carlo methods to produce more accurate and
-                   inclusive results. General state-space Markov chain
-                   theory has seen several developments that have made
-                   it both more accessible and more powerful to the
-                   general statistician. Markov Chain Monte Carlo in
-                   Practice introduces MCMC methods and their
-                   applications, providing some theoretical background
-                   as well. The authors are researchers who have made
-                   key contributions in the recent development of MCMC
-                   methodology and its application.Considering the broad
-                   audience, the editors emphasize practice rather than
-                   theory, keeping the technical content to a minimum.
-                   The examples range from the simplest application,
-                   Gibbs sampling, to more complex applications. The
-                   first chapter contains enough information to allow
-                   the reader to start applying MCMC in a basic way. The
-                   following chapters cover main issues, important
-                   concepts and results, techniques for implementing
-                   MCMC, improving its performance, assessing model
-                   adequacy, choosing between models, and applications
-                   and their domains.Markov Chain Monte Carlo in
-                   Practice is a thorough, clear introduction to the
-                   methodology and applications of this simple idea with
-                   enormous potential. It shows the importance of MCMC
-                   in real applications, such as archaeology, astronomy,
-                   biostatistics, genetics, epidemiology, and image
-                   analysis, and provides an excellent base for MCMC to
-                   be applied to other fields as well.},
-  doi =           {10.2307/1271145},
-  isbn =          {0-412-05551-1},
-  issn =          {00401706},
+@article{baeleBEASTBayesianPhylogenetic2025,
+  author =        {Baele, Guy and Ji, Xiang and Hassler, Gabriel W. and
+                   McCrone, John T. and Shao, Yucai and Zhang, Zhenyu and
+                   Holbrook, Andrew J. and Lemey, Philippe and
+                   Drummond, Alexei J. and Rambaut, Andrew and
+                   Suchard, Marc A.},
+  journal =       {Nature Methods},
+  month =         aug,
+  number =        {8},
+  pages =         {1653--1656},
+  title =         {{{BEAST X}} for {{Bayesian}} Phylogenetic,
+                   Phylogeographic and Phylodynamic Inference},
+  volume =        {22},
+  year =          {2025},
+  abstract =      {Abstract Here we present the open-source and
+                   cross-platform BEAST X software that combines
+                   molecular phylogenetic reconstruction with complex
+                   trait evolution, divergence-time dating and
+                   coalescent demographics in an efficient statistical
+                   inference engine. BEAST X significantly advances the
+                   flexibility and scalability of evolutionary models
+                   supported. Novel clock and substitution models
+                   leverage a large variety of evolutionary processes;
+                   discrete, continuous and mixed traits with
+                   missingness and measurement errors; and fast,
+                   gradient-informed integration techniques that rapidly
+                   traverse high-dimensional parameter spaces.},
+  doi =           {10.1038/s41592-025-02751-x},
+  issn =          {1548-7091, 1548-7105},
 }
 
 @article{robertsOptimalScalingDiscrete1998,
@@ -632,81 +865,103 @@
                    it fails.},
 }
 
-@article{Carpenter2017,
-  author =        {Carpenter, Bob and Gelman, Andrew and
-                   Hoffman, Matthew D. and Lee, Daniel and Goodrich, Ben and
-                   Betancourt, Michael and Brubaker, Marcus A. and
-                   Guo, Jiqiang and Li, Peter and Riddell, Allen},
-  journal =       {Journal of Statistical Software},
-  number =        {1},
-  title =         {Stan: {{A}} Probabilistic Programming Language},
-  volume =        {76},
-  year =          {2017},
-  abstract =      {Stan is a probabilistic programming language for
-                   specifying statistical models. A Stan program
-                   imperatively defines a log probability function over
-                   parameters conditioned on specified data and
-                   constants. As of version 2.14.0, Stan provides full
-                   Bayesian inference for continuous-variable models
-                   through Markov chain Monte Carlo methods such as the
-                   No-U-Turn sampler, an adaptive form of Hamiltonian
-                   Monte Carlo sampling. Penalized maximum likelihood
-                   estimates are calculated using optimization methods
-                   such as the limited memory
-                   Broyden-Fletcher-Goldfarb-Shanno algorithm. Stan is
-                   also a platform for computing log densities and their
-                   gradients and Hessians, which can be used in
-                   alternative algorithms such as variational Bayes,
-                   expectation propagation, and marginal inference using
-                   approximate integration. To this end, Stan is set up
-                   so that the densities, gradients, and Hessians, along
-                   with intermediate quantities of the algorithm such as
-                   acceptance probabilities, are easily accessible. Stan
-                   can be called from the command line using the cmdstan
-                   package, through R using the rstan package, and
-                   through Python using the pystan package. All three
-                   interfaces support sampling and optimization-based
-                   inference with diagnostics and posterior analysis.
-                   rstan and pystan also provide access to log
-                   probabilities, gradients, Hessians, parameter
-                   transforms, and specialized plotting.},
-  doi =           {10.18637/jss.v076.i01},
-  issn =          {15487660},
+@article{johnsonBillionscaleSimilaritySearch2019,
+  author =        {Johnson, Jeff and Douze, Matthijs and
+                   J{\'e}gou, Herv{\'e}},
+  journal =       {IEEE transactions on big data},
+  pages =         {535--547},
+  publisher =     {arXiv},
+  title =         {Billion-Scale Similarity Search with {{GPUs}}},
+  year =          {2019},
+  abstract =      {Similarity search finds application in specialized
+                   database systems handling complex data such as images
+                   or videos, which are typically represented by
+                   high-dimensional features and require specific
+                   indexing structures. This paper tackles the problem
+                   of better utilizing GPUs for this task. While GPUs
+                   excel at data-parallel tasks, prior approaches are
+                   bottlenecked by algorithms that expose less
+                   parallelism, such as k-min selection, or make poor
+                   use of the memory hierarchy. We propose a design for
+                   k-selection that operates at up to 55\% of
+                   theoretical peak performance, enabling a nearest
+                   neighbor implementation that is 8.5\texttimes{}
+                   faster than prior GPU state of the art. We apply it
+                   in different similarity search scenarios, by
+                   proposing optimized design for brute-force,
+                   approximate and compressed-domain search based on
+                   product quantization. In all these setups, we
+                   outperform the state of the art by large margins. Our
+                   implementation enables the construction of a high
+                   accuracy k-NN graph on 95 million images from the
+                   Yfcc100M dataset in 35 minutes, and of a graph
+                   connecting 1 billion vectors in less than 12 hours on
+                   4 Maxwell Titan X GPUs. We have open-sourced our
+                   approach1 for the sake of comparison and
+                   reproducibility.},
+  doi =           {10.48550/arXiv.1702.08734},
 }
 
-@article{Felsenstein1981,
-  author =        {Felsenstein, Joseph},
-  journal =       {Journal of Molecular Evolution},
-  number =        {6},
-  pages =         {368--376},
-  title =         {Evolutionary Trees from {{DNA}} Sequences: {{A}}
-                   Maximum Likelihood Approach},
-  volume =        {17},
-  year =          {1981},
-  abstract =      {Summary The application of maximum likelihood
-                   techniques to the estimation of evolutionary trees
-                   from nucleic acid sequence data is discussed. A
-                   computationally feasible method for finding such
-                   maximum likelihood estimates is developed, and a
-                   computer program is available. This method has
-                   advantages over the traditional parsimony algorithms,
-                   which can give misleading results if rates of
-                   evolution differ in different lineages. It also
-                   allows the testing of hypotheses about the constancy
-                   of evolutionary rates by likelihood ratio tests, and
-                   gives rough indication of the error of the estimate
-                   of the tree.},
-  doi =           {10.1007/BF01734359},
-  isbn =          {0022-2844 (Print)\textbackslash r0022-2844 (Linking)},
-  issn =          {00222844},
-}
-
-@incollection{Jukes1969,
-  author =        {Jukes, T.H. and Cantor, C.R.},
-  booktitle =     {Mammalian Protein Metabolism},
-  pages =         {21--132},
-  publisher =     {Academic Press},
-  title =         {Evolution of Protein Molecules},
-  year =          {1969},
+@inproceedings{wangMilvusPurposeBuiltVector2021,
+  address =       {Virtual Event China},
+  author =        {Wang, Jianguo and Yi, Xiaomeng and Guo, Rentong and
+                   Jin, Hai and Xu, Peng and Li, Shengjun and
+                   Wang, Xiangyu and Guo, Xiangzhou and Li, Chengming and
+                   Xu, Xiaohai and Yu, Kun and Yuan, Yuxing and
+                   Zou, Yinghao and Long, Jiquan and Cai, Yudong and
+                   Li, Zhenxiang and Zhang, Zhifeng and Mo, Yihua and
+                   Gu, Jun and Jiang, Ruiyi and Wei, Yi and
+                   Xie, Charles},
+  booktitle =     {Proceedings of the 2021 {{International Conference}}
+                   on {{Management}} of {{Data}}},
+  month =         jun,
+  pages =         {2614--2627},
+  publisher =     {ACM},
+  title =         {Milvus: {{A Purpose-Built Vector Data Management
+                   System}}},
+  year =          {2021},
+  abstract =      {Recently, there has been a pressing need to manage
+                   high-dimensional vector data in data science and AI
+                   applications. This trend is fueled by the
+                   proliferation of unstructured data and machine
+                   learning (ML), where ML models usually transform
+                   unstructured data into feature vectors for data
+                   analytics, e.g., product recommendation. Existing
+                   systems and algorithms for managing vector data have
+                   two limitations: (1) They incur serious performance
+                   issue when handling large-scale and dynamic vector
+                   data; and (2) They provide limited functionalities
+                   that cannot meet the requirements of versatile
+                   applications. This paper presents Milvus, a
+                   purpose-built data management system to e\dbend
+                   ciently manage large-scale vector data. Milvus
+                   supports easy-to-use application interfaces
+                   (including SDKs and RESTful APIs); optimizes for the
+                   heterogeneous computing platform with modern CPUs and
+                   GPUs; enables advanced query processing beyond simple
+                   vector similarity search; handles dynamic data for
+                   fast updates while ensuring e\dbend cient query
+                   processing; and distributes data across multiple
+                   nodes to achieve scalability and availability. We
+                   \dbend rst describe the design and implementation of
+                   Milvus. Then we demonstrate the real-world use cases
+                   supported by Milvus. In particular, we build a series
+                   of 10 applications (e.g., image/video search,
+                   chemical structure analysis, COVID-19 dataset search,
+                   personalized recommendation, biological multi-factor
+                   authentication, intelligent question answering) on
+                   top of Milvus. Finally, we experimentally evaluate
+                   Milvus with a wide range of systems including two
+                   open source systems (Vearch and Microsoft SPTAG) and
+                   three commercial systems. Experiments show that
+                   Milvus is up to two orders of magnitude faster than
+                   the competitors while providing more functionalities.
+                   Now Milvus is deployed by hundreds of organizations
+                   worldwide and it is also recognized as an
+                   incubation-stage project of the LF AI \& Data
+                   Foundation. Milvus is open-sourced at https://
+                   github.com/ milvus-io/ milvus.},
+  doi =           {10.1145/3448016.3457550},
+  isbn =          {978-1-4503-8343-1},
 }
 

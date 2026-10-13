@@ -43,12 +43,6 @@ dev.off()
 browseURL('mcmc.pdf')
 
 if (F) {
-  #Computing the approximate topological ESS from rwty
-  library(rwty)
-  filename=tempfile()
-  f=file(filename,'w')
-  for (i in 1:length(trees2)) write.tree(trees2[[i]],file=f,append=T)
-  close(f)
-  r=load.trees(filename,type = "newick")
-  print(topological.approx.ess(r,burnin=0))
+  source('scripts/topo_ess.R')
+  topo_ess(trees)
 }
