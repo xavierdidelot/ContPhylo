@@ -503,7 +503,7 @@ Let $C=\left((a_i,b_i)_{i=2,\ldots,n-1},c\right) \in
 First construct a rooted tree $T_{n-1}$ on leaves $1,\ldots,n-1$ using
 Algorithm~\ref{alg:decoding2}, with leaf $1$ as the initial leaf and
 parameters $(a_i,b_i)_{i=2,\ldots,n-1}$. Then attach leaf $n$ directly to the
-root of $R$ by a branch of length $\exp(c)$, and then forget the root
+root of $T_{n-1}$ by a branch of length $\exp(c)$, and then forget the root
 designation. The former root has degree three and therefore becomes an
 ordinary internal node of the resulting unrooted tree. This construction
 is detailed in Algorithm~\ref{alg:decoding3} and
@@ -630,7 +630,7 @@ and noting $\tau_k$ for the duration of the time interval during which there are
 ancestors, the density of a tree is obtained as:
 
 \begin{equation}
-p_n^\mathrm{E}(T)=\prod_{i=2}^n \exp\left(-\tau_k {n \choose 2} \theta \right)
+p_n^\mathrm{E}(T)=\theta^{n-1}\prod_{i=2}^n \exp\left(-\tau_k {n \choose 2} \theta \right)
 \label{eq:tree-distrib1}
 \end{equation}
 
@@ -682,7 +682,7 @@ p_n^\mathrm{U}(b)=\frac{b^{2n-4}}{(2n-4)!\theta^{2n-3}}  \exp\left(-\frac{b}{\th
 
 \section{Sampling the tree distributions}
 
-Having equiped each of the three phylogenetic tree spaces with a distribution 
+Having equipped each of the three phylogenetic tree spaces with a distribution 
 (Equations \ref{eq:tree-distrib1}, \ref{eq:tree-distrib2} and \ref{eq:tree-distrib3}), we now show
 how to sample from these distributions using our new Euclidean parametrisations.
 This requires to use a change-of-variables formula that has the same form in all three cases.
@@ -708,11 +708,12 @@ $q(C'|C)$ which is symmetric (meaning that $q(C'|C)=q(C|C')$), so that the accep
 is simply $\mathrm{min}(1,p_C(C')/p_C(C))$ calculated using Equation \ref{eq:link}.
 The mean of the proposal kernel is the current value $C$ and 
 its covariance matrix is tuned to achieve an acceptance
-rate of 0.234, which has been shown to be optimal under certain conditions \citep{Andrieu2008}. 
+rate of 0.234, which has been shown to be optimal under certain conditions 
+\citep{Roberts1997,Andrieu2008}. 
 Note that this sampler by definition only operates on continuous parameters and 
 could therefore not be applied directly to the phylogenetic tree spaces as usually defined.
 For each of the three models we take $n=5$ to generate a small example, 
-with $\theta=0.1$ as the the scale of the branch lengths.
+with $\theta=0.1$ as the scale of the branch lengths.
 In each case the sampler is run for $2\times10^{5}$ iterations, with the first half discarded
 as burn-in and the remainder sampled every 10 iterations to produce a sample
 of size 10,000. %Each run took less than a minute on a standard laptop. 
@@ -720,7 +721,7 @@ of size 10,000. %Each run took less than a minute on a standard laptop.
 \begin{figure}[p!]
 \includegraphics{priors}
 \caption{Sampled (histograms) and expected (lines) distributions under
-the equidistant tree model (A-C), rooted model (D-E) and unrooted model (F-H)
+the equidistant tree model (A-C), rooted model (D-F) and unrooted model (G-I)
 for the topology (A, D, G),
 for a single branch length (B, E, H) and for the sum of branch lengths (C, F, I).
 \label{fig:priors}}
@@ -739,7 +740,7 @@ trees follows the expected distribution given in Equation \ref{eq:coalescent-sum
 
 Under the rooted tree model (Equation \ref{eq:tree-distrib2}) all topologies
 are equally likely by definition and for $n=5$ there are $(2n-3)!!=105$ of them.
-Figure \ref{fig:priors}D shows that all of themare sampled approximately
+Figure \ref{fig:priors}D shows that all of them are sampled approximately
 uniformly as expected. Furthermore, Figures \ref{fig:priors}E and \ref{fig:priors}F
 show that terminal branch lengths and the sum of branch lengths in sampled trees follow
 the correct distributions from Equation \ref{eq:rooted-blen}, respectively.
@@ -806,7 +807,7 @@ and the target being the posterior distribution in Equation \ref{eq:posterior} g
 Several runs are performed independently, and they are found to have converged and mixed
 well based on a Gelman-Rubin statistic below 1.1 and effective sample sizes above 1000 for
 the sum of the branch lengths and each terminal branch length \citep{Plummer2006}.
-The tree topology is also found in each run to have an approximate effective sample size great than 1000
+The tree topology is also found in each run to have an approximate effective sample size greater than 1000
 \citep{Warren2017}. 
 Figures \ref{fig:posterior}B and C show the phylogenetic posterior samples for two independent runs using
 a densitree graphical representation \citep{Bouckaert2010}. The two posterior samples look very similar,
@@ -820,8 +821,9 @@ that uncertainty remains that is being explored.
 Indeed the value of the
 scaling factor $\theta=0.004$ was selected to create a balanced situation, with enough polymorphism
 to inform the tree but not so much as the remove all uncertainties in the inference. Reducing this scaling
-factor decreases the number of substitutions so that the posterior becomes more similar to its prior
-as shown in Figure \ref{fig:priors}, whereas increase the scaling factor adds more substitutions so
+factor decreases the number of substitutions so that the posterior becomes more similar to the prior
+without data shown in Figure \ref{fig:priors}, 
+whereas increasing the scaling factor adds more substitutions so
 that only a single topology becomes probable. The balanced situation shown in Figure \ref{fig:posterior}
 demonstrates our ability to explore the tree space, including different topologies when the posterior
 requires it.
