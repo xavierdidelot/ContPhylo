@@ -37,7 +37,7 @@ for (i in 2:n) {
   t2$coordinates=t2$coordinates[1:i,]
   t2$tip.label=t2$tip.label[1:i]
   p=contphylo2phylo(t2)
-  p=rotateConstr(p,c(4,2,6,5,1,3))
+  p=rotateConstr(p,c(4,2,6,5,3,1))
   plot(p,direction='downwards',cex=1.5,x.lim=c(-1,Ntip(p)))
   axisPhylo(2,backward = F)
 }
@@ -58,7 +58,7 @@ for (i in 2:n) {
   t2$coordinates=t2$coordinates[1:i,]
   t2$tip.label=t2$tip.label[1:i]
   p=contphylo2phylo(t2)
-  p=rotateConstr(p,c(4,2,6,5,1,3))
+  p=rotateConstr(p,c(4,2,6,5,3,1))
   plot(p,direction='downwards',cex=1.5)
   axisPhylo(2,backward = F)
 }

@@ -207,7 +207,9 @@ This convention also defines the ordering of the children used in subsequent con
 and it is important to guarantee continuity of the construction.
 If $x_i$ lies above the current root,
 the segment joining the old root to $x_i$ is added to the tree and $x_i$
-becomes the new root. If $x_i$ coincides with an existing vertex, the
+becomes the new root. Above the root the direction of travel is defined
+as $\Delta_T(a)=1$ for $a<0$ and $\Delta_T(a)=0$ for $a>2L(T)$.
+If $x_i$ coincides with an existing vertex, the
 operation is interpreted as the corresponding limiting construction with
 a zero-length branch. Thus the construction takes values in the completion
 of binary tree space, while almost every parameter vector produces a binary
@@ -425,9 +427,9 @@ is shown in Figure \ref{fig:decoding2}.
 
 \begin{figure}
 \includegraphics[width=15cm]{figRooted.pdf}
-\caption{An example of construction of a rooted using as input
+\caption{An example of construction of a rooted tree using as input
 $n=6$, $(a_i)_{i=2,...,n}=(-1,1.5,-1,2.75,3)$
-and $(b_i)={i=2,...,n}=\log(0.5,1,0.5,1,0.5)$.
+and $(b_i)_{i=2,...,n}=\log(0.5,1,0.5,1,0.5)$.
 \label{fig:decoding2}}
 \end{figure}
 
@@ -828,7 +830,7 @@ that uncertainty remains that is being explored.
 
 Indeed the value of the
 scaling factor $\theta=0.004$ was selected to create a balanced situation, with enough polymorphism
-to inform the tree but not so much as the remove all uncertainties in the inference. Reducing this scaling
+to inform the tree but not so much as to remove all uncertainties in the inference. Reducing this scaling
 factor decreases the number of substitutions so that the posterior becomes more similar to the prior
 without data shown in Figure \ref{fig:priors}, 
 whereas increasing the scaling factor adds more substitutions so
