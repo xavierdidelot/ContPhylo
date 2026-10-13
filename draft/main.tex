@@ -190,15 +190,21 @@ The extended contour traversal is defined as:
 \ctikzfig{fig1}
 \caption{Illustration of the extended contour traversal. The initial tree is shown in black, with three 
 leaves labeled 1, 2 and 3 and all four branches of length 1.
-Leaf 4 is added with the value of $a_4$ determining the graft point as shown and the new terminal branch
-shown in red.
+Leaf 4 is added with the value of $a_4$ determining the graft point as shown and the new terminal branch shown in red. When the contour traversal
+is travelling down (cases $a_4=-1$, $a_4=3.5$ and $a_4=0.5$) then
+the leaf becomes the first child and otherwise (remaining cases)
+the leaf becomes the second child of the newly created node at the graft point.
 \label{fig:contour}}
 \end{figure}
 
 At the graft point $x_i=\Gamma_{T_{i-1}}(a_i)$, 
 a new node is created with first child equal to what was previously below that point,
 and second child equal to the new branch of length $\ell_i$ leading to the leaf $i$.
-This convention also defines the ordering of the children used in subsequent contour traversals.
+Let $\Delta_T(a)=1$ if the contour traversal was travelling down a branch 
+when it reached the graft point $x_i$, and $\Delta_T(a)=0$ otherwise.
+If $\Delta_T(a)=1$ then the two children of the new node are swapped.
+This convention also defines the ordering of the children used in subsequent contour traversals,
+and it is important to guarantee continuity of the construction.
 If $x_i$ lies above the current root,
 the segment joining the old root to $x_i$ is added to the tree and $x_i$
 becomes the new root. If $x_i$ coincides with an existing vertex, the
@@ -269,6 +275,7 @@ is shown in Figure \ref{fig:decoding1}.
     \State Insert a new internal node at $x_i$, splitting its branch if necessary
     \State Make the subtree previously below $x_i$ the first child of this node
     \State Attach leaf $i$ as its second child by a branch of length $\ell_i=h_{T_{i-1}}(x_i)$
+    \State If $\Delta_{T_{i-1}}(a_i)=1$ then swap the two children
     \State Denote the resulting tree by $T_i$
     \State $L(T_i)\gets L(T_{i-1})+\ell_i
           +\max(0,-a_i)+\max(0,a_i-2L(T_{i-1}))$
@@ -407,6 +414,7 @@ is shown in Figure \ref{fig:decoding2}.
     \State Insert a new internal node at $x_i$, splitting its branch if necessary
     \State Make the subtree previously below $x_i$ the first child of this node
     \State Attach leaf $i$ as its second child by a branch of length $\ell_i=\exp(b_i)$
+    \State If $\Delta_{T_{i-1}}(a_i)=1$ then swap the two children
     \State Denote the resulting tree by $T_i$
     \State $L(T_i)\gets L(T_{i-1})+\exp(b_i)
           +\max(0,-a_i)+\max(0,a_i-2L(T_{i-1}))$
@@ -418,7 +426,7 @@ is shown in Figure \ref{fig:decoding2}.
 \begin{figure}
 \includegraphics[width=15cm]{figRooted.pdf}
 \caption{An example of construction of a rooted using as input
-$n=6$, $(a_i)_{i=2,...,n}=(-1,1.5,-1,3,2.25)$
+$n=6$, $(a_i)_{i=2,...,n}=(-1,1.5,-1,2.75,3)$
 and $(b_i)={i=2,...,n}=\log(0.5,1,0.5,1,0.5)$.
 \label{fig:decoding2}}
 \end{figure}
@@ -514,7 +522,7 @@ is shown in Figure \ref{fig:decoding3}.
 \includegraphics[width=15cm]{figUnrooted.pdf}
 \caption{An example of construction of an unrooted
 tree using as input
-$n=6$, $(a_i)_{i=2,...,n-1}=(-1,1.5,-1,3)$,
+$n=6$, $(a_i)_{i=2,...,n-1}=(-1,1.5,-1,2.75)$,
 $(b_i)_{i=2,...,n-1}=\log(0.5,1,0.5,1)$ and $c=\log(0.5)$.
 \label{fig:decoding3}}
 \end{figure}
@@ -847,8 +855,7 @@ In particular, we implemented the Algorithms \ref{alg:decoding1}, \ref{alg:decod
 \ref{alg:decoding3} to construct phylogenetic trees from their Euclidean representations.
 We also implemented the reverse algorithms, which take as input a phylogenetic tree
 from one of the three types and outputs a canonical representation of this tree in the
-Euclidean space. There are two equivalent values of each graft coordinate $a_i$ and
-the canonical representation uses the smallest positive value.
+Euclidean space. 
 We used \verb+ape+ and \verb+phangorn+ to store, manipulate 
 and visualise phylogenetic trees \citep{Paradis2019,schliepPhangornPhylogeneticAnalysis2011}.
 We used the adaptive Metropolis sampler \citep{Vihola2011} 

@@ -37,10 +37,10 @@ if (simu==3) {
   trees=trees[(length(trees)/2+1):length(trees)]
 }
 
-pdf('mcmc.pdf',7,7)
+pdf('scripts/mcmc.pdf',7,7)
 prior_test(trees,model=model,scale=scale,analyse_topology = T)
 dev.off()
-browseURL('mcmc.pdf')
+browseURL('scripts/mcmc.pdf')
 
 if (F) {
   source('scripts/topo_ess.R')
