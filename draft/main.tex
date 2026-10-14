@@ -69,7 +69,7 @@ contour traversal of the tree constructed so far. Moving a graft coordinate
 continuously along the contour enables changes of topology when internal
 branches contract to zero.
 For trees with $n$ labelled leaves, we apply the construction to rooted
-equidistant trees, rooted trees with unrestricted branch lengths, and
+ultrametric trees, rooted trees with unrestricted branch lengths, and
 unrooted trees, obtaining parametrisations of dimensions $n-1$, $2n-2$,
 and $2n-3$, respectively. We show that the resulting construction functions are surjective and continuous
 onto the corresponding spaces of phylogenetic trees. 
@@ -78,7 +78,8 @@ a generic tree and calculate the Jacobian of each parametrisation. These
 results provide explicit change-of-variables formulae between Euclidean
 coordinates and the phylogenetic tree spaces, and we show how probability
 distributions on tree space can be sampled using generic algorithms that target
-unconstrained Euclidean coordinates. This approach paves the way for the 
+unconstrained Euclidean coordinates. 
+This approach paves the way for the 
 development and application of new methodology in Bayesian phylogenetic inference.
 
 \newpage
@@ -92,7 +93,8 @@ purpose-built operations such as nearest-neighbour interchange (NNI) or subtree 
 and regrafting (SPR), whose performance can depend strongly on how exactly they are designed
 \citep{hohnaGuidedTreeTopology2012,zhangUsingParsimonyGuidedTree2020,
 meyerAdaptiveTreeProposals2021}.
-It also means that many recent computational methods can not be directly used in 
+It also means that 
+many recent computational methods cannot be directly used in 
 phylogenetics as they are designed to operate on vectors in a
 fixed Euclidean space.
 
@@ -101,12 +103,17 @@ Billera--Holmes--Vogtmann (BHV) space \citep{Billera2001}. Each tree topology
 is represented by an orthant of branch-length coordinates, and different
 orthants meet where one or more internal branches have length zero. This
 construction makes clear that topology changes can be viewed continuously:
-an edge belonging to one topology contracts before an edge belonging to
+a branch belonging to one topology contracts before a branch belonging to
 another topology grows. The resulting space is nevertheless stratified, and
 computational methods that move between its orthants generally require
-specialised treatment \citep{dinhProbabilisticPathHamiltonian2017,Helekal2025}.
+special careful design \citep{dinhProbabilisticPathHamiltonian2017,Helekal2025}.
+A few recent studies have sought to develop alternative continuous or vector-based 
+representations of phylogenetic trees. 
+For example, GradME uses continuous optimisation for tree inference under a balanced minimum-evolution criterion \citep{pennLeapingTreeSpace2023}.
+Phylo2Vec presents a bijective integer-vector representation of binary tree topologies \citep{pennPhylo2VecVectorRepresentation2025}. 
+These methods illustrate the potential of alternative representations for exploring tree space, but they address different objectives from the one considered here.
 
-Here we develop a different representation in which both topology and branch
+Here we develop a representation in which both topology and branch
 lengths are encoded by a single vector of unconstrained real parameters. The
 construction is recursive. After fixing an arbitrary order of the leaves, each new leaf
 is attached to the tree formed by the preceding leaves. Its graft point is
@@ -114,18 +121,11 @@ selected by following a contour traversal of the current tree, so that
 continuous movement of a real-valued coordinate moves the graft point along
 branches and through the tree nodes. In this way, changes of topology arise without
 introducing a separate discrete topology variable.
-
 We show that this contour-grafting construction can be used to represent
 the three most widely used classes of phylogenetic trees, namely
 rooted ultrametric trees,
-rooted trees with unrestricted branch lengths and unrooted trees. Our aim is
-to describe the resulting parametrisations and their geometric and
-measure-theoretic properties, including their behaviour at topology
-boundaries and the relationship between Euclidean coordinates and standard
-local coordinates on tree space. We show how the new parametrisation
-can be used to sample phylogenetic tree distributions and to perform
-Bayesian phylogenetic inference, but our main focus here is on the theory 
-of the parametrisations rather than on the applications they enable.
+rooted trees with unrestricted branch lengths and unrooted trees. 
+Our main contribution is to characterise the theoretical properties of this parametrisation: we establish its continuity and surjectivity, determine the number of generic representations of each tree, and derive its Jacobian almost everywhere. These properties yield explicit change-of-variables formulae for transferring probability densities between tree space and Euclidean coordinates. The resulting framework provides a basis for applying algorithms defined on continuous parameter spaces to Bayesian phylogenetic inference, although the computational advantages of particular algorithms is out of our scope.
 
 The remainder of the article is organised as follows. Section~2 introduces
 the recursive contour-grafting construction. Sections~3--5 apply it to rooted
@@ -158,7 +158,7 @@ adding to the tree $T_{i-1}$ built previously.
 
 The location of a
 graft point $x_i$ is parametrised using a variable $a_i \in \mathbb{R}$.
-If $0\leq a_i \leq 2L(T_{i-1})$ then $a_i$ corresponds to the distance travelled
+If $0\leq a_i \leq 2L(T_{i-1})$ then $a_i$ corresponds to the distance traveled
 along the contour traversal of $T_{i-1}$ before reaching the graft point.
 Starting at the root, the traversal follows each branch once away from the root and 
 once back towards it, visiting the first child of each internal node and then the second. 
@@ -189,9 +189,9 @@ The extended contour traversal is defined as:
 \begin{figure}[t]
 \ctikzfig{fig1}
 \caption{Illustration of the extended contour traversal. The initial tree is shown in black, with three 
-leaves labeled 1, 2 and 3 and all four branches of length 1.
+leaves labelled 1, 2 and 3 and all four branches of length 1.
 Leaf 4 is added with the value of $a_4$ determining the graft point as shown and the new terminal branch shown in red. When the contour traversal
-is travelling down (cases $a_4=-1$, $a_4=3.5$ and $a_4=0.5$) then
+is traveling down (cases $a_4=-1$, $a_4=3.5$ and $a_4=0.5$) then
 the leaf becomes the first child and otherwise (remaining cases)
 the leaf becomes the second child of the newly created node at the graft point.
 \label{fig:contour}}
@@ -200,22 +200,27 @@ the leaf becomes the second child of the newly created node at the graft point.
 At the graft point $x_i=\Gamma_{T_{i-1}}(a_i)$, 
 a new node is created with first child equal to what was previously below that point,
 and second child equal to the new branch of length $\ell_i$ leading to the leaf $i$.
-Let $\Delta_T(a)=1$ if the contour traversal was travelling down a branch 
+Let $\Delta_T(a)=1$ if the contour traversal was traveling down a branch 
 when it reached the graft point $x_i$, and $\Delta_T(a)=0$ otherwise.
 If $\Delta_T(a)=1$ then the two children of the new node are swapped.
-This convention also defines the ordering of the children used in subsequent contour traversals,
-and it is important to guarantee continuity of the construction.
+This convention also defines the ordering of the children used in subsequent
+contour traversals. It inserts the new leaf into the contour exactly where
+the graft point was reached: if the traversal is going down it meets the new
+node before the old subtree, and if it is going up it has just left the old
+subtree. The order in which the contour visits the subtrees around each node
+is therefore preserved when the graft point crosses that node, which is
+important to obtain continuity as we will see later.
 If $x_i$ lies above the current root,
-the segment joining the old root to $x_i$ is added to the tree and $x_i$
+the branch joining the old root to $x_i$ is added to the tree and $x_i$
 becomes the new root. Above the root the direction of travel is defined
 as $\Delta_T(a)=1$ for $a<0$ and $\Delta_T(a)=0$ for $a>2L(T)$.
-If $x_i$ coincides with an existing vertex, the
+If $x_i$ coincides with an existing node, the
 operation is interpreted as the corresponding limiting construction with
 a zero-length branch. Thus the construction takes values in the completion
 of binary tree space, while almost every parameter vector produces a binary
 tree with strictly positive branch lengths.
 
-The extended contour traversal is continuous because $\gamma_T(0)=\gamma_T(2(L(T)))=\operatorname{root}(T)$. Every point in the interior of an edge of $T$ is visited exactly twice, once in each
+The extended contour traversal is continuous because $\gamma_T(0)=\gamma_T(2(L(T)))=\operatorname{root}(T)$. Every point in the interior of a branch of $T$ is visited exactly twice, once in each
 traversal direction. A point at distance $d>0$ above the root also has exactly two preimages,
 namely $-d$ and $2L(T)+d$.
 Tree nodes are exceptional because they may be visited more than twice;
@@ -229,11 +234,11 @@ L(T_{i-1})+\ell_i+\mathrm{max}(0,a_i-2L(T_{i-1}))+\mathrm{max}(0,-a_i) & \text{o
 \end{equation}
 
 
-\section{Rooted equidistant trees}
+\section{Rooted ultrametric trees}
 
-We first consider phylogenetic trees with $n$ labeled leaves that are binary, rooted
-and with equidistance from the root to each leaf (this property is also called ultrametric).
-We use the superscript E, standing for equidistant, 
+We first consider phylogenetic trees with $n$ labelled leaves that are binary, rooted,
+and with the same distance from the root to each leaf (this property is called ultrametricity).
+We use the superscript U, standing for ultrametric, 
 to denote the mathematical quantities relating to this
 type of tree.
 There are $n-1$ internal nodes including the root.
@@ -241,17 +246,17 @@ The topology of the tree is
 discrete and there are 
 $(2n-3)!!=(2n-2)!/(2^{n-1}(n-1)!)$ unique possibilities \citep{Felsenstein1978b}. 
 The branch lengths are continuous but not independent from each other.
-Since the tree is equidistant, the branch lengths are constrained
+Since the tree is ultrametric, the branch lengths are constrained
 so that the number of free parameters corresponds to the $n-1$ values
 for the heights of the internal nodes relative to the contemporaneous leaves.
 
 The previous section introduced the recursive principle for constructing
 trees using the extended contour traversal for grafting, with 
 parameters $(a_i)_{i=2,...,n} \in \mathbb{R}^{n-1}$ used in Equation \ref{eq:contour-extended}.
-To produce an equidistant rooted tree, once a
+To produce an ultrametric rooted tree, once a
 graft point $x_i$ has been selected, the length $\ell_i$ of the newly created terminal branch must be equal to the height of $x_i$ relative to 
 the existing leaves. 
-Specifically, for a point $x$ on an equidistant tree $T$, 
+Specifically, for a point $x$ on an ultrametric tree $T$, 
 let $h_T(x)$ denote its distance to any descendant leaf.
 For a point at distance $d$ above the current root $r$, its distance is $h_T(x)=h_T(r)+d$. The length of the new branch is simply
 $\ell_i=h_{T_{i-1}}(x_i)$.
@@ -263,12 +268,12 @@ A small example of applying Algorithm \ref{alg:decoding1}
 is shown in Figure \ref{fig:decoding1}.
 
 \begin{algorithm}
-\caption{Construction of equidistant rooted trees}
+\caption{Construction of ultrametric rooted trees}
 \label{alg:decoding1}
 \begin{algorithmic}[1]
 \Require Ordered leaves $1,\ldots,n$ and parameters
          $C=(a_i)_{i=2,...,n}\in\mathbb{R}^{n-1}$
-\Ensure An equidistant rooted phylogenetic tree $T_n$
+\Ensure An ultrametric rooted phylogenetic tree $T_n$
 \State Let $T_1$ consist of the single leaf $1$, which is also its root
 \State $L(T_1)\gets 0$
 \For{$i=2,\ldots,n$}
@@ -288,101 +293,120 @@ is shown in Figure \ref{fig:decoding1}.
 
 \begin{figure}
 \includegraphics[width=15cm]{figUltra.pdf}
-\caption{An example of construction of an equidistant
+\caption{An example of construction of an ultrametric
 tree using as input
 $n=6$ and $(a_i)_{i=2,...,n}=(-1,1.5,-1,2.75,2.25)$.
 \label{fig:decoding1}}
 \end{figure}
 
-Let $\mathcal{C}_n^\mathrm{E}=\mathbb{R}^{n-1}$ denote the parameter space.
-Let $\mathcal{T}_n^\mathrm{E}$ denote the space of rooted binary equidistant trees
+Let $\mathcal{C}_n^\mathrm{U}=\mathbb{R}^{n-1}$ denote the parameter space.
+Let $\mathcal{T}_n^\mathrm{U}$ denote the space of rooted binary ultrametric trees
 with $n$ labelled leaves and strictly positive branch lengths.
-Let $\overline{\mathcal{T}}_n^\mathrm{E}$ denote its completion obtained by
+Let $\overline{\mathcal{T}}_n^\mathrm{U}$ denote its completion obtained by
 allowing zero-length branches and identifying trees that define the same
-labelled metric tree after contraction of all zero-length edges.
-An element of $\mathcal{C}_n^\mathrm{E}$ is
+labelled metric tree after contraction of all zero-length branches.
+An element of $\mathcal{C}_n^\mathrm{U}$ is
 the vector $C=(a_i)_{i=2,\ldots,n}$, and the construction results in a unique
-tree in $\overline{\mathcal{T}}_n^\mathrm{E}$. The construction in 
+tree in $\overline{\mathcal{T}}_n^\mathrm{U}$. The construction in 
 Algorithm \ref{alg:decoding1} is therefore a function
 $
-\Phi_n^\mathrm{E}:\mathcal{C}_n^\mathrm{E}\longrightarrow
-\overline{\mathcal{T}}_n^\mathrm{E}
+\Phi_n^\mathrm{U}:\mathcal{C}_n^\mathrm{U}\longrightarrow
+\overline{\mathcal{T}}_n^\mathrm{U}
 $. Almost every value of
-$C$ produces a tree in $\mathcal{T}_n^\mathrm{E}$; 
+$C$ produces a tree in $\mathcal{T}_n^\mathrm{U}$; 
 the exceptional values correspond to grafting at tree nodes, including
 the contour endpoints.
 
-The function $\Phi_n^\mathrm{E}$ is surjective onto $\mathcal{T}_n^\mathrm{E}$, 
-meaning that for any phylogenetic tree $T \in \mathcal{T}_n^\mathrm{E}$ there is at least
-one parametrisation $C$ such that $\Phi_n^\mathrm{E}(C)=T$. 
-To see this, consider any $T\in\mathcal{T}_n^\mathrm{E}$, remove leaf $n$ and its pendant branch, 
+The function $\Phi_n^\mathrm{U}$ is surjective onto $\mathcal{T}_n^\mathrm{U}$, 
+meaning that for any phylogenetic tree $T \in \mathcal{T}_n^\mathrm{U}$ there is at least
+one parametrisation $C$ such that $\Phi_n^\mathrm{U}(C)=T$. 
+To see this, consider any $T\in\mathcal{T}_n^\mathrm{U}$, remove leaf $n$ and its terminal branch, 
 and suppress its resulting degree-two parent. 
 Repeating this operation produces trees with successively fewer leaves. Reversing these steps reconstructs $T$ using the proposed grafting procedure, because every required grafting location is reached by the extended
-contour traversal and equidistantity uniquely determines the length of
+contour traversal and ultrametricity uniquely determines the length of
 each newly added terminal branch.
-However, the function $\Phi_n^\mathrm{E}$ is not injective as there
-are more than one $C$ such that $\Phi_n^\mathrm{E}(C)=T$. This is a consequence of each grafting point being
+However, the function $\Phi_n^\mathrm{U}$ is not injective as there
+are more than one $C$ such that $\Phi_n^\mathrm{U}(C)=T$. This is a consequence of each grafting point being
 visited twice by the contour traversal: once as the algorithm goes down the branch and then
 again as it goes back up the branch. Likewise, a grafting point above the root by length $x$
 can be obtained by both $a_i=-x$ and $a_i=2L(T_{i-1})+x$.
-Each grafting point is therefore represented exactly twice if we exclude the possibility of branches
-of length zero. 
-For an equidistant rooted binary tree $T$ with strictly positive branch lengths, there are therefore $R_n^\mathrm{E}=2^{n-1}$ 
-distinct values of $C$ such that $\Phi_n^\mathrm{E}(C)=T$.
-We call this number the redundancy of function $\Phi_n^\mathrm{E}$.
+The two representations of a grafting point give the two possible orders of
+the children of the new node, and this order determines the later contour
+traversals. It is therefore convenient to count the representations of a tree
+through the order of the children. A vector $C$ determines $T$ together with an
+order of the children at each of its $n-1$ internal nodes, and $C$ can be
+recovered from this ordered tree by removing leaves $n,n-1,\dots,2$ in turn:
+$a_i$ is the position of the graft point on the contour of the remaining tree,
+at the descending visit if leaf $i$ is the first child of its parent and at the
+ascending visit if it is the second child (this gives $-x$ and $2L(T_{i-1})+x$
+respectively above the root). Every order of the children of $T$ arises in
+this way. For an ultrametric rooted binary tree $T$ with strictly positive
+branch lengths, there are therefore $R^{\mathrm U}_n=2^{n-1}$ distinct values
+of $C$ such that $\Phi^{\mathrm U}_n(C)=T$. We call this number the redundancy
+of function $\Phi^{\mathrm U}_n$.
 This duplication of grafting coordinates is needed to achieve continuity: it allows the grafting location 
 to move continuously through the endpoints of the contour and across changes in tree topology, without 
 an explicit jump between discrete topological states.
 
 We now show that
-$\Phi_n^\mathrm{E}:\mathcal{C}_n^\mathrm{E}\rightarrow
-\overline{\mathcal{T}}_n^\mathrm{E}$ is continuous. 
-Equip $\overline{\mathcal{T}}_n^\mathrm{E}$ with the restriction of the completed
+$\Phi_n^\mathrm{U}:\mathcal{C}_n^\mathrm{U}\rightarrow
+\overline{\mathcal{T}}_n^\mathrm{U}$ is continuous. 
+Since the contour traversal depends on the order of the children, we consider
+trees whose children are ordered. %; forgetting this order is continuous.
+Equip $\overline{\mathcal{T}}_n^\mathrm{U}$ with the restriction of the completed
 rooted Billera--Holmes--Vogtmann metric \citep{Billera2001}, including
-pendant-edge lengths. Within each region of parameter
-space in which the selected contour segments and traversal directions are
+terminal branch lengths. Within each region of parameter
+space in which the selected contour branchs and traversal directions are
 fixed, all node heights and branch lengths vary continuously with the
 parameters. When a grafting location passes through an internal node, the separating
 internal branch contracts continuously to zero before the adjacent
 topology is entered. The two topologies therefore meet at the same
-boundary tree in $\overline{\mathcal{T}}_n^\mathrm{E}$. When the grafting location
-passes through a leaf, the relevant pendant segment tends continuously to
-zero and the two contour directions likewise meet at the same boundary
-tree. Similarly, the segment
-added above the root tends continuously to zero as $a_i$ approaches either
-endpoint of the contour, namely at $a_i=0$ or $a_i=2L(T_{i-1})$. Applying this
-argument inductively at each grafting step establishes the continuity of
-$\Phi_n^\mathrm{E}$.
-Within each binary topology orthant, the heights of the internal nodes
-provide local coordinates. Densities on tree space are understood
-with respect to counting measure on topologies and Lebesgue measure in
-these local height coordinates.
+boundary tree in $\overline{\mathcal{T}}_n^\mathrm{U}$. 
+Both sides also give the same order of the children: the contour visits an
+internal node once for each pair of neighbouring subtrees (and once on each
+side of the branch above it), and the convention on $\Delta_T$ inserts the new
+leaf at the corresponding place in the contour, whichever side the graft point
+is approached from. Subsequent contour traversals therefore also agree.
+When the grafting location passes through a leaf, the relevant terminal branch
+tends continuously to zero and the two contour directions likewise meet at the
+same boundary tree. The two directions give the two orders of the new leaf and
+the old leaf, but the terminal branch of the old leaf has length tending to
+zero, so the contour traversals of the two trees coincide. Similarly, the
+branch added above the root tends continuously to zero as $a_i$ approaches
+either endpoint of the contour, namely at $a_i=0$ or $a_i=2L(T_{i-1})$, and
+the order of the children is again the same on both sides (the new leaf is the
+first child at $a_i=0$ and the second child at $a_i=2L(T_{i-1})$).
+Applying this argument inductively at each grafting step establishes the
+continuity of $\Phi^{\mathrm U}_n$. Within each binary topology orthant, the
+heights of the internal nodes provide local coordinates. Densities on tree
+space are understood with respect to counting measure on topologies and
+Lebesgue measure in these local height coordinates.
 
 Finally we calculate the Jacobian of
-$\Phi_n^\mathrm{E}:\mathcal{C}_n^\mathrm{E}\rightarrow
-\overline{\mathcal{T}}_n^\mathrm{E}$ within a binary topology.
+$\Phi_n^\mathrm{U}:\mathcal{C}_n^\mathrm{U}\rightarrow
+\overline{\mathcal{T}}_n^\mathrm{U}$ within a binary topology.
 Let $\boldsymbol{h}=(h_2,...,h_n)$ where $h_i$ is the height of the internal node
 created when leaf $i$ is grafted. Within a fixed contour region, $h_i=h_{T_{i-1}}(\Gamma_{T_{i-1}}(a_i))$.
 The new height depends only on $a_2,...,a_i$, not on later parameters. Moreover,
 \[
 \frac{\partial h_i}{\partial a_i}\in \{-1,+1\}
 \]
-because height changes at unit rate along every fixed contour segment and along the branch
+because height changes at unit rate along every fixed contour branch and along the branch
 above the root. Therefore the Jacobian matrix is triangular, with diagonal entries $+1$ or $-1$. Since the determinant of a triangular matrix is the product of the terms on its diagonal we have that the absolute Jacobian determinant is simply equal to:
 \begin{equation}
 \label{eq:jacobian1}
-J_n^\mathrm{E}=\left|\det\frac{\partial\Phi_n^\mathrm{E}(C)}{\partial C}\right|
+J_n^\mathrm{U}=\left|\det\frac{\partial\Phi_n^\mathrm{U}(C)}{\partial C}\right|
 =\left|
 \det\frac{\partial(h_2,...,h_n)}
 {\partial(a_2,...,a_n)}
 \right|=1
 \end{equation}
 This identity holds away from contour-region boundaries, which form a set
-of Lebesgue measure zero in $\mathcal{C}_n^\mathrm{E}$.
+of Lebesgue measure zero in $\mathcal{C}_n^\mathrm{U}$.
 
 \section{Rooted trees with unrestricted branch lengths}
 
-We now consider phylogenetic trees that are binary and rooted, with $n$ labeled leaves. 
+We now consider phylogenetic trees that are binary and rooted, with $n$ labelled leaves. 
 We use the superscript R, standing for rooted, 
 to denote the mathematical quantities relating to this
 type of tree.
@@ -392,13 +416,12 @@ discrete and there are
 $(2n-3)!!=(2n-2)!/(2^{n-1}(n-1)!)$ unique possibilities \citep{Felsenstein1978b}. 
 The branch lengths are continuous, and there are $2n-2$ branch lengths
 taking values in $\mathbb{R}_{>0}$ (one for each leaf and non-root internal node). 
-Our construction is similar to the one above for equidistant trees. 
+Our construction is similar to the one above for ultrametric trees. 
 The main difference is that there is now another parameter $b_i \in \mathbb{R}$
 for each leaf beyond the first one, that represents the length 
 $\ell_i=\exp(b_i)$ of the branch
-separating the graft point (determined by $a_i$) and the newly added leaf $i$. This construction is detailed in Algorithm \ref{alg:decoding2}.
-A small example of applying Algorithm \ref{alg:decoding2}
-is shown in Figure \ref{fig:decoding2}.
+separating the graft point (determined by $a_i$) and the newly added leaf $i$. This construction is detailed in Algorithm \ref{alg:decoding2}
+and a small example of application is shown in Figure \ref{fig:decoding2}.
 
 
 \begin{algorithm}
@@ -438,7 +461,7 @@ Let $\mathcal{T}_n^\mathrm{R}$ denote the space of rooted binary phylogenetic tr
 with $n$ labelled leaves and strictly positive branch lengths.
 Let $\overline{\mathcal{T}}_n^\mathrm{R}$ denote its completion obtained by
 allowing zero-length branches and identifying trees that define the same
-labelled metric tree after contraction of all zero-length edges. 
+labelled metric tree after contraction of all zero-length branches. 
 An element of $\mathcal{C}_n^\mathrm{R}$ is
 the vector $C=(a_i,b_i)_{i=2,\ldots,n}$, and Algorithm \ref{alg:decoding2}
 defines a function
@@ -447,7 +470,7 @@ $
 \overline{\mathcal{T}}_n^\mathrm{R}
 $.
 By the same arguments
-as in the equidistant case, this function is continuous and is surjective onto
+as in the ultrametric case, this function is continuous and is surjective onto
 $\mathcal{T}_n^\mathrm{R}$. Almost every parameter vector produces a tree in
 $\mathcal{T}_n^\mathrm{R}$, and every tree in $\mathcal{T}_n^\mathrm{R}$ has exactly
 $R_n^\mathrm{R}=2^{n-1}$ preimages, which we call the redundancy of $\Phi_n^\mathrm{R}$.
@@ -457,14 +480,14 @@ $\Phi_n^\mathrm{R}:\mathcal{C}_n^\mathrm{R}\rightarrow
 \overline{\mathcal{T}}_n^\mathrm{R}$ within a given binary topology.
 We consider this Jacobian locally, within a region of
 $\mathcal C_n^\mathrm{R}$ where the resulting topology, the selected contour
-segment for each grafting point, and its traversal direction are fixed.
+branch for each grafting point, and its traversal direction are fixed.
 Let $\boldsymbol\ell^{(i-1)}$ denote the vector of branch lengths in $T_{i-1}$. If leaf $i$ is grafted in the interior of a branch of length $\ell_j$, that branch is replaced by two branches of lengths
 \begin{equation*}
 u_i(\boldsymbol\ell^{(i-1)},a_i)
 \quad\text{and}\quad
 \ell_j-u_i(\boldsymbol\ell^{(i-1)},a_i)
 \end{equation*}
-and a terminal branch of length $\exp(b_i)$ is added. Along any fixed segment and direction of the contour traversal, $u_i$ is affine in $a_i$, with
+and a terminal branch of length $\exp(b_i)$ is added. Along any fixed branch and direction of the contour traversal, $u_i$ is affine in $a_i$, with
 \begin{equation*}
 \frac{\partial u_i}{\partial a_i} \in \{-1,1\}
 \end{equation*}
@@ -498,7 +521,7 @@ of Lebesgue measure zero in $\mathcal{C}_n^\mathrm{R}$.
 
 Let us now consider unrooted binary phylogenetic trees with $n\geq 3$
 labelled leaves. 
-We use the superscript U, standing for unrooted, 
+We use the superscript N, standing for not-rooted, 
 to denote the mathematical quantities relating to this
 type of tree.
 Such a tree has $n-2$ internal nodes, $2n-3$ branch lengths and $(2n-5)!!=(2n-5)!/(2^{n-3}(n-3)!)$
@@ -509,7 +532,7 @@ and then grafting the last leaf $n$ always at the
 temporary root of $T_{n-1}$, after which the root is forgotten.
 
 Let $C=\left((a_i,b_i)_{i=2,\ldots,n-1},c\right) \in 
-\mathcal{C}_n^\mathrm{U}=\mathbb{R}^{2n-3}$.
+\mathcal{C}_n^\mathrm{N}=\mathbb{R}^{2n-3}$.
 First construct a rooted tree $T_{n-1}$ on leaves $1,\ldots,n-1$ using
 Algorithm~\ref{alg:decoding2}, with leaf $1$ as the initial leaf and
 parameters $(a_i,b_i)_{i=2,\ldots,n-1}$. Then attach leaf $n$ directly to the
@@ -546,40 +569,40 @@ by $T_n$
 \end{algorithmic}
 \end{algorithm}
 
-Let $\mathcal{T}_n^\mathrm{U}$ denote the space of unrooted binary phylogenetic
+Let $\mathcal{T}_n^\mathrm{N}$ denote the space of unrooted binary phylogenetic
 trees with $n$ labelled leaves and strictly positive branch lengths, and
-let $\overline{\mathcal{T}}_n^\mathrm{U}$ denote its completion obtained by
+let $\overline{\mathcal{T}}_n^\mathrm{N}$ denote its completion obtained by
 allowing zero-length branches and identifying trees that define the same
-labelled metric tree after contraction of all zero-length edges. Algorithm
+labelled metric tree after contraction of all zero-length branches. Algorithm
 \ref{alg:decoding3} defines a function
 $
-\Phi_n^\mathrm{U}:\mathcal{C}_n^\mathrm{U}\longrightarrow
-\overline{\mathcal{T}}_n^\mathrm{U}.
+\Phi_n^\mathrm{N}:\mathcal{C}_n^\mathrm{N}\longrightarrow
+\overline{\mathcal{T}}_n^\mathrm{N}.
 $
-Almost every parameter vector produces a tree in $\mathcal{T}_n^\mathrm{U}$; the
+Almost every parameter vector produces a tree in $\mathcal{T}_n^\mathrm{N}$; the
 exceptional values correspond to grafting at tree nodes, including contour
 endpoints.
 
-The function $\Phi_n^\mathrm{U}$ is surjective onto $\mathcal{T}_n^\mathrm{U}$. To see this, consider any
-$T\in\mathcal{T}_n^\mathrm{U}$. Remove leaf $n$ and its pendant branch, and regard
+The function $\Phi_n^\mathrm{N}$ is surjective onto $\mathcal{T}_n^\mathrm{N}$. To see this, consider any
+$T\in\mathcal{T}_n^\mathrm{N}$. Remove leaf $n$ and its terminal branch, and regard
 the resulting degree-two node as the root of the remaining tree on
 leaves $1,\ldots,n-1$. This is a rooted binary phylogenetic tree and can
 therefore be represented by the function $\Phi_{n-1}^\mathrm{R}$ from the previous section. Setting $c$
-to the logarithm of the removed pendant-branch length reconstructs $T$.
-Every tree in $\mathcal{T}_n^\mathrm{U}$ has exactly $2^{n-2}$ preimages. Indeed,
+to the logarithm of the removed terminal branch length reconstructs $T$.
+Every tree in $\mathcal{T}_n^\mathrm{N}$ has exactly $2^{n-2}$ preimages. Indeed,
 the rooted tree on leaves $1,\ldots,n-1$ has $2^{n-2}$ representations by
 the result of Section~4, while the length of the branch leading to leaf
 $n$ uniquely determines $c$. Thus the redundancy of
-$\Phi_n^\mathrm{U}$ is $R_n^\mathrm{U}=2^{n-2}$.
+$\Phi_n^\mathrm{N}$ is $R_n^\mathrm{N}=2^{n-2}$.
 
-The function $\Phi_n^\mathrm{U}$ is continuous. 
-Equip $\overline{\mathcal{T}}_n^\mathrm{U}$ with the completed unrooted
-Billera--Holmes--Vogtmann metric, including pendant-edge lengths. The
-continuity of $\Phi_n^\mathrm{U}$ follows from the continuity of the 
-function $\Phi_{n-1}^\mathrm{R}$, together with the continuity of attaching a pendant
-edge of length $\exp(c)$ at the root and then forgetting the root
-designation. At topology boundaries, zero-length edges are identified in
-$\overline{\mathcal{T}}_n^\mathrm{U}$ in the same way as in the rooted
+The function $\Phi_n^\mathrm{N}$ is continuous. 
+Equip $\overline{\mathcal{T}}_n^\mathrm{N}$ with the completed unrooted
+Billera--Holmes--Vogtmann metric, including terminal branch lengths. The
+continuity of $\Phi_n^\mathrm{N}$ follows from the continuity of the 
+function $\Phi_{n-1}^\mathrm{R}$, together with the continuity of attaching a terminal
+branch of length $\exp(c)$ at the root and then forgetting the root
+designation. At topology boundaries, zero-length branches are identified in
+$\overline{\mathcal{T}}_n^\mathrm{N}$ in the same way as in the rooted
 construction.
 
 Finally, we calculate the Jacobian within a given binary topology. 
@@ -589,13 +612,13 @@ $
 \exp\left(\sum_{i=2}^{n-1} b_i\right)
 $
 to the absolute Jacobian (cf Equation \ref{eq:jacobian2}), 
-and the additional pendant branch has length
+and the additional terminal branch has length
 $\exp(c)$ and derivative $\exp(c)$. With a suitable ordering of the
 coordinates, the full derivative is block triangular, and hence
 \begin{equation}
 \label{eq:jacobian3}
-J_n^\mathrm{U}=\left|
-\det\frac{\partial\Phi_n^\mathrm{U}(C)}{\partial C}
+J_n^\mathrm{N}=\left|
+\det\frac{\partial\Phi_n^\mathrm{N}(C)}{\partial C}
 \right|
 =
 \exp\left(c+\sum_{i=2}^{n-1} b_i\right)
@@ -609,10 +632,10 @@ almost everywhere.
 \begin{tabular}{|c||c|c|c|c|}
 \hline
 Tree space & Parameters & Dimensions & Redundancy & Absolute Jacobian\\\hline\hline
-Rooted equidistant (E) & $(a_i)_{i=2,...,n}$ & $n-1$& $2^{n-1}$& $1$ \\\hline
+Rooted ultrametric (U) & $(a_i)_{i=2,...,n}$ & $n-1$& $2^{n-1}$& $1$ \\\hline
 Rooted unrestricted (R) & $(a_i,b_i)_{i=2,...,n}$ & $2n-2$& $2^{n-1}$& 
 $\displaystyle \exp\!\left(\sum_{i=2}^{n} b_i\right)$ \\\hline
-Unrooted  (U) & $((a_i,b_i)_{i=2,...,n-1},c)$ & $2n-3$& $2^{n-2}$
+Unrooted (N) & $((a_i,b_i)_{i=2,...,n-1},c)$ & $2n-3$& $2^{n-2}$
 & $\displaystyle \exp\!\left(c+\sum_{i=2}^{n-1} b_i\right)$ \\\hline
 \end{tabular}
 \end{center}
@@ -620,27 +643,27 @@ Unrooted  (U) & $((a_i,b_i)_{i=2,...,n-1},c)$ & $2n-3$& $2^{n-2}$
 \label{tab:comparison}}
 \end{table}
 
-The main properties of the three constructions for equidistant trees,
+The main properties of the three constructions for ultrametric trees,
 rooted trees and unrooted trees
 are summarised and compared in Table~\ref{tab:comparison}.
 We now specify a probability model for each tree type.
-For equidistant tree, we use
+For ultrametric trees, we use
 the coalescent model \citep{Kingman1982,Kingman1982a} which is the backward-in-time
 genealogical process for a sample of size $n$ taken from large populations evolving under
 many forward-in-time models, such as the Wright-Fisher model \citep{Wright1931,Fisher1930}. Under this model, any pair of individuals
 finds a common ancestor at rate $1/\theta$ where $\theta$ is a
 scaling factor on branch lengths. 
 The model starts with the $n$ individuals
-at time zero and builds the tree backward-in-time, so that the tree is equidistant.
+at time zero and builds the tree backward-in-time, so that the tree is ultrametric.
 Initially there are $n$ individuals which means $n \choose 2$ pairs 
 and therefore the height of the first node 
 is Exponentially distributed with rate ${n \choose 2}/\theta$. Any of the $n \choose 2$
-pairs is then likely to coalesce together, leaving $n-1$ ancestors. By repeating this process
+pairs is then equally likely to coalesce together, leaving $n-1$ ancestors. By repeating this process
 and noting $\tau_k$ for the duration of the time interval during which there are $k$
 ancestors, the density of a tree is obtained as:
 
 \begin{equation}
-p_n^\mathrm{E}(T)=\prod_{k=2}^n \frac{1}{\theta}\exp\left(-\frac{\tau_k {k \choose 2}}{\theta} \right)
+p_n^\mathrm{U}(T)=\prod_{k=2}^n \frac{1}{\theta}\exp\left(-\frac{\tau_k {k \choose 2}}{\theta} \right)
 \label{eq:tree-distrib1}
 \end{equation}
 
@@ -648,14 +671,14 @@ Under the coalescent model, the distribution of the sum of branch lengths
 is \citep{Tavare1984}: 
 
 \begin{equation}
-p_n^\mathrm{E}(b)=\frac{n-1}{2\theta}\exp\left(-\frac{b}{2\theta}\right)\left(1-\exp\left(-\frac{b}{2\theta}\right)\right)^{n-2}
+p_n^\mathrm{U}(b)=\frac{n-1}{2\theta}\exp\left(-\frac{b}{2\theta}\right)\left(1-\exp\left(-\frac{b}{2\theta}\right)\right)^{n-2}
 \label{eq:coalescent-sumblen}
 \end{equation}
 
 The distribution of the length of a single terminal branch is \citep{caliebeLengthDistributionExternal2007}:
 
 \begin{equation}
-p_n^\mathrm{E}(t)=\frac{2}{n(n-1)}\sum_{k=2}^n (k-1) \sum_{j=k}^n \left[\lambda_j \prod_{r=k,r\neq j}^n \frac{\lambda_r}{\lambda_r-\lambda_j}\right]\exp(-\lambda_j t) \mathrm{~with~}\lambda_j=\frac{1}{\theta}{j \choose 2}
+p_n^\mathrm{U}(t)=\frac{2}{n(n-1)}\sum_{k=2}^n (k-1) \sum_{j=k}^n \left[\lambda_j \prod_{r=k,r\neq j}^n \frac{\lambda_r}{\lambda_r-\lambda_j}\right]\exp(-\lambda_j t) \mathrm{~with~}\lambda_j=\frac{1}{\theta}{j \choose 2}
 \label{eq:coalescent-blen}
 \end{equation}
 
@@ -677,15 +700,15 @@ p_n^\mathrm{R}(b)=\frac{b^{2n-3}}{(2n-3)!\theta^{2n-2}}  \exp\left(-\frac{b}{\th
 For unrooted trees we consider a model in which all $(2n-5)!!$ topologies are equally
 likely and each of the $2n-3$ branch lengths $\ell_i$ follow an Exponential distribution with mean $\theta$, so that:
 \begin{equation}\label{eq:tree-distrib3}
-p_n^\mathrm{U}(T)=\frac{1}{(2n-5)!!}\prod_{i=1}^{2n-3}\theta^{-1}\exp\left(-\frac{\ell_i}{\theta}\right)
+p_n^\mathrm{N}(T)=\frac{1}{(2n-5)!!}\prod_{i=1}^{2n-3}\theta^{-1}\exp\left(-\frac{\ell_i}{\theta}\right)
 \end{equation}
 
 Under this model a terminal branch length and the sum of branch lengths are distributed as
 Exponential and Gamma, respectively:
 \begin{equation}
-p_n^\mathrm{U}(t)=\frac{1}{\theta}\exp\left( -\frac{t}{\theta} \right)
+p_n^\mathrm{N}(t)=\frac{1}{\theta}\exp\left( -\frac{t}{\theta} \right)
 \mathrm{~and~}
-p_n^\mathrm{U}(b)=\frac{b^{2n-4}}{(2n-4)!\theta^{2n-3}}  \exp\left(-\frac{b}{\theta} \right)
+p_n^\mathrm{N}(b)=\frac{b^{2n-4}}{(2n-4)!\theta^{2n-3}}  \exp\left(-\frac{b}{\theta} \right)
 \label{eq:unrooted-blen}
 \end{equation}
 
@@ -695,9 +718,9 @@ p_n^\mathrm{U}(b)=\frac{b^{2n-4}}{(2n-4)!\theta^{2n-3}}  \exp\left(-\frac{b}{\th
 Having equipped each of the three phylogenetic tree spaces with a distribution 
 (Equations \ref{eq:tree-distrib1}, \ref{eq:tree-distrib2} and \ref{eq:tree-distrib3}), we now show
 how to sample from these distributions using our new Euclidean parametrisations.
-This requires to use a change-of-variables formula that has the same form in all three cases.
-Let $j \in \{\mathrm{E},\mathrm{R},\mathrm{U}\}$ denote the type of tree under study.
-Let $\Phi_n^j$ denote one of the three functions ($\Phi_n^\mathrm{E}$, $\Phi_n^\mathrm{R}$ or $\Phi_n^\mathrm{U}$), let $R_n^j$ be its redundancy (cf Table \ref{tab:comparison}), 
+This requires using a change-of-variables formula that has the same form in all three cases.
+Let $j \in \{\mathrm{U},\mathrm{R},\mathrm{N}\}$ denote the type of tree under study.
+Let $\Phi_n^j$ denote one of the three functions ($\Phi_n^\mathrm{U}$, $\Phi_n^\mathrm{R}$ or $\Phi_n^\mathrm{N}$), let $R_n^j$ be its redundancy (cf Table \ref{tab:comparison}), 
 and let $J^j_n(C)$ be its absolute Jacobian from
 Equations \ref{eq:jacobian1}, \ref{eq:jacobian2} or \ref{eq:jacobian3}. If $p_T^j$ is a density on the
 corresponding tree space, with respect to counting measure on topologies
@@ -731,15 +754,15 @@ of size 10,000. %Each run took less than a minute on a standard laptop.
 \begin{figure}[p!]
 \includegraphics{priors}
 \caption{Sampled (histograms) and expected (lines) distributions under
-the equidistant tree model (A-C), rooted model (D-F) and unrooted model (G-I)
+the ultrametric tree model (A-C), rooted model (D-F) and unrooted model (G-I)
 for the topology (A, D, G),
 for a single branch length (B, E, H) and for the sum of branch lengths (C, F, I).
 \label{fig:priors}}
 \end{figure}
 
 Under the coalescent model (Equation \ref{eq:tree-distrib1}), 
-all topologies are not equally likely but all ranked
-topologies (also known as histories) are equal likely and for $n=5$ there are 
+the topologies are not equally likely but the ranked
+topologies (also known as histories) are equally likely and for $n=5$ there are 
 $n!(n-1)!/2^{n-1}=180$ ranked topologies \citep{Degnan2005}.
 Figure \ref{fig:priors}A shows that all 180 ranked topologies are sampled
 approximately uniformly as expected. 
@@ -797,7 +820,7 @@ obtained using Algorithm \ref{alg:decoding1}. This likelihood can be calculated 
 using the Felsenstein pruning algorithm \citep{Felsenstein1981} which is used in
 most phylogenetic inference tools. 
 
-For this toy example we focus on the equidistant model as it is the simplest with
+For this toy example we focus on the ultrametric model as it is the simplest with
 just $n-1$ parameters (Table \ref{tab:comparison}). We generate a tree from the 
 coalescent model (Equation \ref{eq:tree-distrib1}) with $n=10$ leaves and 
 scaling factor $\theta=0.004$. This tree is shown in Figure \ref{fig:posterior}A. 
@@ -820,7 +843,7 @@ the sum of the branch lengths and each terminal branch length \citep{Plummer2006
 The tree topology is also found in each run to have an approximate effective sample size greater than 1000
 \citep{Warren2017}. 
 Figures \ref{fig:posterior}B and C show the phylogenetic posterior samples for two independent runs using
-a densitree graphical representation \citep{Bouckaert2010}. The two posterior samples look very similar,
+a DensiTree graphical representation \citep{Bouckaert2010}. The two posterior samples look very similar,
 and give high support to the correct phylogeny shown in Figure \ref{fig:posterior}A.
 Figure \ref{fig:posterior}D shows the trace of the two runs for the sum of branch lengths, again showing
 good mixing and agreement. Finally, the Figures \ref{fig:posterior}E and F show the posterior probability
@@ -841,7 +864,7 @@ requires it.
 \begin{figure}[p!]
 \includegraphics[width=17cm]{simu_toy}
 \caption{Toy example of Bayesian phylogenetic inference using two independent runs.
-(A) Correct tree used in simulation. (B-C) Densitree representations of trees sampled in 
+(A) Correct tree used in simulation. (B-C) DensiTree representations of trees sampled in 
 the two runs. (D) Traces of the sum of branch lengths in both runs.
 (E-F) Posterior probability of topologies according to the two runs.
 \label{fig:posterior}}
@@ -858,6 +881,7 @@ In particular, we implemented the Algorithms \ref{alg:decoding1}, \ref{alg:decod
 We also implemented the reverse algorithms, which take as input a phylogenetic tree
 from one of the three types and outputs a canonical representation of this tree in the
 Euclidean space. 
+In the canonical representation, children of every internal node are ordered by smallest descendant leaf label, so every new leaf is a second child: each graft coordinate is the larger of its two equivalent values given the preceding coordinates. 
 We used \verb+ape+ and \verb+phangorn+ to store, manipulate 
 and visualise phylogenetic trees \citep{Paradis2019,schliepPhangornPhylogeneticAnalysis2011}.
 We used the adaptive Metropolis sampler \citep{Vihola2011} 
@@ -869,9 +893,9 @@ We used \verb+coda+ \citep{Plummer2006} to analyse the MCMC outputs, and
 
 The three constructions we introduced provide unconstrained Euclidean
 parametrisations of the three most commonly used types of phylogenetic tree spaces. 
-The rooted equidistant construction is the simplest case (Algorithm \ref{alg:decoding1} 
+The rooted ultrametric construction is the simplest case (Algorithm \ref{alg:decoding1} 
 and Figure \ref{fig:decoding1}). Each added
-leaf requires only its graft coordinate, because equidistance uniquely
+leaf requires only its graft coordinate, because ultrametricity uniquely
 determines the new terminal-branch length. 
 Allowing unrestricted branch lengths introduces one additional
 log-length parameter $b_i$ at every grafting step (Algorithm \ref{alg:decoding2} 
@@ -889,22 +913,37 @@ In every case, the dimension of the parameter space equals
 the number of parameters needed to specify the branch lengths for a given binary topology. 
 All three functions are surjective onto the corresponding space of binary
 trees with strictly positive branch lengths and extend continuously to
-the completed tree space obtained by allowing zero-length edges. Their
+the completed tree space obtained by allowing zero-length branches. Their
 parameter spaces are divided into subspaces on which the
-selected contour segments and traversal directions are fixed. Within
+selected contour branchs and traversal directions are fixed. Within
 each such subspace, the resulting topology is fixed and the function is continuous.
 The boundaries between subspaces correspond to grafting at tree nodes or
-contour endpoints. At these boundaries an edge contracts to zero, so
-adjacent binary topologies meet at the same tree in the completed space.
-The functions are therefore continuous globally.
+contour endpoints. 
+At these boundaries a branch contracts to zero, so adjacent binary topologies
+meet at the same tree in the completed space, with the same order of the
+children owing to the convention on the order of the children of the new node,
+so that subsequent contour traversals also agree. The functions are therefore
+continuous globally.
 
-In all three constructions, the redundancy of representations arise from the redundancy in
+In all three constructions, the redundancy of representations arises from the redundancy in
 the contour traversal (Figure \ref{fig:contour}). 
 This redundancy is clearly a drawback of the parametrisations we proposed,
-but it seems difficult that a bijection could be established between phylogenetic tree
-space and Euclidean space. At least the number of representations is fixed for
+but it seems unlikely that a bijection exists between phylogenetic tree
+space and Euclidean space.
+Since BHV space is not a manifold \citep{Billera2001}, 
+no homeomorphism with $\mathbb{R}^d$ exists. 
+Restricting our parametrisation to canonical representatives (see Section 9) gives a bijection 
+almost everywhere, but onto a tree-dependent subset of $\mathbb{R}^d$.
+At least the number of representations is fixed for
 each type of tree and value of $n$ (Table \ref{tab:comparison}) which
-allows us to sample without concern, and in practice we found that it did not pose an issue.
+allows us to sample without theoretical difficulty. In practice the multi-modality
+could be a problem for some samplers, although the different modes might be 
+separate enough for only a single one to be explored. 
+All modes are exact copies, so mode-hopping is harmless for tree-level summaries.
+Occasional jumps between 
+modes should not affect results in terms of the sampled phylogenetic trees.
+This problem similar for example to label switching in mixture and
+Hidden Markov Models \citep{papastamoulisLabelswitchingPackageDealing2016}.
 
 Many promising Monte-Carlo methods have not been applied in Bayesian phylogenetics
 because they can only be applied to continuous parameters. Our new unconstrained
@@ -921,12 +960,11 @@ The focus here was on providing constructions that enable the use of new algorit
 on the application of these algorithms or on scalability to real-life data analysis. Our implementation
 uses R and is not optimised. More importantly, the adaptive Metropolis algorithm \citep{Vihola2011} 
 we used is not the most promising Bayesian inference method unlocked by our 
-new parametrisations compared for example to gradient-based approaches such as 
-the Langevin and Hamiltonian methods \citep{robertsOptimalScalingDiscrete1998,nealMCMCUsingHamiltonian2011,Betancourt2017}. 
-More generally, unconstrained real-valued vector representations are needed for
-many highly scalable machine learning and artificial intelligence algorithms
-\citep{johnsonBillionscaleSimilaritySearch2019,wangMilvusPurposeBuiltVector2021},
-and our work helps bridge the gap between these computational fields and phylogenetics. 
+new parametrisations. Future work should investigate the application of 
+Hamiltonian Monte-Carlo \citep{Betancourt2017,Carpenter2017},
+Automatic Differentiation Variational Inference \citep{JMLR:v18:16-107,bleiVariationalInferenceReview2017}
+or normalising flows \citep{JMLR:v22:19-1028} to our parametrisations in order to
+develop new approaches to Bayesian phylogenetic inference.
 
 \clearpage
 \bibliographystyle{elsarticle-harv}

@@ -2,15 +2,16 @@ rm(list=ls())
 library(ContPhylo)
 library(ape)
 library(phangorn)
-set.seed(4)
 
 n=10
 model=1
 scale=0.004
 l=10000
 
-tree=randtree(n,model,scale)
-plot(tree)
+set.seed(4)
+tree=randtree(n,model,scale)#nice balanced tree
+
+set.seed(2)
 if (l==0) {seqs=phyDatEmpty(Ntip(tree));names(seqs)<-tree$tip.label} else
 seqs=phangorn::simSeq(tree,l=l,rate=1)
 dist=dist.ml(seqs)
@@ -18,7 +19,7 @@ disttree=phangorn::upgma(dist)
 results=vector('list',2)
 #clusters=vector('list',2)
 for (i in 1:2) {
-  x=mcmc2(seqs,model=model,niter=1e6,scale=scale,initTree = disttree)
+  x=mcmc2(seqs,model=model,niter=1e5,scale=scale,initTree = disttree)
   x=x[(floor(length(x) / 2) + 1):length(x)]
   results[[i]]=x
   #clusters[[i]]=topologies(x)
@@ -78,12 +79,12 @@ lines(s2,col=col2)
 fig_label(LETTERS[let],cex=2);let=let+1
 
 counts=table(clusters[1:1000])
-names(counts)<-1:length(counts)
+#names(counts)<-1:length(counts)
 barplot(counts)
 fig_label(LETTERS[let],cex=2);let=let+1
 
 counts=table(clusters[1001:2000])
-names(counts)<-1:length(counts)
+#names(counts)<-1:length(counts)
 barplot(counts)
 fig_label(LETTERS[let],cex=2);let=let+1
 
