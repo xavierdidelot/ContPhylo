@@ -125,7 +125,7 @@ We show that this contour-grafting construction can be used to represent
 the three most widely used classes of phylogenetic trees, namely
 rooted ultrametric trees,
 rooted trees with unrestricted branch lengths and unrooted trees. 
-Our main contribution is to characterise the theoretical properties of this parametrisation: we establish its continuity and surjectivity, determine the number of generic representations of each tree, and derive its Jacobian almost everywhere. These properties yield explicit change-of-variables formulae for transferring probability densities between tree space and Euclidean coordinates. The resulting framework provides a basis for applying algorithms defined on continuous parameter spaces to Bayesian phylogenetic inference, although the computational advantages of particular algorithms is out of our scope.
+Our main contribution is to characterise the theoretical properties of this parametrisation: we establish its continuity and surjectivity, determine the number of generic representations of each tree, and derive its Jacobian almost everywhere. These properties yield explicit change-of-variables formulae for transferring probability densities between tree space and Euclidean coordinates. The resulting framework provides a basis for applying algorithms defined on continuous parameter spaces to Bayesian phylogenetic inference, although the computational advantages of particular algorithms are beyond our scope.
 
 The remainder of the article is organised as follows. Section~2 introduces
 the recursive contour-grafting construction. Sections~3--5 apply it to rooted
@@ -352,11 +352,11 @@ We now show that
 $\Phi_n^\mathrm{U}:\mathcal{C}_n^\mathrm{U}\rightarrow
 \overline{\mathcal{T}}_n^\mathrm{U}$ is continuous. 
 Since the contour traversal depends on the order of the children, we consider
-trees whose children are ordered. %; forgetting this order is continuous.
+trees whose children are ordered. 
 Equip $\overline{\mathcal{T}}_n^\mathrm{U}$ with the restriction of the completed
 rooted Billera--Holmes--Vogtmann metric \citep{Billera2001}, including
 terminal branch lengths. Within each region of parameter
-space in which the selected contour branchs and traversal directions are
+space in which the selected contour branches and traversal directions are
 fixed, all node heights and branch lengths vary continuously with the
 parameters. When a grafting location passes through an internal node, the separating
 internal branch contracts continuously to zero before the adjacent
@@ -376,8 +376,11 @@ branch added above the root tends continuously to zero as $a_i$ approaches
 either endpoint of the contour, namely at $a_i=0$ or $a_i=2L(T_{i-1})$, and
 the order of the children is again the same on both sides (the new leaf is the
 first child at $a_i=0$ and the second child at $a_i=2L(T_{i-1})$).
-Applying this argument inductively at each grafting step establishes the
-continuity of $\Phi^{\mathrm U}_n$. Within each binary topology orthant, the
+The graft location $\Gamma_T(a)$ is itself jointly continuous in $a$ and in the branch lengths of $T$, 
+including when branches shrink to zero, because the contour is a closed walk of total length $2L(T)$ 
+that depends only on the ordered tree. Since $T_{i-1}$ varies continuously with $(a_2, …, a_{i-1})$, 
+the continuity of each grafting step therefore carries over to the next, and applying this argument inductively establishes the continuity of $\Phi^{\mathrm U}_n$. 
+Within each binary topology orthant, the
 heights of the internal nodes provide local coordinates. Densities on tree
 space are understood with respect to counting measure on topologies and
 Lebesgue measure in these local height coordinates.
@@ -735,18 +738,21 @@ a density $p^j_n(C)$ in unconstrained Euclidean space and a density $p^j_n(T)$
 in phylogenetic space, for each of the three types of trees.
 
 To sample from the distributions in Equation \ref{eq:link} 
-we use an adaptive Metropolis sampler \citep{Haario2001,Vihola2011}. 
+we use an adaptive Metropolis sampler \citep{Haario2001,Vihola2011}, 
+specifically the robust adaptive Metropolis algorithm with coerced acceptance rate
+\citep{Vihola2012}. 
 This algorithm uses a multivariate normal distribution as the proposal kernel
 $q(C'|C)$ which is symmetric (meaning that $q(C'|C)=q(C|C')$), so that the acceptance probability 
 is simply $\mathrm{min}(1,p_C(C')/p_C(C))$ calculated using Equation \ref{eq:link}.
 The mean of the proposal kernel is the current value $C$ and 
 its covariance matrix is tuned to achieve an acceptance
-rate of 0.234, which has been shown to be optimal under certain conditions 
+rate of 0.234. This target was derived for smooth high-dimensional targets
+which is not the case here, but should nevertheless be reasonable
 \citep{Roberts1997,Andrieu2008}. 
 Note that this sampler by definition only operates on continuous parameters and 
 could therefore not be applied directly to the phylogenetic tree spaces as usually defined.
 For each of the three models we take $n=5$ to generate a small example, 
-with $\theta=0.1$ as the scale of the branch lengths.
+with $\theta=0.01$ as the scale of the branch lengths.
 In each case the sampler is run for $2\times10^{5}$ iterations, with the first half discarded
 as burn-in and the remainder sampled every 10 iterations to produce a sample
 of size 10,000. %Each run took less than a minute on a standard laptop. 
@@ -823,7 +829,7 @@ most phylogenetic inference tools.
 For this toy example we focus on the ultrametric model as it is the simplest with
 just $n-1$ parameters (Table \ref{tab:comparison}). We generate a tree from the 
 coalescent model (Equation \ref{eq:tree-distrib1}) with $n=10$ leaves and 
-scaling factor $\theta=0.004$. This tree is shown in Figure \ref{fig:posterior}A. 
+scaling factor $\theta=0.005$. This tree is shown in Figure \ref{fig:posterior}A. 
 A sequence of length $L=10,000$ bp is generated for the root of this tree by
 picking each of the four nucleotides \{A,C,G,T\} uniformly at random for each position.
 A sequence is then generated for each of the 10 leaves by evolving the sequence
@@ -837,6 +843,9 @@ leaves of the tree.
 We perform inference using the same adaptive Metropolis sampler as described in the
 previous section, with the parameter being the $n-1=9$ values in the real-valued vector $C$,
 and the target being the posterior distribution in Equation \ref{eq:posterior} given the data $D$.
+The sampler was run for $2\times10^{6}$ iterations, with the first half discarded
+as burn-in and the remainder sampled every 100 iterations to produce a sample
+of size 10,000. 
 Several runs are performed independently, and they are found to have converged and mixed
 well based on a Gelman-Rubin statistic below 1.1 and effective sample sizes above 1000 for
 the sum of the branch lengths and each terminal branch length \citep{Plummer2006}.
@@ -846,16 +855,17 @@ Figures \ref{fig:posterior}B and C show the phylogenetic posterior samples for t
 a DensiTree graphical representation \citep{Bouckaert2010}. The two posterior samples look very similar,
 and give high support to the correct phylogeny shown in Figure \ref{fig:posterior}A.
 Figure \ref{fig:posterior}D shows the trace of the two runs for the sum of branch lengths, again showing
-good mixing and agreement. Finally, the Figures \ref{fig:posterior}E and F show the posterior probability
+good mixing and agreement. 
+
+Finally, the Figures \ref{fig:posterior}E and F show the posterior probability
 given to different topologies, with good agreement between them. The highest posterior probability was
 given to the correct topology, but significant weight was given to other similar topologies, showing
 that uncertainty remains that is being explored. 
-
 Indeed the value of the
-scaling factor $\theta=0.004$ was selected to create a balanced situation, with enough polymorphism
+scaling factor $\theta=0.005$ was selected to create a balanced situation, with enough polymorphism
 to inform the tree but not so much as to remove all uncertainties in the inference. Reducing this scaling
 factor decreases the number of substitutions so that the posterior becomes more similar to the prior
-without data shown in Figure \ref{fig:priors}, 
+without data (similar to Figure \ref{fig:priors}), 
 whereas increasing the scaling factor adds more substitutions so
 that only a single topology becomes probable. The balanced situation shown in Figure \ref{fig:posterior}
 demonstrates our ability to explore the tree space, including different topologies when the posterior
@@ -866,7 +876,7 @@ requires it.
 \caption{Toy example of Bayesian phylogenetic inference using two independent runs.
 (A) Correct tree used in simulation. (B-C) DensiTree representations of trees sampled in 
 the two runs. (D) Traces of the sum of branch lengths in both runs.
-(E-F) Posterior probability of topologies according to the two runs.
+(E-F) Posterior count of topologies according to the two runs.
 \label{fig:posterior}}
 \end{figure}
 
@@ -884,7 +894,7 @@ Euclidean space.
 In the canonical representation, children of every internal node are ordered by smallest descendant leaf label, so every new leaf is a second child: each graft coordinate is the larger of its two equivalent values given the preceding coordinates. 
 We used \verb+ape+ and \verb+phangorn+ to store, manipulate 
 and visualise phylogenetic trees \citep{Paradis2019,schliepPhangornPhylogeneticAnalysis2011}.
-We used the adaptive Metropolis sampler \citep{Vihola2011} 
+We used the adaptive Metropolis sampler with coerced acceptance rate \citep{Vihola2012} 
 implemented \verb+adaptMCMC+ \citep{adaptMCMC}. 
 We used \verb+coda+ \citep{Plummer2006} to analyse the MCMC outputs, and 
 \verb+rwty+ \citep{Warren2017} to compute the approximate effective sample size of tree topologies.
@@ -915,7 +925,7 @@ All three functions are surjective onto the corresponding space of binary
 trees with strictly positive branch lengths and extend continuously to
 the completed tree space obtained by allowing zero-length branches. Their
 parameter spaces are divided into subspaces on which the
-selected contour branchs and traversal directions are fixed. Within
+selected contour branches and traversal directions are fixed. Within
 each such subspace, the resulting topology is fixed and the function is continuous.
 The boundaries between subspaces correspond to grafting at tree nodes or
 contour endpoints. 
@@ -936,13 +946,13 @@ Restricting our parametrisation to canonical representatives (see Section 9) giv
 almost everywhere, but onto a tree-dependent subset of $\mathbb{R}^d$.
 At least the number of representations is fixed for
 each type of tree and value of $n$ (Table \ref{tab:comparison}) which
-allows us to sample without theoretical difficulty. In practice the multi-modality
+allows us to sample without theoretical difficulty using Equation \ref{eq:link}. 
+In practice the multi-modality
 could be a problem for some samplers, although the different modes might be 
 separate enough for only a single one to be explored. 
-All modes are exact copies, so mode-hopping is harmless for tree-level summaries.
-Occasional jumps between 
-modes should not affect results in terms of the sampled phylogenetic trees.
-This problem similar for example to label switching in mixture and
+All modes are exact copies, so mode-hopping is harmless 
+in terms of the sampled phylogenetic trees.
+This problem is therefore analogous to label switching in mixture and
 Hidden Markov Models \citep{papastamoulisLabelswitchingPackageDealing2016}.
 
 Many promising Monte-Carlo methods have not been applied in Bayesian phylogenetics
@@ -955,7 +965,6 @@ to infer the phylogeny, and showed that it can sample the prior when no data is 
 This toy example of Bayesian phylogenetic inference was aimed as a proof-of-concept,
 not as a practical approach compared to current state-of-the-art methods
 such as MrBayes \citep{Ronquist2012} or BEAST \citep{baeleBEASTBayesianPhylogenetic2025}.
-
 The focus here was on providing constructions that enable the use of new algorithms, not
 on the application of these algorithms or on scalability to real-life data analysis. Our implementation
 uses R and is not optimised. More importantly, the adaptive Metropolis algorithm \citep{Vihola2011} 

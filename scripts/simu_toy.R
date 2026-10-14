@@ -5,13 +5,13 @@ library(phangorn)
 
 n=10
 model=1
-scale=0.004
+scale=0.005
 l=10000
 
 set.seed(4)
 tree=randtree(n,model,scale)#nice balanced tree
 
-set.seed(2)
+set.seed(4)
 if (l==0) {seqs=phyDatEmpty(Ntip(tree));names(seqs)<-tree$tip.label} else
 seqs=phangorn::simSeq(tree,l=l,rate=1)
 dist=dist.ml(seqs)
@@ -19,7 +19,7 @@ disttree=phangorn::upgma(dist)
 results=vector('list',2)
 #clusters=vector('list',2)
 for (i in 1:2) {
-  x=mcmc2(seqs,model=model,niter=1e5,scale=scale,initTree = disttree)
+  x=mcmc(seqs,model=model,niter=2e5,scale=scale,initTree = disttree,thin=1e1)
   x=x[(floor(length(x) / 2) + 1):length(x)]
   results[[i]]=x
   #clusters[[i]]=topologies(x)
@@ -59,15 +59,15 @@ fig_label(LETTERS[let],cex=2);let=let+1
 #axisPhylo(1,backward = F)
 
 r=results[[1]]
-r=r[(length(r)/2+1):length(r)]
+r=r[round(seq(1,length(r),length.out=1000))]
 class(r)<-'multiPhylo'
-densiTree(r,type='cladogram',col='blue',alpha = 0.01)
+densiTree(r,type='cladogram',col='blue',alpha = 0.01,consensus=tree)
 fig_label(LETTERS[let],cex=2);let=let+1
 
 r=results[[2]]
-r=r[(length(r)/2+1):length(r)]
+r=r[round(seq(1,length(r),length.out=1000))]
 class(r)<-'multiPhylo'
-densiTree(r,type='cladogram',col='blue',alpha = 0.01)
+densiTree(r,type='cladogram',col='blue',alpha = 0.01,consensus=tree)
 fig_label(LETTERS[let],cex=2);let=let+1
 
 col1 <- rgb(1, 0, 0, 0.4)   # red, 40% opaque
@@ -78,12 +78,12 @@ plot (s1,type='l',xlab='',ylab='',col=col1,ylim=c(min(c(s1,s2)),max(c(s1,s2))))
 lines(s2,col=col2)
 fig_label(LETTERS[let],cex=2);let=let+1
 
-counts=table(clusters[1:1000])
+counts=table(clusters[1:(length(clusters)/2)])
 #names(counts)<-1:length(counts)
 barplot(counts)
 fig_label(LETTERS[let],cex=2);let=let+1
 
-counts=table(clusters[1001:2000])
+counts=table(clusters[(1+length(clusters)/2):length(clusters)])
 #names(counts)<-1:length(counts)
 barplot(counts)
 fig_label(LETTERS[let],cex=2);let=let+1

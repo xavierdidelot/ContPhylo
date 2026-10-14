@@ -141,13 +141,16 @@
   issn =          {01968858},
 }
 
-@misc{dinhProbabilisticPathHamiltonian2017,
+@article{dinhProbabilisticPathHamiltonian2017,
   author =        {Dinh, Vu and Bilge, Arman and Zhang, Cheng and
                    Matsen, Frederick A.},
+  journal =       {ICML'17: Proceedings of the 34th International
+                   Conference on Machine Learning},
   month =         jun,
-  number =        {arXiv:1702.07814},
+  pages =         {1009--1018},
   publisher =     {arXiv},
   title =         {Probabilistic {{Path Hamiltonian Monte Carlo}}},
+  volume =        {70},
   year =          {2017},
   abstract =      {Hamiltonian Monte Carlo (HMC) is an efficient and
                    effective means of sampling posterior distributions
@@ -170,7 +173,6 @@
                    ease the transition across a boundary on which the
                    log-posterior has discontinuous derivatives can
                    greatly improve efficiency.},
-  doi =           {10.48550/arXiv.1702.07814},
 }
 
 @article{Helekal2025,
@@ -211,12 +213,96 @@
   issn =          {1063-5157},
 }
 
+@article{pennLeapingTreeSpace2023,
+  author =        {Penn, Matthew J and Scheidwasser, Neil and
+                   Penn, Joseph and Donnelly, Christl A and
+                   Duch{\^e}ne, David A and Bhatt, Samir},
+  editor =        {Pisani, Davide},
+  journal =       {Genome Biology and Evolution},
+  month =         dec,
+  number =        {12},
+  pages =         {evad213},
+  title =         {Leaping through {{Tree Space}}: {{Continuous
+                   Phylogenetic Inference}} for {{Rooted}} and
+                   {{Unrooted Trees}}},
+  volume =        {15},
+  year =          {2023},
+  abstract =      {Phylogenetics is now fundamental in life sciences,
+                   providing insights into the earliest branches of life
+                   and the origins and spread of epidemics. However,
+                   finding suitable phylogenies from the vast space of
+                   possible trees remains challenging. To address this
+                   problem, for the first time, we perform both tree
+                   exploration and inference in a continuous space where
+                   the computation of gradients is possible. This
+                   continuous relaxation allows for major leaps across
+                   tree space in both rooted and unrooted trees, and is
+                   less susceptible to convergence to local minima. Our
+                   approach outperforms the current best methods for
+                   inference on unrooted trees and, in simulation,
+                   accurately infers the tree and root in ultrametric
+                   cases. The approach is effective in cases of
+                   empirical data with negligible amounts of data, which
+                   we demonstrate on the phylogeny of jawed vertebrates.
+                   Indeed, only a few genes with an ultrametric signal
+                   were generally sufficient for resolving the major
+                   lineages of vertebrates. Optimization is possible via
+                   automatic differentiation and our method presents an
+                   effective way forward for exploring the most
+                   difficult, data-deficient phylogenetic questions.},
+  doi =           {10.1093/gbe/evad213},
+  issn =          {1759-6653},
+}
+
+@article{pennPhylo2VecVectorRepresentation2025,
+  author =        {Penn, Matthew J and Scheidwasser, Neil and
+                   Khurana, Mark P and Duch{\^e}ne, David A and
+                   Donnelly, Christl A and Bhatt, Samir},
+  editor =        {Smith, Stephen},
+  journal =       {Systematic Biology},
+  month =         apr,
+  number =        {2},
+  pages =         {250--266},
+  title =         {{{Phylo2Vec}}: {{A Vector Representation}} for
+                   {{Binary Trees}}},
+  volume =        {74},
+  year =          {2025},
+  abstract =      {Abstract Binary phylogenetic trees inferred from
+                   biological data are central to understanding the
+                   shared history among evolutionary units. However,
+                   inferring the placement of latent nodes in a tree is
+                   computationally expensive. State-of-the-art methods
+                   rely on carefully designed heuristics for tree
+                   search, using different data structures for easy
+                   manipulation (e.g., classes in object-oriented
+                   programming languages) and readable representation of
+                   trees (e.g., Newick-format strings). Here, we present
+                   Phylo2Vec, a parsimonious encoding for phylogenetic
+                   trees that serves as a unified approach for both
+                   manipulating and representing phylogenetic trees.
+                   Phylo2Vec maps any binary tree with n leaves to a
+                   unique integer vector of length n-1. The advantages
+                   of Phylo2Vec are 4-fold: (i) fast tree sampling, (ii)
+                   compressed tree representation compared to a Newick
+                   string, (iii) quick and unambiguous verification if 2
+                   binary trees are identical topologically, and (iv)
+                   systematic ability to traverse tree space in very
+                   large or small jumps. As a proof of concept, we use
+                   Phylo2Vec for ML inference on 5 real-world datasets
+                   and show that a simple hill-climbing-based
+                   optimization scheme can efficiently traverse the
+                   vastness of tree space from a random to an optimal
+                   tree.},
+  doi =           {10.1093/sysbio/syae030},
+  issn =          {1063-5157, 1076-836X},
+}
+
 @article{Felsenstein1978b,
   author =        {Felsenstein, Joseph},
   journal =       {Systematic Zoology},
   month =         mar,
   number =        {1},
-  pages =         {27},
+  pages =         {27--33},
   title =         {The {{Number}} of {{Evolutionary Trees}}},
   volume =        {27},
   year =          {1978},
@@ -369,6 +455,40 @@
                    reserved.},
   doi =           {10.1016/j.spa.2011.08.006},
   issn =          {03044149},
+}
+
+@article{Vihola2012,
+  author =        {Vihola, Matti},
+  journal =       {Statistics and Computing},
+  month =         sep,
+  number =        {5},
+  pages =         {997--1008},
+  title =         {Robust Adaptive {{Metropolis}} Algorithm with Coerced
+                   Acceptance Rate},
+  volume =        {22},
+  year =          {2012},
+  abstract =      {The adaptive Metropolis (AM) algorithm of Haario,
+                   Saksman and Tamminen (Bernoulli 7(2):223--242, 2001)
+                   uses the estimated covariance of the target
+                   distribution in the proposal distribution. This paper
+                   introduces a new robust adaptive Metropolis algorithm
+                   estimating the shape of the target distribution and
+                   simultaneously coercing the acceptance rate. The
+                   adaptation rule is computationally simple adding no
+                   extra cost compared with the AM algorithm. The
+                   adaptation strategy can be seen as a multidimensional
+                   extension of the previously proposed method adapting
+                   the scale of the proposal distribution in order to
+                   attain a given acceptance rate. The empirical results
+                   show promising behaviour of the new algorithm in an
+                   example with Student target distribution having no
+                   finite second moment, where the AM covariance
+                   estimate is unstable. In the examples with finite
+                   second moments, the performance of the new approach
+                   seems to be competitive with the AM algorithm
+                   combined with scale adaptation.},
+  doi =           {10.1007/s11222-011-9269-5},
+  issn =          {0960-3174, 1573-1375},
 }
 
 @article{Roberts1997,
@@ -706,6 +826,38 @@
   year =          {2012},
 }
 
+@article{papastamoulisLabelswitchingPackageDealing2016,
+  author =        {Papastamoulis, Panagiotis},
+  journal =       {Journal of Statistical Software},
+  number =        {Code Snippet 1},
+  title =         {Label.Switching: {{An R Package}} for {{Dealing}}
+                   with the {{Label Switching Problem}} in {{MCMC
+                   Outputs}}},
+  volume =        {69},
+  year =          {2016},
+  abstract =      {Label switching is a well-known and fundamental
+                   problem in Bayesian estimation of mixture or hidden
+                   Markov models. In case that the prior distribution of
+                   the model parameters is the same for all states, then
+                   both the likelihood and posterior distribution are
+                   invariant to permutations of the parameters. This
+                   property makes Markov chain Monte Carlo (MCMC)
+                   samples simulated from the posterior distribution
+                   non-identifiable. In this paper, the label.switching
+                   package is introduced. It contains one probabilistic
+                   and seven deterministic relabeling algorithms in
+                   order to post-process a given MCMC sample, provided
+                   by the user. Each method returns a set of
+                   permutations that can be used to reorder the MCMC
+                   output. Then, any parametric function of interest can
+                   be inferred using the reordered MCMC sample. A set of
+                   user-defined permutations is also accepted, allowing
+                   the researcher to benchmark new relabeling methods
+                   against the available ones.},
+  doi =           {10.18637/jss.v069.c01},
+  issn =          {1548-7660},
+}
+
 @article{Ronquist2012,
   author =        {Ronquist, Fredrik and Teslenko, Maxim and
                    {van der Mark}, Paul and Ayres, Daniel L and
@@ -792,67 +944,9 @@
   issn =          {1548-7091, 1548-7105},
 }
 
-@article{robertsOptimalScalingDiscrete1998,
-  author =        {Roberts, Gareth O. and Rosenthal, Jeffrey S.},
-  journal =       {Journal of the Royal Statistical Society Series B:
-                   Statistical Methodology},
-  month =         jan,
-  number =        {1},
-  pages =         {255--268},
-  title =         {Optimal {{Scaling}} of {{Discrete Approximations}} to
-                   {{Langevin Diffusions}}},
-  volume =        {60},
-  year =          {1998},
-  abstract =      {We consider the optimal scaling problem for proposal
-                   distributions in Hastings\textpm{} Metropolis
-                   algorithms derived from Langevin diffusions. We prove
-                   an asymptotic diffusion limit theorem and show that
-                   the relative ef\AE ciency of the algorithm can be
-                   characterized by its overall acceptance rate,
-                   independently of the target distribution. The
-                   asymptotically optimal acceptance rate is 0.574. We
-                   show that, as a function of dimension n, the
-                   complexity of the algorithm is O(n1/3), which
-                   compares favourably with the O(n) complexity of
-                   random walk Metropolis algorithms. We illustrate this
-                   comparison with some example simulations.},
-  doi =           {10.1111/1467-9868.00123},
-  issn =          {1369-7412, 1467-9868},
-}
-
-@book{nealMCMCUsingHamiltonian2011,
-  author =        {Neal, Radford M.},
-  month =         may,
-  title =         {{{MCMC}} Using {{Hamiltonian}} Dynamics},
-  year =          {2011},
-  abstract =      {Hamiltonian dynamics can be used to produce distant
-                   proposals for the Metropolis algorithm, thereby
-                   avoiding the slow exploration of the state space that
-                   results from the diffusive behaviour of simple
-                   random-walk proposals. Though originating in physics,
-                   Hamiltonian dynamics can be applied to most problems
-                   with continuous state spaces by simply introducing
-                   fictitious "momentum" variables. A key to its
-                   usefulness is that Hamiltonian dynamics preserves
-                   volume, and its trajectories can thus be used to
-                   define complex mappings without the need to account
-                   for a hard-to-compute Jacobian factor - a property
-                   that can be exactly maintained even when the dynamics
-                   is approximated by discretizing time. In this review,
-                   I discuss theoretical and practical aspects of
-                   Hamiltonian Monte Carlo, and present some of its
-                   variations, including using windows of states for
-                   deciding on acceptance or rejection, computing
-                   trajectories using fast approximations, tempering
-                   during the course of a trajectory to handle isolated
-                   modes, and short-cut methods that prevent useless
-                   trajectories from taking much computation time.},
-  doi =           {10.1201/b10905},
-}
-
 @article{Betancourt2017,
   author =        {Betancourt, Michael},
-  journal =       {arxiv},
+  journal =       {arXiv preprint arXiv:1701.02434},
   title =         {A {{Conceptual Introduction}} to {{Hamiltonian Monte
                    Carlo}}},
   year =          {2017},
@@ -876,103 +970,111 @@
                    it fails.},
 }
 
-@article{johnsonBillionscaleSimilaritySearch2019,
-  author =        {Johnson, Jeff and Douze, Matthijs and
-                   J{\'e}gou, Herv{\'e}},
-  journal =       {IEEE transactions on big data},
-  pages =         {535--547},
-  publisher =     {arXiv},
-  title =         {Billion-Scale Similarity Search with {{GPUs}}},
-  year =          {2019},
-  abstract =      {Similarity search finds application in specialized
-                   database systems handling complex data such as images
-                   or videos, which are typically represented by
-                   high-dimensional features and require specific
-                   indexing structures. This paper tackles the problem
-                   of better utilizing GPUs for this task. While GPUs
-                   excel at data-parallel tasks, prior approaches are
-                   bottlenecked by algorithms that expose less
-                   parallelism, such as k-min selection, or make poor
-                   use of the memory hierarchy. We propose a design for
-                   k-selection that operates at up to 55\% of
-                   theoretical peak performance, enabling a nearest
-                   neighbor implementation that is 8.5\texttimes{}
-                   faster than prior GPU state of the art. We apply it
-                   in different similarity search scenarios, by
-                   proposing optimized design for brute-force,
-                   approximate and compressed-domain search based on
-                   product quantization. In all these setups, we
-                   outperform the state of the art by large margins. Our
-                   implementation enables the construction of a high
-                   accuracy k-NN graph on 95 million images from the
-                   Yfcc100M dataset in 35 minutes, and of a graph
-                   connecting 1 billion vectors in less than 12 hours on
-                   4 Maxwell Titan X GPUs. We have open-sourced our
-                   approach1 for the sake of comparison and
-                   reproducibility.},
-  doi =           {10.48550/arXiv.1702.08734},
+@article{Carpenter2017,
+  author =        {Carpenter, Bob and Gelman, Andrew and
+                   Hoffman, Matthew D. and Lee, Daniel and Goodrich, Ben and
+                   Betancourt, Michael and Brubaker, Marcus A. and
+                   Guo, Jiqiang and Li, Peter and Riddell, Allen},
+  journal =       {Journal of Statistical Software},
+  number =        {1},
+  title =         {Stan: {{A}} Probabilistic Programming Language},
+  volume =        {76},
+  year =          {2017},
+  abstract =      {Stan is a probabilistic programming language for
+                   specifying statistical models. A Stan program
+                   imperatively defines a log probability function over
+                   parameters conditioned on specified data and
+                   constants. As of version 2.14.0, Stan provides full
+                   Bayesian inference for continuous-variable models
+                   through Markov chain Monte Carlo methods such as the
+                   No-U-Turn sampler, an adaptive form of Hamiltonian
+                   Monte Carlo sampling. Penalized maximum likelihood
+                   estimates are calculated using optimization methods
+                   such as the limited memory
+                   Broyden-Fletcher-Goldfarb-Shanno algorithm. Stan is
+                   also a platform for computing log densities and their
+                   gradients and Hessians, which can be used in
+                   alternative algorithms such as variational Bayes,
+                   expectation propagation, and marginal inference using
+                   approximate integration. To this end, Stan is set up
+                   so that the densities, gradients, and Hessians, along
+                   with intermediate quantities of the algorithm such as
+                   acceptance probabilities, are easily accessible. Stan
+                   can be called from the command line using the cmdstan
+                   package, through R using the rstan package, and
+                   through Python using the pystan package. All three
+                   interfaces support sampling and optimization-based
+                   inference with diagnostics and posterior analysis.
+                   rstan and pystan also provide access to log
+                   probabilities, gradients, Hessians, parameter
+                   transforms, and specialized plotting.},
+  doi =           {10.18637/jss.v076.i01},
+  issn =          {15487660},
 }
 
-@inproceedings{wangMilvusPurposeBuiltVector2021,
-  address =       {Virtual Event China},
-  author =        {Wang, Jianguo and Yi, Xiaomeng and Guo, Rentong and
-                   Jin, Hai and Xu, Peng and Li, Shengjun and
-                   Wang, Xiangyu and Guo, Xiangzhou and Li, Chengming and
-                   Xu, Xiaohai and Yu, Kun and Yuan, Yuxing and
-                   Zou, Yinghao and Long, Jiquan and Cai, Yudong and
-                   Li, Zhenxiang and Zhang, Zhifeng and Mo, Yihua and
-                   Gu, Jun and Jiang, Ruiyi and Wei, Yi and
-                   Xie, Charles},
-  booktitle =     {Proceedings of the 2021 {{International Conference}}
-                   on {{Management}} of {{Data}}},
-  month =         jun,
-  pages =         {2614--2627},
-  publisher =     {ACM},
-  title =         {Milvus: {{A Purpose-Built Vector Data Management
-                   System}}},
+@article{JMLR:v18:16-107,
+  author =        {Kucukelbir, Alp and Tran, Dustin and
+                   Ranganath, Rajesh and Gelman, Andrew and
+                   Blei, David M.},
+  journal =       {Journal of Machine Learning Research},
+  number =        {14},
+  pages =         {1--45},
+  title =         {Automatic Differentiation Variational Inference},
+  volume =        {18},
+  year =          {2017},
+}
+
+@article{bleiVariationalInferenceReview2017,
+  author =        {Blei, David M. and Kucukelbir, Alp and
+                   McAuliffe, Jon D.},
+  journal =       {Journal of the American Statistical Association},
+  month =         apr,
+  number =        {518},
+  pages =         {859--877},
+  title =         {Variational {{Inference}}: {{A Review}} for
+                   {{Statisticians}}},
+  volume =        {112},
+  year =          {2017},
+  abstract =      {One of the core problems of modern statistics is to
+                   approximate difficult-to-compute probability
+                   densities. This problem is especially important in
+                   Bayesian statistics, which frames all inference about
+                   unknown quantities as a calculation involving the
+                   posterior density. In this article, we review
+                   variational inference (VI), a method from machine
+                   learning that approximates probability densities
+                   through optimization. VI has been used in many
+                   applications and tends to be faster than classical
+                   methods, such as Markov chain Monte Carlo sampling.
+                   The idea behind VI is to first posit a family of
+                   densities and then to find a member of that family
+                   which is close to the target density. Closeness is
+                   measured by Kullback--Leibler divergence. We review
+                   the ideas behind mean-field variational inference,
+                   discuss the special case of VI applied to exponential
+                   family models, present a full example with a Bayesian
+                   mixture of Gaussians, and derive a variant that uses
+                   stochastic optimization to scale up to massive data.
+                   We discuss modern research in VI and highlight
+                   important open problems. VI is powerful, but it is
+                   not yet well understood. Our hope in writing this
+                   article is to catalyze statistical research on this
+                   class of algorithms. Supplementary materials for this
+                   article are available online.},
+  doi =           {10.1080/01621459.2017.1285773},
+  issn =          {0162-1459, 1537-274X},
+}
+
+@article{JMLR:v22:19-1028,
+  author =        {Papamakarios, George and Nalisnick, Eric and
+                   Rezende, Danilo Jimenez and Mohamed, Shakir and
+                   Lakshminarayanan, Balaji},
+  journal =       {Journal of Machine Learning Research},
+  number =        {57},
+  pages =         {1--64},
+  title =         {Normalizing Flows for Probabilistic Modeling and
+                   Inference},
+  volume =        {22},
   year =          {2021},
-  abstract =      {Recently, there has been a pressing need to manage
-                   high-dimensional vector data in data science and AI
-                   applications. This trend is fueled by the
-                   proliferation of unstructured data and machine
-                   learning (ML), where ML models usually transform
-                   unstructured data into feature vectors for data
-                   analytics, e.g., product recommendation. Existing
-                   systems and algorithms for managing vector data have
-                   two limitations: (1) They incur serious performance
-                   issue when handling large-scale and dynamic vector
-                   data; and (2) They provide limited functionalities
-                   that cannot meet the requirements of versatile
-                   applications. This paper presents Milvus, a
-                   purpose-built data management system to e\dbend
-                   ciently manage large-scale vector data. Milvus
-                   supports easy-to-use application interfaces
-                   (including SDKs and RESTful APIs); optimizes for the
-                   heterogeneous computing platform with modern CPUs and
-                   GPUs; enables advanced query processing beyond simple
-                   vector similarity search; handles dynamic data for
-                   fast updates while ensuring e\dbend cient query
-                   processing; and distributes data across multiple
-                   nodes to achieve scalability and availability. We
-                   \dbend rst describe the design and implementation of
-                   Milvus. Then we demonstrate the real-world use cases
-                   supported by Milvus. In particular, we build a series
-                   of 10 applications (e.g., image/video search,
-                   chemical structure analysis, COVID-19 dataset search,
-                   personalized recommendation, biological multi-factor
-                   authentication, intelligent question answering) on
-                   top of Milvus. Finally, we experimentally evaluate
-                   Milvus with a wide range of systems including two
-                   open source systems (Vearch and Microsoft SPTAG) and
-                   three commercial systems. Experiments show that
-                   Milvus is up to two orders of magnitude faster than
-                   the competitors while providing more functionalities.
-                   Now Milvus is deployed by hundreds of organizations
-                   worldwide and it is also recognized as an
-                   incubation-stage project of the LF AI \& Data
-                   Foundation. Milvus is open-sourced at https://
-                   github.com/ milvus-io/ milvus.},
-  doi =           {10.1145/3448016.3457550},
-  isbn =          {978-1-4503-8343-1},
 }
 

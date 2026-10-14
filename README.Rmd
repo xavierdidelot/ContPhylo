@@ -42,12 +42,12 @@ library(ContPhylo,quietly=T)
 
 ## Example
 
-This is a basic example of usage. 
+See the vignette
+[here](https://github.com/xavierdidelot/ContPhylo/tree/master/vignettes).
 
 ## More information and getting help
 
-For more detailed examples of how to use ContPhylo, see the vignettes [here](https://github.com/xavierdidelot/ContPhylo/tree/master/vignettes).
-See also the help included in the package using the R command
+See the help included in the package using the R command
 `help(package='ContPhylo')`. 
 
 If you have any problem or question please create an issue [here](https://github.com/xavierdidelot/ContPhylo/issues) 

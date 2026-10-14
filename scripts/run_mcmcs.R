@@ -11,7 +11,7 @@ scale=0.01#scaling factor on branch lengths
 alltrees=vector('list',3)
 allcounts=vector('list',3)
 for (model in 1:3) {
-  trees=mcmc2(phyDatEmpty(n),model=model,scale=scale,niter=2e5,thin=10)
+  trees=mcmc(phyDatEmpty(n),model=model,scale=scale,niter=2e5,thin=10)
   trees=trees[(length(trees)/2+1):length(trees)]
   alltrees[[model]]=trees
 

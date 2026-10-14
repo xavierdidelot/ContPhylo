@@ -14,7 +14,7 @@ if (simu==1) {
 
 if (simu==2) {
   #My own MCMC
-  trees=mcmc(phyDatEmpty(n),model=model,scale=scale,niter=1e5)
+  trees=ContPhylo:::mcmc_mine(phyDatEmpty(n),model=model,scale=scale,niter=1e5)
   par(mfrow=c(2,2))
   for (i in c(1700,1800,1900,2000)) {
     plot(trees[[i]])
@@ -30,7 +30,7 @@ if (simu==2) {
 
 if (simu==3) {
   #MCMC from adaptMCMC package
-  trees=mcmc2(phyDatEmpty(n),model=model,scale=scale,niter=1e5)
+  trees=mcmc(phyDatEmpty(n),model=model,scale=scale,niter=1e5)
   mat=trees[[1]]$cov.jump
   image(1:nrow(mat),1:ncol(mat),mat,xlab='',ylab='')
   title('Covariance of last jump distribution')

@@ -1,4 +1,4 @@
 library(testthat)
-library(RealTree)
+library(ContPhylo)
 
-test_check("RealTree")
+test_check("ContPhylo")

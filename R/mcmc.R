@@ -7,8 +7,7 @@
 #' @param scale Scale of the branch lengths
 #' @param showProgress Whether to show a progress bar
 #' @returns MCMC result
-#' @export
-mcmc = function(dat=phyDatEmpty(5),model=2,initTree,niter=1e3,thin=max(1,round(niter/2e3)),scale=1,showProgress=T) {
+mcmc_mine = function(dat=phyDatEmpty(5),model=2,initTree,niter=1e3,thin=max(1,round(niter/2e3)),scale=1,showProgress=T) {
   if (missing(initTree)) {
     n=length(dat)
     tree=randtree(n,model,scale)
@@ -71,7 +70,7 @@ mcmc = function(dat=phyDatEmpty(5),model=2,initTree,niter=1e3,thin=max(1,round(n
 #' @param showProgress Whether to show a progress bar
 #' @returns MCMC result
 #' @export
-mcmc2 = function(dat=phyDatEmpty(5),model=2,initTree,niter=1e3,thin=max(1,round(niter/2e3)),scale=1,showProgress=T) {
+mcmc = function(dat=phyDatEmpty(5),model=2,initTree,niter=1e3,thin=max(1,round(niter/2e3)),scale=1,showProgress=T) {
   if (missing(initTree)) {
     n=length(dat)
     tree=randtree(n,model,scale)

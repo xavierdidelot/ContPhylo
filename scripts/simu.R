@@ -34,7 +34,7 @@ if ((length(seqs)>2||model==1) && all(!is.na(dist))) {
   plot(0,0,main=sprintf('Distance-based tree not available'),xlab='',ylab='')
 }
 
-r=mcmc2(seqs,model=model,niter=2e5,scale=scale,initTree = tree)
+r=mcmc(seqs,model=model,niter=2e5,scale=scale,initTree = tree)
 #r=r[(length(r)/2+1):length(r)]
 
 plot(sapply(r,function(x) x$posterior),type='l',xlab='',ylab='Posterior')

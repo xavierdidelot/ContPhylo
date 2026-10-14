@@ -2,7 +2,7 @@
 % Please edit documentation in R/mcmc.R
 \name{mcmc}
 \alias{mcmc}
-\title{MCMC algorithm}
+\title{MCMC algorithm using package adaptMCMC}
 \usage{
 mcmc(
   dat = phyDatEmpty(5),
@@ -33,5 +33,5 @@ mcmc(
 MCMC result
 }
 \description{
-MCMC algorithm
+MCMC algorithm using package adaptMCMC
 }
