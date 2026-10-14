@@ -6,11 +6,11 @@ Date: 2026-09-16
 Authors@R: person("Xavier","Didelot",email="xavier.didelot@gmail.com",role=c("aut", "cre"))
 Maintainer: Xavier Didelot <xavier.didelot@gmail.com>
 Depends: R (>= 3.5.0)
-Imports: ape, phangorn, coda
-Suggests: knitr, testthat, adaptMCMC, DEoptim, distory, rwty, rmarkdown
+Imports: ape, phangorn, coda, adaptMCMC
+Suggests: knitr, testthat, DEoptim, distory, rwty, rmarkdown
 Description: ContPhylo is a R package to work with phylogenetic trees in unconstrained Euclidean space.
 VignetteBuilder: knitr
-License: GPL (>=3)
+License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Config/roxygen2/version: 8.0.0

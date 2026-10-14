@@ -14,7 +14,7 @@ prior=function(r,scale=1) {
 }
 
 #' Prior function for a phylo object
-#' @param r Object of class phylo
+#' @param tree Object of class phylo
 #' @param model Model of tree: 1 for ultrametric, 2 for rooted, 3 for unrooted.
 #' @param scale Scale of the branch lengths
 #' @returns Log of the prior

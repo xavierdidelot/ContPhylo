@@ -7,11 +7,11 @@
 priorT(tree, model = 2, scale = 1)
 }
 \arguments{
+\item{tree}{Object of class phylo}
+
 \item{model}{Model of tree: 1 for ultrametric, 2 for rooted, 3 for unrooted.}
 
 \item{scale}{Scale of the branch lengths}
-
-\item{r}{Object of class phylo}
 }
 \value{
 Log of the prior

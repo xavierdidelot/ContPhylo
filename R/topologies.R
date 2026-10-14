@@ -15,6 +15,7 @@ topologies=function(trees,ranked=F) {
 }
 
 unranked_key <- function(tr) {
+  n <- Ntip(tr)
   rooted=is.rooted(tr)
   pp <- ape::prop.part(tr)            # list of tip-index vectors, one per internal node
   cl <- lapply(pp, function(x) {
