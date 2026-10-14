@@ -61,26 +61,7 @@ sampling tree distributions; Bayesian phylogenetic inference
 
 \newpage
 \section*{Abstract}
-Phylogenetic trees combine a discrete topology with continuous branch
-lengths, which makes them difficult to work with. We introduce a recursive contour-grafting construction that encodes
-both components using unconstrained real-valued coordinates. After fixing
-an order of the leaves, each new leaf is attached at a point selected by a
-contour traversal of the tree constructed so far. Moving a graft coordinate
-continuously along the contour enables changes of topology when internal
-branches contract to zero.
-For trees with $n$ labelled leaves, we apply the construction to rooted
-ultrametric trees, rooted trees with unrestricted branch lengths, and
-unrooted trees, obtaining parametrisations of dimensions $n-1$, $2n-2$,
-and $2n-3$, respectively. We show that the resulting construction functions are surjective and continuous
-onto the corresponding spaces of phylogenetic trees. 
-We also determine the number of representations of
-a generic tree and calculate the Jacobian of each parametrisation. These
-results provide explicit change-of-variables formulae between Euclidean
-coordinates and the phylogenetic tree spaces, and we show how probability
-distributions on tree space can be sampled using generic algorithms that target
-unconstrained Euclidean coordinates. 
-This approach paves the way for the 
-development and application of new methodology in Bayesian phylogenetic inference.
+Phylogenetic trees combine a discrete topology with continuous branch lengths, which makes them difficult to work with. We introduce a recursive contour-grafting construction that encodes both components using unconstrained real-valued coordinates. After fixing an order of the leaves, each new leaf is attached at a point selected by a contour traversal of the tree constructed so far. Moving a graft coordinate continuously along the contour enables changes of topology when internal branches contract to zero. For trees with $n$ labelled leaves, we apply the construction to rooted ultrametric trees, rooted trees with unrestricted branch lengths, and unrooted trees, obtaining parametrisations of dimensions $n-1$, $2n-2$, and $2n-3$, respectively. We show that the resulting construction functions are surjective and continuous onto the corresponding spaces of phylogenetic trees. We also determine the number of representations of a generic tree and calculate the Jacobian of each parametrisation. These results provide explicit change-of-variables formulae between Euclidean coordinates and the phylogenetic tree spaces, and we show how probability distributions on tree space can be sampled using generic algorithms that target unconstrained Euclidean coordinates. This approach paves the way for the development and application of new methodology in Bayesian phylogenetic inference.
 
 \newpage
 \section{Introduction}
@@ -849,8 +830,7 @@ of size 10,000.
 Several runs are performed independently, and they are found to have converged and mixed
 well based on a Gelman-Rubin statistic below 1.1 and effective sample sizes above 1000 for
 the sum of the branch lengths and each terminal branch length \citep{Plummer2006}.
-The tree topology is also found in each run to have an approximate effective sample size greater than 1000
-\citep{Warren2017}. 
+The tree topology is also found in each run to have an approximate effective sample size greater than 1000 \citep{Warren2017}. 
 Figures \ref{fig:posterior}B and C show the phylogenetic posterior samples for two independent runs using
 a DensiTree graphical representation \citep{Bouckaert2010}. The two posterior samples look very similar,
 and give high support to the correct phylogeny shown in Figure \ref{fig:posterior}A.

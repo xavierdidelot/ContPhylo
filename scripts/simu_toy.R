@@ -16,14 +16,22 @@ if (l==0) {seqs=phyDatEmpty(Ntip(tree));names(seqs)<-tree$tip.label} else
 seqs=phangorn::simSeq(tree,l=l,rate=1)
 dist=dist.ml(seqs)
 disttree=phangorn::upgma(dist)
-results=vector('list',2)
-#clusters=vector('list',2)
-for (i in 1:2) {
-  x=mcmc(seqs,model=model,niter=2e5,scale=scale,initTree = disttree,thin=1e1)
+reps=4
+results=vector('list',reps)
+
+library(doParallel)
+cl <- makeCluster(min(reps,parallel::detectCores()-1), type = "PSOCK", outfile="")
+registerDoParallel(cl)
+results <- foreach (rep = 1:reps,.packages = c('ape','phangorn','ContPhylo')) %dopar% {
+  cat('Starting task',rep,'\n')
+  set.seed(rep)
+  x=mcmc(seqs,model=model,niter=2e6,scale=scale,initTree = disttree,thin=1e2)
   x=x[(floor(length(x) / 2) + 1):length(x)]
-  results[[i]]=x
-  #clusters[[i]]=topologies(x)
+  cat('Finished task',rep,'\n')
+  return(x)
 }
+parallel::stopCluster(cl)
+
 clusters=topologies(c(results[[1]],results[[2]]),ranked = F)
 save.image('scripts/simu_toy.RData')
 
@@ -79,12 +87,10 @@ lines(s2,col=col2)
 fig_label(LETTERS[let],cex=2);let=let+1
 
 counts=table(clusters[1:(length(clusters)/2)])
-#names(counts)<-1:length(counts)
 barplot(counts)
 fig_label(LETTERS[let],cex=2);let=let+1
 
 counts=table(clusters[(1+length(clusters)/2):length(clusters)])
-#names(counts)<-1:length(counts)
 barplot(counts)
 fig_label(LETTERS[let],cex=2);let=let+1
 
